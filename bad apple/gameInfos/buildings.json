@@ -1,0 +1,1264 @@
+{
+    "GameVersion": "0.0.0-alpha17",
+    "Buildings": [
+        {
+            "Id": "HubBuilding",
+            "Title": "Hub",
+            "Variants": [
+                {
+                    "Id": "HubDefaultVariant",
+                    "Title": "Hub",
+                    "InternalVariants": [
+                        {
+                            "Id": "HubDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "BeltBuilding",
+            "Title": "Conveyor Belt",
+            "Variants": [
+                {
+                    "Id": "BeltDefaultVariant",
+                    "Title": "Conveyor Belt",
+                    "InternalVariants": [
+                        {
+                            "Id": "BeltDefaultForwardInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "BeltDefaultRightInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "BeltDefaultLeftInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "Splitter1To2Variant",
+                    "Title": "2-Way Splitter",
+                    "InternalVariants": [
+                        {
+                            "Id": "Splitter1To2LInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "Splitter1To2RInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "Splitter1To3Variant",
+                    "Title": "3-Way Splitter",
+                    "InternalVariants": [
+                        {
+                            "Id": "Splitter1To3InternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "SplitterTShapeVariant",
+                    "Title": "T-Splitter",
+                    "InternalVariants": [
+                        {
+                            "Id": "SplitterTShapeInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "Merger2To1Variant",
+                    "Title": "2-Way Merger",
+                    "InternalVariants": [
+                        {
+                            "Id": "Merger2To1LInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "Merger2To1RInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "Merger3To1Variant",
+                    "Title": "3-Way Merger",
+                    "InternalVariants": [
+                        {
+                            "Id": "Merger3To1InternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "MergerTShapeVariant",
+                    "Title": "T-Merger",
+                    "InternalVariants": [
+                        {
+                            "Id": "MergerTShapeInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "Lift1LayerVariant",
+                    "Title": "1 Floor Lift",
+                    "InternalVariants": [
+                        {
+                            "Id": "Lift1DownBackwardInternalVariant",
+                            "Tiles": [
+                                {
+                                    "Z": -1
+                                },
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "Lift1DownForwardInternalVariant",
+                            "Tiles": [
+                                {
+                                    "Z": -1
+                                },
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "Lift1DownLeftInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": -1
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "Lift1DownRightInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": -1
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "Lift1UpBackwardInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "Lift1UpForwardInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "Lift1UpLeftInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "Lift1UpRightInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "Lift2LayerVariant",
+                    "Title": "2 Floor Lift",
+                    "InternalVariants": [
+                        {
+                            "Id": "Lift2DownBackwardInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": -1
+                                },
+                                {
+                                    "Z": -2
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "Lift2DownForwardInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": -1
+                                },
+                                {
+                                    "Z": -2
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "Lift2DownLeftInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": -1
+                                },
+                                {
+                                    "Z": -2
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "Lift2DownRightInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": -1
+                                },
+                                {
+                                    "Z": -2
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "Lift2UpBackwardInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                },
+                                {
+                                    "Z": 2
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "Lift2UpForwardInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                },
+                                {
+                                    "Z": 2
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "Lift2UpLeftInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                },
+                                {
+                                    "Z": 2
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "Lift2UpRightInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                },
+                                {
+                                    "Z": 2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "BeltPortSenderVariant",
+                    "Title": "Belt Launcher",
+                    "InternalVariants": [
+                        {
+                            "Id": "BeltPortSenderInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "BeltPortReceiverVariant",
+                    "Title": "Belt Catcher",
+                    "InternalVariants": [
+                        {
+                            "Id": "BeltPortReceiverInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "RotatorBuilding",
+            "Title": "Rotator",
+            "Variants": [
+                {
+                    "Id": "RotatorOneQuadVariant",
+                    "Title": "90\u00b0 CW Rotator",
+                    "InternalVariants": [
+                        {
+                            "Id": "RotatorOneQuadInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "RotatorOneQuadCCWVariant",
+                    "Title": "90\u00b0 CCW Rotator",
+                    "InternalVariants": [
+                        {
+                            "Id": "RotatorOneQuadCCWInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "RotatorHalfVariant",
+                    "Title": "180\u00b0 Rotator",
+                    "InternalVariants": [
+                        {
+                            "Id": "RotatorHalfInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "CutterBuilding",
+            "Title": "Cutting",
+            "Variants": [
+                {
+                    "Id": "CutterHalfVariant",
+                    "Title": "Half Destroyer",
+                    "InternalVariants": [
+                        {
+                            "Id": "CutterHalfInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "CutterDefaultVariant",
+                    "Title": "Cutter",
+                    "InternalVariants": [
+                        {
+                            "Id": "CutterDefaultInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Y": -1
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "CutterMirroredInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Y": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "HalvesSwapperDefaultVariant",
+                    "Title": "Swapper",
+                    "InternalVariants": [
+                        {
+                            "Id": "HalvesSwapperDefaultInternalVariant",
+                            "Tiles": [
+                                {
+                                    "Y": -1
+                                },
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "StackerBuilding",
+            "Title": "Stacker",
+            "Variants": [
+                {
+                    "Id": "StackerDefaultVariant",
+                    "Title": "Stacker",
+                    "InternalVariants": [
+                        {
+                            "Id": "StackerDefaultInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "StackerMirroredInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "PinPusherBuilding",
+            "Title": "Pin Pusher",
+            "Variants": [
+                {
+                    "Id": "PinPusherDefaultVariant",
+                    "Title": "Pin Pusher",
+                    "InternalVariants": [
+                        {
+                            "Id": "PinPusherDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "ExtractorBuilding",
+            "Title": "Extractor",
+            "Variants": [
+                {
+                    "Id": "ExtractorDefaultVariant",
+                    "Title": "Extractor",
+                    "InternalVariants": [
+                        {
+                            "Id": "ExtractorDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "TrashBuilding",
+            "Title": "Trash",
+            "Variants": [
+                {
+                    "Id": "TrashDefaultVariant",
+                    "Title": "Trash",
+                    "InternalVariants": [
+                        {
+                            "Id": "TrashDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "ShapePackerBuilding",
+            "Title": "Shape Packer",
+            "Variants": [
+                {
+                    "Id": "ShapePackerDefaultVariant",
+                    "Title": "Shape Packer",
+                    "InternalVariants": [
+                        {
+                            "Id": "ShapePackerDefaultInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                },
+                                {
+                                    "X": -1
+                                },
+                                {
+                                    "X": -1,
+                                    "Z": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "ShapeUnpackerDefaultVariant",
+                    "Title": "Shape Unpacker",
+                    "InternalVariants": [
+                        {
+                            "Id": "ShapeUnpackerDefaultInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                },
+                                {
+                                    "X": 1
+                                },
+                                {
+                                    "X": 1,
+                                    "Z": 1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "PipeBuilding",
+            "Title": "Pipe",
+            "Variants": [
+                {
+                    "Id": "PipeDefaultVariant",
+                    "Title": "Pipe",
+                    "InternalVariants": [
+                        {
+                            "Id": "PipeForwardInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "PipeRightInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "PipeLeftInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "PipeCrossInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "PipeJunctionInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "Pipe1LayerVariant",
+                    "Title": "Pipe Up/Down",
+                    "InternalVariants": [
+                        {
+                            "Id": "PipeUpBackwardInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "PipeUpForwardInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "PipeUpLeftInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "PipeUpRightInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "PumpBuilding",
+            "Title": "Pump",
+            "Variants": [
+                {
+                    "Id": "PumpDefaultVariant",
+                    "Title": "Pump",
+                    "InternalVariants": [
+                        {
+                            "Id": "PumpDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "PainterBuilding",
+            "Title": "Painters",
+            "Variants": [
+                {
+                    "Id": "PainterDefaultVariant",
+                    "Title": "Topmost Painter",
+                    "InternalVariants": [
+                        {
+                            "Id": "PainterDefaultInternalVariant",
+                            "Tiles": [
+                                {
+                                    "Y": -1
+                                },
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "PainterFullVariant",
+                    "Title": "Deep Painter",
+                    "InternalVariants": [
+                        {
+                            "Id": "PainterFullInternalVariant",
+                            "Tiles": [
+                                {
+                                    "Y": -1
+                                },
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "MixerBuilding",
+            "Title": "Color Mixer",
+            "Variants": [
+                {
+                    "Id": "MixerDefaultVariant",
+                    "Title": "Color Mixer",
+                    "InternalVariants": [
+                        {
+                            "Id": "MixerDefaultInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "X": 1
+                                },
+                                {
+                                    "X": 2
+                                },
+                                {
+                                    "Y": -1
+                                },
+                                {
+                                    "X": 1,
+                                    "Y": -1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "FluidPackerBuilding",
+            "Title": "Fluid Packer",
+            "Variants": [
+                {
+                    "Id": "FluidPackerDefaultVariant",
+                    "Title": "Fluid Packer",
+                    "InternalVariants": [
+                        {
+                            "Id": "FluidPackerDefaultInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "FluidUnpackerDefaultVariant",
+                    "Title": "Fluid Unpacker",
+                    "InternalVariants": [
+                        {
+                            "Id": "FluidUnpackerDefaultInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "TrainStationBuilding",
+            "Title": "Train Station",
+            "Variants": [
+                {
+                    "Id": "TrainStationLoaderVariant",
+                    "Title": "Train Loader",
+                    "InternalVariants": [
+                        {
+                            "Id": "TrainStationLoaderInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "TrainStationUnloaderVariant",
+                    "Title": "Train Unloader",
+                    "InternalVariants": [
+                        {
+                            "Id": "TrainStationUnloaderInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "CrystalGeneratorBuilding",
+            "Title": "Crystal Generator",
+            "Variants": [
+                {
+                    "Id": "CrystalGeneratorDefaultVariant",
+                    "Title": "Crystal Generator",
+                    "InternalVariants": [
+                        {
+                            "Id": "CrystalGeneratorDefaultInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Y": -1
+                                },
+                                {
+                                    "Y": -1,
+                                    "Z": 1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "FluidStorageBuilding",
+            "Title": "Fluid Tank",
+            "Variants": [
+                {
+                    "Id": "FluidStorageDefaultVariant",
+                    "Title": "Fluid Tank",
+                    "InternalVariants": [
+                        {
+                            "Id": "FluidStorageDefaultInternalVariant",
+                            "Tiles": [
+                                {
+                                    "X": -1
+                                },
+                                {
+                                    "X": -1,
+                                    "Y": -1
+                                },
+                                {},
+                                {
+                                    "Y": -1
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "WireBuilding",
+            "Title": "Wire",
+            "Variants": [
+                {
+                    "Id": "WireDefaultVariant",
+                    "Title": "Wire",
+                    "InternalVariants": [
+                        {
+                            "Id": "WireDefaultForwardInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "WireDefaultLeftInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "WireDefaultRightInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "WireDefaultJunctionInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "WireDefaultCrossInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        },
+                        {
+                            "Id": "WireDefault1UpBackwardInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "WireDefault1UpForwardInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "WireDefault1UpLeftInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "WireDefault1UpRightInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "WireDefault2UpBackwardInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                },
+                                {
+                                    "Z": 2
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "WireDefault2UpForwardInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                },
+                                {
+                                    "Z": 2
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "WireDefault2UpLeftInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                },
+                                {
+                                    "Z": 2
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "WireDefault2UpRightInternalVariant",
+                            "Tiles": [
+                                {},
+                                {
+                                    "Z": 1
+                                },
+                                {
+                                    "Z": 2
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "WireTransmitterSenderVariant",
+                    "Title": "Wire Transmitter",
+                    "InternalVariants": [
+                        {
+                            "Id": "WireTransmitterSenderInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "WireTransmitterReceiverVariant",
+                    "Title": "Wire Receiver",
+                    "InternalVariants": [
+                        {
+                            "Id": "WireTransmitterReceiverInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "SandboxItemProducerBuilding",
+            "Title": "Item Producer",
+            "Variants": [
+                {
+                    "Id": "SandboxItemProducerDefaultVariant",
+                    "Title": "Item Producer",
+                    "InternalVariants": [
+                        {
+                            "Id": "SandboxItemProducerDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "SandboxFluidProducerBuilding",
+            "Title": "Fluid Producer",
+            "Variants": [
+                {
+                    "Id": "SandboxFluidProducerDefaultVariant",
+                    "Title": "Fluid Producer",
+                    "InternalVariants": [
+                        {
+                            "Id": "SandboxFluidProducerDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "LabelBuilding",
+            "Title": "Label",
+            "Variants": [
+                {
+                    "Id": "LabelDefaultVariant",
+                    "Title": "Label",
+                    "InternalVariants": [
+                        {
+                            "Id": "LabelDefaultInternalVariant",
+                            "Tiles": [
+                                {
+                                    "X": -1
+                                },
+                                {},
+                                {
+                                    "X": 1
+                                },
+                                {
+                                    "X": -2
+                                },
+                                {
+                                    "X": 2
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "WireUtilityBuilding",
+            "Title": "Wire Utility",
+            "Variants": [
+                {
+                    "Id": "BeltReaderDefaultVariant",
+                    "Title": "Belt Reader",
+                    "InternalVariants": [
+                        {
+                            "Id": "BeltReaderDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "ConstantSignalDefaultVariant",
+                    "Title": "Constant Signal",
+                    "InternalVariants": [
+                        {
+                            "Id": "ConstantSignalDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "BeltFilterDefaultVariant",
+                    "Title": "Belt Filter",
+                    "InternalVariants": [
+                        {
+                            "Id": "BeltFilterDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "DisplayDefaultVariant",
+                    "Title": "Display",
+                    "InternalVariants": [
+                        {
+                            "Id": "DisplayDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "ButtonDefaultVariant",
+                    "Title": "Button",
+                    "InternalVariants": [
+                        {
+                            "Id": "ButtonDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "LogicGateBuilding",
+            "Title": "Logic Gate",
+            "Variants": [
+                {
+                    "Id": "LogicGateAndVariant",
+                    "Title": "AND Gate",
+                    "InternalVariants": [
+                        {
+                            "Id": "LogicGateAndInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "LogicGateOrVariant",
+                    "Title": "OR Gate",
+                    "InternalVariants": [
+                        {
+                            "Id": "LogicGateOrInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "LogicGateNotVariant",
+                    "Title": "NOT Gate",
+                    "InternalVariants": [
+                        {
+                            "Id": "LogicGateNotInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "LogicGateXOrVariant",
+                    "Title": "XOR Gate",
+                    "InternalVariants": [
+                        {
+                            "Id": "LogicGateXOrInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "LogicGateCompareVariant",
+                    "Title": "Comparison",
+                    "InternalVariants": [
+                        {
+                            "Id": "LogicGateCompareInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "LogicGateIfVariant",
+                    "Title": "IF Gate",
+                    "InternalVariants": [
+                        {
+                            "Id": "LogicGateIfInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "VirtualProcessorBuilding",
+            "Title": "Virtual Processors",
+            "Variants": [
+                {
+                    "Id": "VirtualRotatorDefaultVariant",
+                    "Title": "Virtual Rotator",
+                    "InternalVariants": [
+                        {
+                            "Id": "VirtualRotatorDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "VirtualAnalyzerDefaultVariant",
+                    "Title": "Virtual Analyzer",
+                    "InternalVariants": [
+                        {
+                            "Id": "VirtualAnalyzerDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Id": "VirtualUnstackerDefaultVariant",
+                    "Title": "Virtual Unstacker",
+                    "InternalVariants": [
+                        {
+                            "Id": "VirtualUnstackerDefaultInternalVariant",
+                            "Tiles": [
+                                {}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

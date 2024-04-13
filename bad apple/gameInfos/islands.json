@@ -1,0 +1,383 @@
+{
+    "GameVersion": "0.0.0-alpha17",
+    "Islands": [
+        {
+            "Id": "Layout_1",
+            "Title": "1x1 Platform",
+            "Tiles": [
+                {}
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": []
+        },
+        {
+            "Id": "Layout_1_Forward",
+            "Title": "Forwarder",
+            "Tiles": [
+                {}
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": []
+        },
+        {
+            "Id": "Layout_1_RightTurn",
+            "Title": "Right Turn",
+            "Tiles": [
+                {}
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": []
+        },
+        {
+            "Id": "Layout_1_LeftTurn",
+            "Title": "Left Turn",
+            "Tiles": [
+                {}
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": []
+        },
+        {
+            "Id": "LayoutTunnelEntrance",
+            "Title": "Tunnel Entrance",
+            "Tiles": [
+                {}
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": [],
+            "BuildAreaOverride": [
+                {
+                    "Tile": {},
+                    "Rects": []
+                }
+            ]
+        },
+        {
+            "Id": "LayoutTunnelExit",
+            "Title": "Tunnel Exit",
+            "Tiles": [
+                {}
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": [],
+            "BuildAreaOverride": [
+                {
+                    "Tile": {},
+                    "Rects": []
+                }
+            ]
+        },
+        {
+            "Id": "LayoutMinerCompact",
+            "Title": "Asteroid Miner",
+            "Tiles": [
+                {}
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": [
+                {
+                    "Direction_L": 1
+                },
+                {
+                    "Direction_L": 2
+                },
+                {
+                    "Direction_L": 3
+                }
+            ]
+        },
+        {
+            "Id": "ChainMiner",
+            "Title": "Chain Miner",
+            "Tiles": [
+                {}
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": [],
+            "BuildAreaOverride": [
+                {
+                    "Tile": {},
+                    "Rects": []
+                }
+            ]
+        },
+        {
+            "Id": "Layout_SpaceBeltNode",
+            "Title": "Space Belt",
+            "Tiles": [
+                {}
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": []
+        },
+        {
+            "Id": "Layout_RailNode",
+            "Title": "Rail Island",
+            "Tiles": [
+                {}
+            ],
+            "RemovedNotches": [
+                {},
+                {
+                    "Direction_L": 1
+                },
+                {
+                    "Direction_L": 2
+                },
+                {
+                    "Direction_L": 3
+                }
+            ],
+            "ReducedSides": []
+        },
+        {
+            "Id": "Layout_LeftTrainStation",
+            "Title": "Train Station",
+            "Tiles": [
+                {}
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": [],
+            "BuildAreaOverride": [
+                {
+                    "Tile": {},
+                    "Rects": [
+                        [
+                            3,
+                            3,
+                            14,
+                            5
+                        ],
+                        [
+                            8,
+                            2,
+                            4,
+                            1
+                        ],
+                        [
+                            8,
+                            8,
+                            4,
+                            1
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "Layout_RightTrainStation",
+            "Title": "Train Station (Mirrored)",
+            "Tiles": [
+                {}
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": [],
+            "BuildAreaOverride": [
+                {
+                    "Tile": {},
+                    "Rects": [
+                        [
+                            3,
+                            12,
+                            14,
+                            5
+                        ],
+                        [
+                            8,
+                            11,
+                            4,
+                            1
+                        ],
+                        [
+                            8,
+                            17,
+                            4,
+                            1
+                        ]
+                    ]
+                }
+            ]
+        },
+        {
+            "Id": "Layout_2",
+            "Title": "2x1 Platform",
+            "Tiles": [
+                {},
+                {
+                    "X": 1
+                }
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": []
+        },
+        {
+            "Id": "LayoutFluidExtractor",
+            "Title": "Fluid Platform",
+            "Tiles": [
+                {},
+                {
+                    "X": 1
+                }
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": [
+                {
+                    "Direction_L": 1
+                },
+                {
+                    "Direction_L": 2
+                },
+                {
+                    "Direction_L": 3
+                }
+            ]
+        },
+        {
+            "Id": "Layout_3_L",
+            "Title": "3L Platform",
+            "Tiles": [
+                {},
+                {
+                    "X": 1
+                },
+                {
+                    "Y": 1
+                }
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": []
+        },
+        {
+            "Id": "Layout_4_Quad_TwoNotches",
+            "Title": "2x2 Platform",
+            "Tiles": [
+                {},
+                {
+                    "X": 1
+                },
+                {
+                    "Y": 1
+                },
+                {
+                    "X": 1,
+                    "Y": 1
+                }
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": []
+        },
+        {
+            "Id": "Layout_4_T",
+            "Title": "4T Platform",
+            "Tiles": [
+                {},
+                {
+                    "X": 1
+                },
+                {
+                    "Y": 1
+                },
+                {
+                    "X": -1
+                }
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": []
+        },
+        {
+            "Id": "Layout_5_Cross",
+            "Title": "5 Cross Platform",
+            "Tiles": [
+                {},
+                {
+                    "X": 1
+                },
+                {
+                    "Y": 1
+                },
+                {
+                    "X": -1
+                },
+                {
+                    "Y": -1
+                }
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": []
+        },
+        {
+            "Id": "Layout_9_Quad_TopAllNotches",
+            "Title": "3x3 Platform",
+            "Tiles": [
+                {
+                    "X": -1,
+                    "Y": -1
+                },
+                {
+                    "Y": -1
+                },
+                {
+                    "X": 1,
+                    "Y": -1
+                },
+                {
+                    "X": -1
+                },
+                {},
+                {
+                    "X": 1
+                },
+                {
+                    "X": -1,
+                    "Y": 1
+                },
+                {
+                    "Y": 1
+                },
+                {
+                    "X": 1,
+                    "Y": 1
+                }
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": []
+        },
+        {
+            "Id": "LayoutHUB",
+            "Title": "Hub Platform",
+            "Tiles": [
+                {
+                    "X": -1,
+                    "Y": -1
+                },
+                {
+                    "Y": -1
+                },
+                {
+                    "X": 1,
+                    "Y": -1
+                },
+                {
+                    "X": -1
+                },
+                {},
+                {
+                    "X": 1
+                },
+                {
+                    "X": -1,
+                    "Y": 1
+                },
+                {
+                    "Y": 1
+                },
+                {
+                    "X": 1,
+                    "Y": 1
+                }
+            ],
+            "RemovedNotches": [],
+            "ReducedSides": []
+        }
+    ]
+}

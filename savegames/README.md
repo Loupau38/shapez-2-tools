@@ -1,0 +1,1 @@
+A very basic savegame decoder with a script to sum playtimes from all savegames to get an approximate total playtime
