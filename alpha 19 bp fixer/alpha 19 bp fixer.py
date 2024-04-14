@@ -87,10 +87,10 @@ def fixBp(bp:str) -> str:
 
 def main() -> None:
 
-    inputtedBP = sys.stdin.read().strip()
     outputToStdOut = False
 
-    if inputtedBP != "":
+    if not os.isatty(0):
+        inputtedBP = sys.stdin.read().strip()
         outputToStdOut = True
 
     elif len(sys.argv) > 1:
