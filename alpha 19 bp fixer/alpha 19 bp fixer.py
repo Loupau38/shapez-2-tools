@@ -9,7 +9,8 @@ CHANGED_ISLAND_IDS = {
     "Layout_1" : "Layout_Normal_1",
     "LayoutTunnelEntrance" : "Layout_SpaceBeltTunnel_Entrance",
     "LayoutTunnelExit" : "Layout_SpaceBeltTunnel_Exit",
-    "ShapeMinerLayout" : "Layout_ShapeMiner",
+    "LayoutMinerCompact" : "Layout_ShapeMiner", # alpha 16 and older
+    "ShapeMinerLayout" : "Layout_ShapeMiner", # alpha 17 and 18
     "ChainMiner" : "Layout_ShapeMinerExtension",
     "TrainProducer" : "Layout_TrainProducer_Blue",
     "Layout_2" : "Layout_Normal_2",
@@ -86,23 +87,34 @@ def fixBp(bp:str) -> str:
 
 def main() -> None:
 
-    if len(sys.argv) > 1:
-        inputtedBP = sys.argv[1]
+    inputtedBP = sys.stdin.read().strip()
+    outputToStdOut = False
+
+    if inputtedBP != "":
+        outputToStdOut = True
+
+    elif len(sys.argv) > 1:
+        inputtedBP = sys.argv[1].strip()
+
     else:
         print("Input either :")
         print("- A blueprint code directly")
         print("- A path to a blueprint file (will create a copy for the fixed version)")
         print("- A path to a folder containing blueprint files (will recursively also take files inside sub-folders) (will create a copy of the base folder for the fixed version)")
-        inputtedBP = input(">")
+        inputtedBP = input(">").strip()
 
     if inputtedBP.startswith("SHAPEZ2-1-"):
 
-        print()
-        print("Fixed blueprint :")
-        print()
-        print(fixBp(inputtedBP))
-        print()
-        input("Press enter to exit")
+        fixedBP = fixBp(inputtedBP)
+        if outputToStdOut:
+            sys.stdout.write(fixedBP)
+        else:
+            print()
+            print("Fixed blueprint :")
+            print()
+            print(fixedBP)
+            print()
+            input("Press enter to exit")
 
     elif pathlib.Path(inputtedBP).is_file():
 
@@ -113,6 +125,8 @@ def main() -> None:
         newPath = ".".join(pathStart) + ".fixed." + extension
         with open(newPath,"w",encoding="utf-8") as f:
             f.write(fixedBP)
+        if outputToStdOut:
+            sys.stdout.write(newPath)
 
     else:
 
@@ -128,7 +142,10 @@ def main() -> None:
                     with open(pathlib.Path(fixedDirPath,dirEntry.name),"w",encoding="utf-8") as f:
                         f.write(fixedBP)
         inputtedDir = pathlib.Path(inputtedBP)
-        fixDir(inputtedDir,pathlib.Path(inputtedDir.parent,inputtedDir.name+".fixed"))
+        fixedDirPath = pathlib.Path(inputtedDir.parent,inputtedDir.name+".fixed")
+        fixDir(inputtedDir,fixedDirPath)
+        if outputToStdOut:
+            sys.stdout.write(str(fixedDirPath))
 
 if __name__ == "__main__":
     main()
