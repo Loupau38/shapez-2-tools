@@ -8,7 +8,7 @@ SAVEGAMES_DIRS = [
 ]
 TEMP_EXTRACTION_PATH = "./temp"
 
-SAVEGAME_INFO_PATH = "/savegame.json"
+SAVEGAME_INFO_PATH = "savegame.json"
 
 def main() -> None:
 
@@ -20,8 +20,8 @@ def main() -> None:
             if dirEntry.is_dir():
                 latestBackup = decoder.getLatestBackup(dirEntry.path)
                 print(f"Decompressing '{latestBackup}'")
-                decoder.decompressSavegame(latestBackup,TEMP_EXTRACTION_PATH)
-                with open(TEMP_EXTRACTION_PATH+SAVEGAME_INFO_PATH,encoding="utf-8") as f:
+                decoder.decompressSavegame(latestBackup,TEMP_EXTRACTION_PATH,[SAVEGAME_INFO_PATH])
+                with open(TEMP_EXTRACTION_PATH+"/"+SAVEGAME_INFO_PATH,encoding="utf-8") as f:
                     savegameInfo = json.load(f)
                     totalPlayTime += savegameInfo["TotalPlaytime"]
                     numSavegames += 1

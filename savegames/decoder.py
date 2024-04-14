@@ -26,6 +26,6 @@ def getLatestBackup(directoryPath:str) -> str:
         raise ValueError(f"No backups found in '{directoryPath}'")
     return latestBackup
 
-def decompressSavegame(savegamePath:str,extractToPath:str) -> None:
+def decompressSavegame(savegamePath:str,extractToPath:str,onlyExtractFiles:list[str]|None=None) -> None:
     with zipfile.ZipFile(savegamePath,"r") as zipRef:
-        zipRef.extractall(extractToPath)
+        zipRef.extractall(extractToPath,onlyExtractFiles)
