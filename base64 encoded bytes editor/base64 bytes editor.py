@@ -58,7 +58,7 @@ def main() -> None:
     while run:
 
         clock.tick(FPS)
-        pygame.display.set_caption(f"Base64 encoded bytes editor | {clock.get_fps():.0f}")
+        pygame.display.set_caption(f"Base64 encoded bytes editor | {clock.get_fps():.0f} fps")
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
