@@ -921,7 +921,7 @@ def main() -> None:
 
     def handleClickEvent(clickPos:tuple[int,int]) -> None:
 
-        nonlocal curValueInputInfos, autoSave, shapesColorSkin
+        nonlocal curValueInputInfos, autoSave, shapesColorSkin, createCurContentBoxes
 
         if screen == "inputFile":
             return
@@ -978,6 +978,7 @@ def main() -> None:
                     (shapeViewer.EXTERNAL_COLOR_SKINS.index(shapesColorSkin)+1)
                     % len(shapeViewer.EXTERNAL_COLOR_SKINS)
                 ]
+                createCurContentBoxes = True
                 return
 
             return
