@@ -1,0 +1,284 @@
+{
+    "FormatVersion": 1,
+    "GameVersion": 0,
+    "UniqueId": "",
+    "GameMode": "",
+    "Config": {
+        "BaseChunkLimitMultiplier": 0,
+        "LayerMechanicIds": [],
+        "BlueprintsMechanicId": "",
+        "RailsMechanicId": "",
+        "IslandManagementMechanicId": "",
+        "BlueprintCurrencyShapes": [],
+        "BlueprintDiscountUpgradeId": "",
+        "HubInputSizeUpgradeId": "",
+        "ShapesConfigurationId": "",
+        "ColorSchemeConfigurationId": "",
+        "SpeedsToLinearUpgradeMappings": {
+            "BeltSpeed": "",
+            "CutterSpeed": "",
+            "StackerSpeed": "",
+            "PainterSpeed": ""
+        },
+        "IntroductionWikiEntryId": ""
+    },
+    "Progression": {
+        "Levels": [],
+        "SideQuestGroups": [],
+        "SideUpgrades": [],
+        "LinearUpgrades": [],
+        "Mechanics": []
+    },
+    "StartingLocation": {
+        "Hub": {
+            "Position_GC": {
+                "x": -1
+            },
+            "LayoutId": "Layout_HUB"
+        },
+        "InitialViewport": {
+            "PositionX": -48.7,
+            "PositionY": -8.8,
+            "Zoom": 11.0,
+            "Angle": 60.0,
+            "ShowAllLayers": true
+        },
+        "InitialIslands": [
+            {
+                "Position_GC": {
+                    "x": -3
+                },
+                "LayoutId": "Layout_ShapeMiner"
+            },
+            {
+                "Position_GC": {
+                    "x": -1,
+                    "y": 2
+                },
+                "Rotation": 3,
+                "LayoutId": "Layout_ShapeMiner"
+            },
+            {
+                "Position_GC": {
+                    "x": 1
+                },
+                "Rotation": 2,
+                "LayoutId": "Layout_ShapeMiner"
+            },
+            {
+                "Position_GC": {
+                    "x": -1,
+                    "y": -2
+                },
+                "Rotation": 1,
+                "LayoutId": "Layout_ShapeMiner"
+            },
+            {
+                "Position_GC": {
+                    "x": -5
+                },
+                "LayoutId": "Layout_ShapeMinerExtension"
+            },
+            {
+                "Position_GC": {
+                    "x": -4,
+                    "y": -1
+                },
+                "Rotation": 1,
+                "LayoutId": "Layout_ShapeMinerExtension"
+            },
+            {
+                "Position_GC": {
+                    "x": -4
+                },
+                "LayoutId": "Layout_ShapeMinerExtension"
+            },
+            {
+                "Position_GC": {
+                    "x": -2,
+                    "y": -4
+                },
+                "Rotation": 1,
+                "LayoutId": "Layout_ShapeMinerExtension"
+            },
+            {
+                "Position_GC": {
+                    "x": -2,
+                    "y": -3
+                },
+                "LayoutId": "Layout_ShapeMinerExtension"
+            },
+            {
+                "Position_GC": {
+                    "x": -2,
+                    "y": 3
+                },
+                "LayoutId": "Layout_ShapeMinerExtension"
+            },
+            {
+                "Position_GC": {
+                    "x": -2,
+                    "y": 4
+                },
+                "Rotation": 3,
+                "LayoutId": "Layout_ShapeMinerExtension"
+            },
+            {
+                "Position_GC": {
+                    "x": -1,
+                    "y": -3
+                },
+                "Rotation": 1,
+                "LayoutId": "Layout_ShapeMinerExtension"
+            },
+            {
+                "Position_GC": {
+                    "x": -1,
+                    "y": 3
+                },
+                "Rotation": 3,
+                "LayoutId": "Layout_ShapeMinerExtension"
+            },
+            {
+                "Position_GC": {
+                    "x": 1,
+                    "y": -1
+                },
+                "Rotation": 1,
+                "LayoutId": "Layout_ShapeMinerExtension"
+            },
+            {
+                "Position_GC": {
+                    "x": 1,
+                    "y": 1
+                },
+                "Rotation": 3,
+                "LayoutId": "Layout_ShapeMinerExtension"
+            },
+            {
+                "Position_GC": {
+                    "x": 2
+                },
+                "Rotation": 2,
+                "LayoutId": "Layout_ShapeMinerExtension"
+            }
+        ],
+        "FixedPatches": [
+            {
+                "Shape": "CuCuCuCu",
+                "Position_LC": {
+                    "x": 31,
+                    "y": 30
+                },
+                "LocalTiles": [
+                    {},
+                    {
+                        "x": -1,
+                        "y": -2
+                    },
+                    {
+                        "y": -1
+                    },
+                    {
+                        "x": -1,
+                        "y": -1
+                    }
+                ]
+            },
+            {
+                "Shape": "CuCuCuCu",
+                "Position_LC": {
+                    "x": 31,
+                    "y": 34
+                },
+                "LocalTiles": [
+                    {},
+                    {
+                        "y": 1
+                    },
+                    {
+                        "x": -1,
+                        "y": 1
+                    },
+                    {
+                        "x": -1,
+                        "y": 2
+                    }
+                ]
+            },
+            {
+                "Shape": "RuRuRuRu",
+                "Position_LC": {
+                    "x": 29,
+                    "y": 32
+                },
+                "LocalTiles": [
+                    {},
+                    {
+                        "x": -1
+                    },
+                    {
+                        "x": -1,
+                        "y": -1
+                    },
+                    {
+                        "x": -2
+                    }
+                ]
+            },
+            {
+                "Shape": "RuRuRuRu",
+                "Position_LC": {
+                    "x": 33,
+                    "y": 32
+                },
+                "LocalTiles": [
+                    {},
+                    {
+                        "x": 1
+                    },
+                    {
+                        "y": 1
+                    },
+                    {
+                        "y": -1
+                    }
+                ]
+            }
+        ],
+        "StartingChunks": [
+            {
+                "GuaranteedShapePatches": [
+                    "RbRbRbRu",
+                    "CrCrCrCu",
+                    "RuRuRu--",
+                    "RuRuRuRu",
+                    "--CuCuCu",
+                    "SuSuCu--",
+                    "CuCuCuCu"
+                ],
+                "GuaranteedColorPatches": [
+                    "r",
+                    "b"
+                ]
+            },
+            {
+                "SuperChunk": {
+                    "x": -1
+                },
+                "GuaranteedColorPatches": [
+                    "g"
+                ]
+            },
+            {
+                "SuperChunk": {
+                    "x": 1,
+                    "y": 1
+                },
+                "GuaranteedShapePatches": [
+                    "--WuWuCu"
+                ]
+            }
+        ]
+    }
+}
