@@ -120,10 +120,8 @@ def alpha20Fix(bp:dict) -> None:
 
         def fixFluidGen(fluidGen:bytes) -> bytes:
             if fluidGen == bytes([255,255]):
-                newFluidGen = b"r"
-            else:
-                newFluidGen = fluidGen.removeprefix(b"\x07\x00color-").replace(b"k",b"u")
-            return b"\x01" + newFluidGen
+                return bytes([0])
+            return b"\x01" + fluidGen.removeprefix(b"\x07\x00color-").replace(b"k",b"u")
 
         itemProducer = "SandboxItemProducerDefaultInternalVariant"
         fluidProducer = "SandboxFluidProducerDefaultInternalVariant"
