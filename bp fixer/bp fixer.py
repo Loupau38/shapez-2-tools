@@ -28,18 +28,18 @@ def alpha17Fix(bp:dict) -> None:
 def alpha19Fix(bp:dict) -> None:
 
     CHANGED_ISLAND_IDS = {
-        "Layout_1" : "Layout_Normal_1",
-        "LayoutTunnelEntrance" : "Layout_SpaceBeltTunnel_Entrance",
-        "LayoutTunnelExit" : "Layout_SpaceBeltTunnel_Exit",
-        "ShapeMinerLayout" : "Layout_ShapeMiner",
-        "ChainMiner" : "Layout_ShapeMinerExtension",
-        "TrainProducer" : "Layout_TrainProducer_Blue",
-        "Layout_2" : "Layout_Normal_2",
-        "LayoutFluidExtractor" : "Layout_FluidMiner",
-        "Layout_3_L" : "Layout_Normal_3_L",
-        "Layout_4_Quad_TwoNotches" : "Layout_Normal_4_2x2",
-        "Layout_4_T" : "Layout_Normal_4_T",
-        "Layout_5_Cross" : "Layout_Normal_5_Cross",
+        "Layout_1"                    : "Layout_Normal_1",
+        "LayoutTunnelEntrance"        : "Layout_SpaceBeltTunnel_Entrance",
+        "LayoutTunnelExit"            : "Layout_SpaceBeltTunnel_Exit",
+        "ShapeMinerLayout"            : "Layout_ShapeMiner",
+        "ChainMiner"                  : "Layout_ShapeMinerExtension",
+        "TrainProducer"               : "Layout_TrainProducer_Blue",
+        "Layout_2"                    : "Layout_Normal_2",
+        "LayoutFluidExtractor"        : "Layout_FluidMiner",
+        "Layout_3_L"                  : "Layout_Normal_3_L",
+        "Layout_4_Quad_TwoNotches"    : "Layout_Normal_4_2x2",
+        "Layout_4_T"                  : "Layout_Normal_4_T",
+        "Layout_5_Cross"              : "Layout_Normal_5_Cross",
         "Layout_9_Quad_TopAllNotches" : "Layout_Normal_9_3x3"
     }
 
@@ -160,6 +160,37 @@ def alpha20Fix(bp:dict) -> None:
             if island.get("B") is not None:
                 fixBuildingBp(island["B"])
 
+def alpha21Fix(bp:dict) -> None:
+
+    CHANGED_BUILDING_IDS = {
+        "BeltDefaultRightInternalVariant"    : "BeltDefaultLeftInternalVariantMirrored",
+        "Splitter1To2RInternalVariant"       : "Splitter1To2LInternalVariantMirrored",
+        "Merger2To1RInternalVariant"         : "Merger2To1LInternalVariantMirrored",
+        "Lift1DownRightInternalVariant"      : "Lift1DownLeftInternalVariantMirrored",
+        "Lift1UpRightInternalVariant"        : "Lift1UpLeftInternalVariantMirrored",
+        "Lift2DownRightInternalVariant"      : "Lift2DownLeftInternalVariantMirrored",
+        "Lift2UpRightInternalVariant"        : "Lift2UpLeftInternalVariantMirrored",
+        "CutterMirroredInternalVariant"      : "CutterDefaultInternalVariantMirrored",
+        "StackerMirroredInternalVariant"     : "StackerDefaultInternalVariantMirrored",
+        "PipeRightInternalVariant"           : "PipeLeftInternalVariantMirrored",
+        "PipeUpRightInternalVariant"         : "PipeUpLeftInternalVariantMirrored",
+        "Pipe2UpRightInternalVariant"        : "Pipe2UpLeftInternalVariantMirrored",
+        "WireDefaultRightInternalVariant"    : "WireDefaultLeftInternalVariantMirrored",
+        "WireDefault1UpRightInternalVariant" : "WireDefault1UpLeftInternalVariantMirrored",
+        "WireDefault2UpRightInternalVariant" : "WireDefault2UpLeftInternalVariantMirrored"
+    }
+
+    def fixBuildingBp(bp:dict) -> None:
+        for entry in bp["Entries"]:
+            entry["T"] = CHANGED_BUILDING_IDS.get(entry["T"],entry["T"])
+
+    if bp["BP"].get("$type",BUILDING_BP_TYPE) == BUILDING_BP_TYPE:
+        fixBuildingBp(bp["BP"])
+    else:
+        for island in bp["BP"]["Entries"]:
+            if island.get("B") is not None:
+                fixBuildingBp(island["B"])
+
 def allVersionFix(bp:str) -> str:
 
     decodedBP = json.loads(gzip.decompress(base64.b64decode(bp.removeprefix("SHAPEZ2-1-").removesuffix("$"))))
@@ -176,6 +207,9 @@ def allVersionFix(bp:str) -> str:
 
     if bpVersion < 1057:
         alpha20Fix(decodedBP)
+
+    if bpVersion < 1064:
+        alpha21Fix(decodedBP)
 
     encodedBP = "SHAPEZ2-1-" + base64.b64encode(gzip.compress(json.dumps(decodedBP,separators=(",",":")).encode())).decode() + "$"
 
