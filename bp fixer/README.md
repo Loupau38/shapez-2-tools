@@ -29,3 +29,6 @@ When a blueprint gets processed :
   - Item, fluid and signal producers get updated to the new format
   - The color black gets replaced with uncolored in the above three buildings
   - Fluid producers producing nothing get reset to producing red
+
+- If its version is less than 1064 (alpha 21) :
+  - Mirrorable building IDs get updated
