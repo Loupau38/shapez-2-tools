@@ -6,7 +6,7 @@ Usage :
     - `progression file editor.py` and `shapeViewer.py`
   - `defaultValues.json`
 - Note : if using the `.py` version, pygame is required
-- You can additionally download `defaultProgression.json` to edit the ingame progression or `emptyProgression.json` to start creating a progression from scratch
+- You can additionally download `defaultScenario.json` to edit the ingame progression or `emptyProgression.json` to start creating a progression from scratch
 - Launch the `.exe` or `.py`
 - Maximize the window for better visibility
 

@@ -42,27 +42,60 @@ BIG_FONT_UNDERLINED.set_underline(True)
 SMALL_FONT = pygame.font.SysFont("arial",20)
 
 DEFAULT_TEXT_COLOR = (255,255,255)
+
 INPUT_FILE_BG_COLOR = (0,0,0)
 BG_COLOR = (50,50,50)
 FIXED_UI_BG_COLOR = (40,40,40)
-ELEM_COLOR = (75,75,75)
-HIGHLIGHTED_COLOR = (127,127,127)
-REMOVE_COLOR = (255,0,0)
-NONE_COLOR = (0,0,255)
 TEXT_INPUT_BG_COLOR = (100,100,100)
+
+ELEM_COLOR = (75,75,75)
 ELEM_ON_ELEM_COLOR = (100,100,100)
 ELEM_ON_ELEM_ON_ELEM_COLOR = (115,115,115)
+HIGHLIGHTED_COLOR = (127,127,127)
+SHAPE_LINE_SPACING_COLOR = (115,115,150)
+
+REMOVE_COLOR = (255,0,0)
+NONE_COLOR = (0,0,255)
+FALSE_COLOR = (255,0,0)
+TRUE_COLOR = (0,255,0)
 
 ADD_TEXT = DEFAULT_FONT.render("+",1,DEFAULT_TEXT_COLOR)
 REMOVE_TEXT = SMALL_FONT.render("X",1,REMOVE_COLOR)
 REMOVE_TEXT_HOVER = SMALL_FONT.render("X",1,DEFAULT_TEXT_COLOR)
+
 NONE_TEXT = DEFAULT_FONT.render("None",1,NONE_COLOR)
+FALSE_TEXT = DEFAULT_FONT.render("False",1,FALSE_COLOR)
+TRUE_TEXT = DEFAULT_FONT.render("True",1,TRUE_COLOR)
+
 MOVE_LEFT_TEXT = DEFAULT_FONT.render("\u2190",1,DEFAULT_TEXT_COLOR)
 MOVE_UP_TEXT = DEFAULT_FONT.render("\u2191",1,DEFAULT_TEXT_COLOR)
 MOVE_RIGHT_TEXT = DEFAULT_FONT.render("\u2192",1,DEFAULT_TEXT_COLOR)
 MOVE_DOWN_TEXT = DEFAULT_FONT.render("\u2193",1,DEFAULT_TEXT_COLOR)
+
 INVALID_SHAPE_TEXT = BIG_FONT.render("?",1,DEFAULT_TEXT_COLOR)
-NO_MOVE_SURF = pygame.Surface((0,0))
+
+SHAPE_LINE_REUSE_NEXT_MILESTONE = DEFAULT_FONT.render("\u2192",1,DEFAULT_TEXT_COLOR)
+SHAPE_LINE_REUSE_SAME_MILESTONE = DEFAULT_FONT.render("\u2192",1,DEFAULT_TEXT_COLOR)
+SHAPE_LINE_REUSE_SAME_MILESTONE_UP = DEFAULT_FONT.render("\u2191",1,DEFAULT_TEXT_COLOR)
+SHAPE_LINE_REUSE_SAME_MILESTONE_DOWN = DEFAULT_FONT.render("\u2193",1,DEFAULT_TEXT_COLOR)
+SHAPE_LINE_REUSE_SIDEGOAL = DEFAULT_FONT.render("\u2192",1,DEFAULT_TEXT_COLOR)
+SHAPE_LINE_REUSE_NO_REUSE = DEFAULT_FONT.render("\u2192X",1,DEFAULT_TEXT_COLOR)
+
+EMPTY_SURF = pygame.Surface((0,0))
+shapeLineSpacingText = DEFAULT_FONT.render("[Spacing]",1,DEFAULT_TEXT_COLOR)
+shapeLineSpacingText = pygame.transform.smoothscale_by(
+    shapeLineSpacingText,
+    SHAPE_SIZE / shapeLineSpacingText.get_width()
+)
+SHAPE_LINE_SPACING = pygame.Surface((SHAPE_SIZE,SHAPE_SIZE),pygame.SRCALPHA)
+SHAPE_LINE_SPACING.blit(shapeLineSpacingText,(0,0))
+
+DEFAULT_SHAPE_LINE_REUSE_TYPE = {
+    "type" : "noReuse",
+    "sameMilestoneValue" : "up",
+    "sideGoalValue" : "<sideGoalId>"
+}
+
 DEFAULT_REMOVE_BUTTON_KWARGS = {
     "elem" : REMOVE_TEXT,
     "hoverable" : True,
@@ -116,6 +149,13 @@ SHAPES_CONFIG_IDS = [
 COLOR_SCHEME_IDS = [ # to extend
     "DefaultColorSchemeRGBFlex"
 ]
+TUTORIAL_CONFIG_IDS = [
+    "TCMainTutorial",
+    "TCNoTutorial"
+]
+GAME_MODE_IDS = [ # to extend
+    "RegularGameMode"
+]
 
 SHAPE_COSTS_FORMAT = [
     {
@@ -134,16 +174,23 @@ REWARDS_FORMAT = [
         "LayoutId" : OptionalValueFormat(str,None),
         "MechanicId" : OptionalValueFormat(str,None),
         "EntryId" : OptionalValueFormat(str,None),
-        "Amount" : OptionalValueFormat(int,0), # when 0 chunk limit reward is fixed, change default to None
+        "Amount" : OptionalValueFormat(int,None)
     }
 ]
 PROGRESSION_FORMAT = {
     "FormatVersion" : int,
     "GameVersion" : int,
     "UniqueId" : str,
-    "GameMode" : str,
+    "SupportedGameModes" : [str],
+    "Title" : str,
+    "Description" : str,
+    "BasedOnScenarioId" : OptionalValueFormat(str,None),
+    "FollowupScenarioIds" : OptionalValueFormat([str],[]),
+    "RecommendedScenarioIdsToCompleteBefore" : OptionalValueFormat([str],[]),
+    "ExampleShapes" : [str],
     "Config" : {
         "BaseChunkLimitMultiplier" : int,
+        "MaxShapeLayers" : OptionalValueFormat(int,4),
         "LayerMechanicIds" : [str],
         "BlueprintsMechanicId" : str,
         "RailsMechanicId" : str,
@@ -155,7 +202,6 @@ PROGRESSION_FORMAT = {
                 "Amount" : int
             }
         ],
-        "BlueprintDiscountUpgradeId" : str,
         "HubInputSizeUpgradeId" : str,
         "ShapesConfigurationId" : str,
         "ColorSchemeConfigurationId" : str,
@@ -165,7 +211,9 @@ PROGRESSION_FORMAT = {
             "StackerSpeed" : str,
             "PainterSpeed" : str
         },
-        "IntroductionWikiEntryId" : str
+        "IntroductionWikiEntryId" : str,
+        "InitiallyUnlockedUpgrades" : [str],
+        "TutorialConfig" : str
     },
     "Progression" : {
         "Levels" : [
@@ -176,9 +224,15 @@ PROGRESSION_FORMAT = {
                 "PreviewImageId" : str,
                 "Title" : str,
                 "Description" : str,
+                "WikiEntryId" : OptionalValueFormat(str,None),
                 "Lines" : [
                     {
-                        "Shapes" : SHAPE_COSTS_FORMAT
+                        "Shapes" : SHAPE_COSTS_FORMAT,
+                        "ReusedAtNextMilestone" : OptionalValueFormat(bool,False),
+                        "ReusedAtSameMilestone" : OptionalValueFormat(bool,False),
+                        "ReusedAtSameMilestoneOffset" : OptionalValueFormat(int,0),
+                        "ReusedAtSideGoal" : OptionalValueFormat(str,None),
+                        "StartingOffset" : OptionalValueFormat(int,0)
                     }
                 ]
             }
@@ -199,6 +253,7 @@ PROGRESSION_FORMAT = {
         "SideUpgrades" : [
             {
                 "Id" : str,
+                "Hidden" : OptionalValueFormat(bool,False),
                 "PreviewImageId" : str,
                 "VideoId" : OptionalValueFormat(str,None),
                 "Title" : str,
@@ -454,6 +509,23 @@ def convertProgressionObjToInternalFormat(progressionObj:dict) -> None:
                     if cost["$type"] == costType:
                         obj[costNewKey] += cost[costOldKey]
 
+    for level in progressionObj["Progression"]["Levels"]:
+        for line in level["Lines"]:
+            curReuseType = DEFAULT_SHAPE_LINE_REUSE_TYPE.copy()
+            if line["ReusedAtNextMilestone"]:
+                curReuseType["type"] = "nextMilestone"
+            elif line["ReusedAtSameMilestone"]:
+                curReuseType["type"] = "sameMilestone"
+                if line["ReusedAtSameMilestoneOffset"] < 0:
+                    curReuseType["sameMilestoneValue"] = "up"
+                else:
+                    curReuseType["sameMilestoneValue"] = "down"
+            elif line["ReusedAtSideGoal"] is not None:
+                curReuseType["type"] = "sideGoal"
+                curReuseType["sideGoalValue"] = line["ReusedAtSideGoal"]
+            line["reuseType"] = curReuseType
+            line["StartingOffset"] = max(line["StartingOffset"],0)
+
 def convertProgressionObjFromInternalFormat(progressionObj:dict) -> None:
 
     toConvertRewards:list[tuple[dict,str]] = []
@@ -511,6 +583,27 @@ def convertProgressionObjFromInternalFormat(progressionObj:dict) -> None:
     for linearUpgrade in progressionObj["Progression"]["LinearUpgrades"]:
         for level in linearUpgrade["Levels"]:
             level["Cost"] = level.pop("Costs")[0]
+
+    for level in progressionObj["Progression"]["Levels"]:
+        for line in level["Lines"]:
+            curReuseType = line["reuseType"]
+            if curReuseType["type"] == "nextMilestone":
+                line["ReusedAtNextMilestone"] = True
+            else:
+                line["ReusedAtNextMilestone"] = False
+            if curReuseType["type"] == "sameMilestone":
+                line["ReusedAtSameMilestone"] = True
+                if curReuseType["sameMilestoneValue"] == "up":
+                    line["ReusedAtSameMilestoneOffset"] = -1
+                else:
+                    line["ReusedAtSameMilestoneOffset"] = 1
+            else:
+                line["ReusedAtSameMilestone"] = False
+                line["ReusedAtSameMilestoneOffset"] = 0
+            if curReuseType["type"] == "sideGoal":
+                line["ReusedAtSideGoal"] = curReuseType["sideGoalValue"]
+            else:
+                line["ReusedAtSideGoal"] = None
 
 class ContentBoxElem:
 
@@ -691,7 +784,9 @@ def main() -> None:
 
     def decodeInputtedFilePath(filePath:str) -> None:
         nonlocal curProgression, curProgressionFilePath, curInputFileError
-        nonlocal curBPCurrencyShapesList, curLevelsList, curSideQuestGroupsList, curSideUpgradesList, curLinearUpgradesList, curMechanicsList
+        nonlocal curBPCurrencyShapesList, curExampleShapesList, curLevelsList
+        nonlocal curSideQuestGroupsList, curSideUpgradesList, curLinearUpgradesList
+        nonlocal curMechanicsList
         try:
             curProgression, warningMsgs = decodeProgressionFile(filePath)
         except ProgressionDecodeError as e:
@@ -703,6 +798,7 @@ def main() -> None:
         curProgressionFilePath = filePath
         curInputFileError = None
         curBPCurrencyShapesList = curProgression["Config"]["BlueprintCurrencyShapes"]
+        curExampleShapesList = curProgression["ExampleShapes"]
         curLevelsList = curProgression["Progression"]["Levels"]
         curSideQuestGroupsList = curProgression["Progression"]["SideQuestGroups"]
         curSideUpgradesList = curProgression["Progression"]["SideUpgrades"]
@@ -769,7 +865,6 @@ def main() -> None:
     def getRectifiedMousePos(mousePosX:int,mousePosY:int) -> tuple[int,int]:
         return mousePosX-hScrollOffset, mousePosY-vScrollOffset
 
-    global getScrollSurfBlitPos
     def getScrollSurfBlitPos() -> tuple[int,int]:
         return hScrollOffset, vScrollOffset
 
@@ -826,7 +921,7 @@ def main() -> None:
                 True
             ))
         if moveArrows == []:
-            moveArrows.append(ContentBoxElem(NO_MOVE_SURF,hPadding=0,vPadding=0))
+            moveArrows.append(ContentBoxElem(EMPTY_SURF,hPadding=0,vPadding=0))
         return moveArrows
 
     DIGITS = [str(i) for i in range(10)]
@@ -851,6 +946,9 @@ def main() -> None:
             return NONE_TEXT
         return renderFunc(*args)
 
+    def renderBoolText(boolValue:bool) -> pygame.Surface:
+        return TRUE_TEXT if boolValue else FALSE_TEXT
+
     def confirmValueInputChanges() -> None:
         nonlocal curValueInputInfos
         if (curValueInputInfos["type"] == "int") and (curValueInputInfos["curInputText"] is not None):
@@ -862,11 +960,11 @@ def main() -> None:
         changeScreen(curValueInputInfos["previousScreen"],*curValueInputInfos["previousScrollOffsets"])
         curValueInputInfos = None
 
-    def addAddButtons(list_:list[ContentBoxElem],elemsDir:direction) -> list[ContentBoxElem]:
+    def addAddButtons(list_:list[ContentBoxElem],elemsDir:direction,bgColor:tuple[int,int,int]|None=None) -> list[ContentBoxElem]:
         newList = []
         marginKey = "hMargin" if elemsDir == "h" else "vMargin"
         for elem in list_+[None]:
-            newList.append(ContentBoxElem(ADD_TEXT,True,**{marginKey:DEFAULT_MARGIN}))
+            newList.append(ContentBoxElem(ADD_TEXT,True,bgColor=bgColor,**{marginKey:DEFAULT_MARGIN}))
             if elem is not None:
                 newList.append(elem)
         return newList
@@ -990,18 +1088,77 @@ def main() -> None:
             for inputType,key in [
                 ("int","GameVersion"),
                 ("str","UniqueId"),
-                ("str","GameMode")
+                ("str","Title"),
+                ("str","Description")
             ]:
                 if configScreenContentBox.elems[curElemIndex].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
                     askForInput(inputType,curProgression,key)
                     return
                 curElemIndex += 1
 
-            if configScreenContentBox.elems[curElemIndex].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
-                askForInput("int",curProgression["Config"],"BaseChunkLimitMultiplier")
+            curElemIndex += 1
+            if handleClicksForDefaultEditableList(
+                configScreenContentBox.elems[curElemIndex].elem,
+                curProgression["SupportedGameModes"],
+                rectifiedMousePos,
+                GAME_MODE_IDS
+            ):
                 return
-            curElemIndex += 2
+            curElemIndex += 1
 
+            if configScreenContentBox.elems[curElemIndex].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
+                askForInput("str",curProgression,"BasedOnScenarioId",canBeNone=True)
+                return
+            curElemIndex += 1
+
+            for key in [
+                "RecommendedScenarioIdsToCompleteBefore",
+                "FollowupScenarioIds"
+            ]:
+                curElemIndex += 1
+                if handleClicksForDefaultEditableList(
+                    configScreenContentBox.elems[curElemIndex].elem,
+                    curProgression[key],
+                    rectifiedMousePos
+                ):
+                    return
+                curElemIndex += 1
+
+            curElemIndex += 1
+            for i,elem in enumerate(configScreenContentBox.elems[curElemIndex].elem.elems):
+                curActualIndex,isNotAddButton = divmod(i,2)
+                if not isNotAddButton:
+                    if elem.boundingRect.collidepoint(rectifiedMousePos):
+                        curExampleShapesList.insert(curActualIndex,DEFAULT_SHAPE)
+                        fileChanged()
+                        return
+                else:
+                    if checkForMoveElem(
+                        elem.elem.elems[0].elem.elems,
+                        curExampleShapesList,
+                        curActualIndex,
+                        rectifiedMousePos
+                    ):
+                        return
+                    if elem.elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
+                        askForInput("shape",curExampleShapesList,curActualIndex)
+                        return
+                    if elem.elem.elems[2].boundingRect.collidepoint(rectifiedMousePos):
+                        curExampleShapesList.pop(curActualIndex)
+                        fileChanged()
+                        return
+            curElemIndex += 1
+
+            for key in [
+                "BaseChunkLimitMultiplier",
+                "MaxShapeLayers"
+            ]:
+                if configScreenContentBox.elems[curElemIndex].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
+                    askForInput("int",curProgression["Config"],key)
+                    return
+                curElemIndex += 1
+
+            curElemIndex += 1
             if handleClicksForDefaultEditableList(
                 configScreenContentBox.elems[curElemIndex].elem,
                 curProgression["Config"]["LayerMechanicIds"],
@@ -1011,7 +1168,11 @@ def main() -> None:
                 return
             curElemIndex += 1
 
-            for key in ["BlueprintsMechanicId","RailsMechanicId","IslandManagementMechanicId"]:
+            for key in [
+                "BlueprintsMechanicId",
+                "RailsMechanicId",
+                "IslandManagementMechanicId"
+            ]:
                 if configScreenContentBox.elems[curElemIndex].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
                     askForInput(
                         "str",
@@ -1062,7 +1223,9 @@ def main() -> None:
                         return
             curElemIndex += 1
 
-            for key in ["BlueprintDiscountUpgradeId","HubInputSizeUpgradeId"]:
+            for key in [
+                "HubInputSizeUpgradeId"
+            ]:
                 if configScreenContentBox.elems[curElemIndex].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
                     askForInput(
                         "str",
@@ -1084,33 +1247,24 @@ def main() -> None:
                     return
                 curElemIndex += 1
 
-            if configScreenContentBox.elems[curElemIndex].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
-                askForInput(
-                    "str",
-                    curProgression["Config"],
-                    "ShapesConfigurationId",
-                    SHAPES_CONFIG_IDS
-                )
-                return
-            curElemIndex += 1
+            for key,presets in [
+                ("ShapesConfigurationId",SHAPES_CONFIG_IDS),
+                ("ColorSchemeConfigurationId",COLOR_SCHEME_IDS),
+                ("TutorialConfig",TUTORIAL_CONFIG_IDS),
+                ("IntroductionWikiEntryId",defaultValues["wikiEntries"])
+            ]:
+                if configScreenContentBox.elems[curElemIndex].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
+                    askForInput("str",curProgression["Config"],key,presets)
+                    return
+                curElemIndex += 1
 
-            if configScreenContentBox.elems[curElemIndex].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
-                askForInput(
-                    "str",
-                    curProgression["Config"],
-                    "ColorSchemeConfigurationId",
-                    COLOR_SCHEME_IDS
-                )
-                return
             curElemIndex += 1
-
-            if configScreenContentBox.elems[curElemIndex].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
-                askForInput(
-                    "str",
-                    curProgression["Config"],
-                    "IntroductionWikiEntryId",
-                    defaultValues["wikiEntries"]
-                )
+            if handleClicksForDefaultEditableList(
+                configScreenContentBox.elems[curElemIndex].elem,
+                curProgression["Config"]["InitiallyUnlockedUpgrades"],
+                rectifiedMousePos,
+                defaultValues["nodeIds"]
+            ):
                 return
             curElemIndex += 1
 
@@ -1156,6 +1310,7 @@ def main() -> None:
                         ("PreviewImageId",defaultValues["images"],False),
                         ("Title",defaultValues["nodeTitles"],False),
                         ("Description",defaultValues["nodeDescriptions"],False),
+                        ("WikiEntryId",defaultValues["wikiEntries"],True)
                     ]:
                         if level.elem.elems[curElemIndex].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
                             askForInput("str",curLevelsList[curActualLevelIndex],key,presets,canBeNone)
@@ -1169,7 +1324,9 @@ def main() -> None:
                         if not isNotShapeLineAddButton:
                             if shapeLine.boundingRect.collidepoint(rectifiedMousePos):
                                 curShapeLinesList.insert(curActualShapeLineIndex,{
-                                    "Shapes" : []
+                                    "Shapes" : [],
+                                    "reuseType" : DEFAULT_SHAPE_LINE_REUSE_TYPE.copy(),
+                                    "StartingOffset" : 0
                                 })
                                 fileChanged()
                                 return
@@ -1183,37 +1340,77 @@ def main() -> None:
                             ):
                                 return
 
-                            for shapeIndex,shape in enumerate(shapeLine.elem.elems[1].elem.elems):
-                                curActualShapeIndex,isNotShapeAddButton = divmod(shapeIndex,2)
-                                curShapesList = curShapeLinesList[curActualShapeLineIndex]["Shapes"]
-                                if not isNotShapeAddButton:
-                                    if shape.boundingRect.collidepoint(rectifiedMousePos):
-                                        curShapesList.insert(curActualShapeIndex,{
-                                            "Shape" : DEFAULT_SHAPE,
-                                            "Amount" : 0
-                                        })
-                                        fileChanged()
-                                        return
+                            numShapeLineElemsForSpacing = (curShapeLinesList[curActualShapeLineIndex]["StartingOffset"]*2) + 1
+                            numShapeLineElemsForShapes = (len(curShapeLinesList[curActualShapeLineIndex]["Shapes"])*2) + 1
+                            for shapeLineElemIndex,shapeLineElem in enumerate(shapeLine.elem.elems[1].elem.elems):
+
+                                if shapeLineElemIndex < numShapeLineElemsForSpacing:
+                                    isNotSpacingAddButton = shapeLineElemIndex % 2
+                                    if not isNotSpacingAddButton:
+                                        if shapeLineElem.boundingRect.collidepoint(rectifiedMousePos):
+                                            curShapeLinesList[curActualShapeLineIndex]["StartingOffset"] += 1
+                                            fileChanged()
+                                            return
+                                    else:
+                                        if shapeLineElem.elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
+                                            curShapeLinesList[curActualShapeLineIndex]["StartingOffset"] -= 1
+                                            fileChanged()
+                                            return
+
+                                elif shapeLineElemIndex < numShapeLineElemsForSpacing+numShapeLineElemsForShapes:
+                                    curActualShapeIndex,isNotShapeAddButton = divmod(shapeLineElemIndex-numShapeLineElemsForSpacing,2)
+                                    curShapesList = curShapeLinesList[curActualShapeLineIndex]["Shapes"]
+                                    if not isNotShapeAddButton:
+                                        if shapeLineElem.boundingRect.collidepoint(rectifiedMousePos):
+                                            curShapesList.insert(curActualShapeIndex,{
+                                                "Shape" : DEFAULT_SHAPE,
+                                                "Amount" : 0
+                                            })
+                                            fileChanged()
+                                            return
+                                    else:
+
+                                        if checkForMoveElem(
+                                            shapeLineElem.elem.elems[0].elem.elems,
+                                            curShapesList,
+                                            curActualShapeIndex,
+                                            rectifiedMousePos
+                                        ):
+                                            return
+
+                                        if shapeLineElem.elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
+                                            askForInput("shape",curShapesList[curActualShapeIndex],"Shape")
+                                            return
+                                        if shapeLineElem.elem.elems[2].boundingRect.collidepoint(rectifiedMousePos):
+                                            askForInput("int",curShapesList[curActualShapeIndex],"Amount")
+                                            return
+                                        if shapeLineElem.elem.elems[3].boundingRect.collidepoint(rectifiedMousePos):
+                                            curShapesList.pop(curActualShapeIndex)
+                                            fileChanged()
+                                            return
+
                                 else:
-
-                                    if checkForMoveElem(
-                                        shape.elem.elems[0].elem.elems,
-                                        curShapesList,
-                                        curActualShapeIndex,
-                                        rectifiedMousePos
-                                    ):
-                                        return
-
-                                    if shape.elem.elems[1].elem.elems[0].boundingRect.collidepoint(rectifiedMousePos):
-                                        askForInput("shape",curShapesList[curActualShapeIndex],"Shape")
-                                        return
-                                    if shape.elem.elems[1].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
-                                        askForInput("int",curShapesList[curActualShapeIndex],"Amount")
-                                        return
-                                    if shape.elem.elems[2].boundingRect.collidepoint(rectifiedMousePos):
-                                        curShapesList.pop(curActualShapeIndex)
+                                    curShapeLineReuseType = curShapeLinesList[curActualShapeLineIndex]["reuseType"]
+                                    shapeLineReuseTypes = ["nextMilestone","sameMilestone","sideGoal","noReuse"]
+                                    if shapeLineElem.elem.elems[0].boundingRect.collidepoint(rectifiedMousePos):
+                                        curShapeLineReuseType["type"] = shapeLineReuseTypes[
+                                            (shapeLineReuseTypes.index(curShapeLineReuseType["type"])+1)
+                                            % len(shapeLineReuseTypes)
+                                        ]
                                         fileChanged()
                                         return
+                                    if curShapeLineReuseType["type"] in ("sameMilestone","sideGoal"):
+                                        if shapeLineElem.elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
+                                            if curShapeLineReuseType["type"] == "sameMilestone":
+                                                curShapeLineReuseType["sameMilestoneValue"] = (
+                                                    "down"
+                                                    if curShapeLineReuseType["sameMilestoneValue"] == "up" else
+                                                    "up"
+                                                )
+                                                fileChanged()
+                                                return
+                                            askForInput("str",curShapeLineReuseType,"sideGoalValue",defaultValues["sideQuestIds"])
+                                            return
 
                             if shapeLine.elem.elems[2].boundingRect.collidepoint(rectifiedMousePos):
                                 curShapeLinesList.pop(curActualShapeLineIndex)
@@ -1270,6 +1467,7 @@ def main() -> None:
                     if sideUpgrade.boundingRect.collidepoint(rectifiedMousePos):
                         curSideUpgradesList.insert(curActualSideUpgradeIndex,{
                             "Id" : defaultValues["nodeIds"][0],
+                            "Hidden" : False,
                             "VideoId" : None,
                             "PreviewImageId" : defaultValues["images"][0],
                             "Title" : defaultValues["nodeTitles"][0],
@@ -1306,6 +1504,10 @@ def main() -> None:
                         if sideUpgrade.elem.elems[1].elem.elems[i].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
                             askForInput("str",curSideUpgradesList[curActualSideUpgradeIndex],key,presets,canBeNone)
                             return
+                    if sideUpgrade.elem.elems[1].elem.elems[i+1].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
+                        curSideUpgradesList[curActualSideUpgradeIndex]["Hidden"] = not curSideUpgradesList[curActualSideUpgradeIndex]["Hidden"]
+                        fileChanged()
+                        return
 
                     if handleClicksForDefaultEditableList(
                         sideUpgrade.elem.elems[3].elem.elems[1].elem,
@@ -1682,6 +1884,7 @@ def main() -> None:
     curValueInputInfos = None
     checkScrollOffsets = False
     curBPCurrencyShapesList = []
+    curExampleShapesList = []
     curLevelsList = []
     curSideQuestGroupsList = []
     curSideUpgradesList = []
@@ -1942,6 +2145,17 @@ def main() -> None:
 
             if createCurContentBoxes:
 
+                exampleShapesContentBoxes = []
+                for i,shape in enumerate(curExampleShapesList):
+                    exampleShapesContentBoxes.append(ContentBoxElem(ContentBox([
+                        ContentBoxElem(ContentBox(
+                            getMoveArrowsList(curExampleShapesList,i,"h")
+                        ,"h")),
+                        ContentBoxElem(renderShape(shape),True),
+                        ContentBoxElem(**DEFAULT_REMOVE_BUTTON_KWARGS)
+                    ],"v"),bgColor=ELEM_COLOR))
+                exampleShapesContentBoxes = addAddButtons(exampleShapesContentBoxes,"h")
+
                 bpCurrencyShapesContentBoxes = []
                 for i,shape in enumerate(curBPCurrencyShapesList):
                     bpCurrencyShapesContentBoxes.append(ContentBoxElem(ContentBox([
@@ -1961,21 +2175,56 @@ def main() -> None:
 
                 configScreenContentBox = ContentBox([
                     ContentBoxElem(ContentBox([
-                        ContentBoxElem(defaultRenderText("Game version :",True)),
-                        ContentBoxElem(defaultRenderText(str(curProgression["GameVersion"])),True)
-                    ],"h"),**configScreenContentBoxElemStyle),
+                        ContentBoxElem(defaultRenderText(f"{text} :",True)),
+                        ContentBoxElem(defaultRenderText(str(curProgression[id])),True)
+                    ],"h"),**configScreenContentBoxElemStyle) for id,text in [
+                        ("GameVersion","Game version"),
+                        ("UniqueId","Scenario ID"),
+                        ("Title","Title"),
+                        ("Description","Description"),
+                    ]
+                ]+[
+                    ContentBoxElem(
+                        defaultRenderText("Supported game modes :",True),
+                        **configScreenContentBoxElemStyle
+                    ),
+                    ContentBoxElem(ContentBox(
+                        getDefaultEditableListContentBoxes(curProgression["SupportedGameModes"])
+                    ,"v"),**configScreenContentBoxElemStyle),
                     ContentBoxElem(ContentBox([
-                        ContentBoxElem(defaultRenderText("Unique Id :",True)),
-                        ContentBoxElem(defaultRenderText(curProgression["UniqueId"]),True)
+                        ContentBoxElem(defaultRenderText("Based on scenario :",True)),
+                        ContentBoxElem(renderCanBeNoneText(defaultRenderText,curProgression["BasedOnScenarioId"]),True)
                     ],"h"),**configScreenContentBoxElemStyle),
+                    ContentBoxElem(
+                        defaultRenderText("Recommended scenarios to complete before :",True),
+                        **configScreenContentBoxElemStyle
+                    ),
+                    ContentBoxElem(ContentBox(
+                        getDefaultEditableListContentBoxes(curProgression["RecommendedScenarioIdsToCompleteBefore"])
+                    ,"v"),**configScreenContentBoxElemStyle),
+                    ContentBoxElem(
+                        defaultRenderText("Followup scenarios :",True),
+                        **configScreenContentBoxElemStyle
+                    ),
+                    ContentBoxElem(ContentBox(
+                        getDefaultEditableListContentBoxes(curProgression["FollowupScenarioIds"])
+                    ,"v"),**configScreenContentBoxElemStyle),
+                    ContentBoxElem(
+                        defaultRenderText("Example shapes :",True),
+                        **configScreenContentBoxElemStyle
+                    ),
+                    ContentBoxElem(ContentBox(
+                        exampleShapesContentBoxes
+                    ,"h"),**configScreenContentBoxElemStyle),
+                ]+[
                     ContentBoxElem(ContentBox([
-                        ContentBoxElem(defaultRenderText("Game mode :",True)),
-                        ContentBoxElem(defaultRenderText(curProgression["GameMode"]),True)
-                    ],"h"),**configScreenContentBoxElemStyle),
-                    ContentBoxElem(ContentBox([
-                        ContentBoxElem(defaultRenderText("Base chunk limit multiplier :",True)),
-                        ContentBoxElem(defaultRenderText(str(curProgression["Config"]["BaseChunkLimitMultiplier"])),True)
-                    ],"h"),**configScreenContentBoxElemStyle),
+                        ContentBoxElem(defaultRenderText(f"{text} :",True)),
+                        ContentBoxElem(defaultRenderText(str(curProgression["Config"][id])),True)
+                    ],"h"),**configScreenContentBoxElemStyle) for id,text in [
+                        ("BaseChunkLimitMultiplier","Base chunk limit multiplier"),
+                        ("MaxShapeLayers","Max shape layers")
+                    ]
+                ]+[
                     ContentBoxElem(
                         defaultRenderText("Layer mechanics :",True),
                         **configScreenContentBoxElemStyle
@@ -2005,7 +2254,6 @@ def main() -> None:
                         ContentBoxElem(defaultRenderText(f"{text} upgrade :",True)),
                         ContentBoxElem(defaultRenderText(curProgression["Config"][id]),True)
                     ],"h"),**configScreenContentBoxElemStyle) for id,text in [
-                        ("BlueprintDiscountUpgradeId","Blueprint discount"),
                         ("HubInputSizeUpgradeId","Hub input size")
                     ]
                 ]+[
@@ -2020,8 +2268,17 @@ def main() -> None:
                     ],"h"),**configScreenContentBoxElemStyle) for id,text in [
                         ("ShapesConfigurationId","Shapes configuration"),
                         ("ColorSchemeConfigurationId","Color scheme"),
+                        ("TutorialConfig","Tutorial configuration"),
                         ("IntroductionWikiEntryId","Introduction wiki entry")
                     ]
+                ]+[
+                    ContentBoxElem(
+                        defaultRenderText("Initially unlocked upgrades :",True),
+                        **configScreenContentBoxElemStyle
+                    ),
+                    ContentBoxElem(ContentBox(
+                        getDefaultEditableListContentBoxes(curProgression["Config"]["InitiallyUnlockedUpgrades"])
+                    ,"v"),**configScreenContentBoxElemStyle)
                 ],"v")
 
                 configScreenContentBox.calculateBoundingRects()
@@ -2046,30 +2303,61 @@ def main() -> None:
                     linesContentBoxes = []
                     for lineIndex,line in enumerate(level["Lines"]):
 
+                        lineSpacingsContentBoxes = []
+                        for _ in range(line["StartingOffset"]):
+                            lineSpacingsContentBoxes.append(ContentBoxElem(ContentBox([
+                                ContentBoxElem(SHAPE_LINE_SPACING),
+                                ContentBoxElem(**DEFAULT_REMOVE_BUTTON_KWARGS)
+                            ],"v"),bgColor=SHAPE_LINE_SPACING_COLOR,vAlignment="b"))
+
+                        lineSpacingsContentBoxes = addAddButtons(lineSpacingsContentBoxes,"h",SHAPE_LINE_SPACING_COLOR)
+
                         lineShapesContentBoxes = []
                         for shapeIndex,shape in enumerate(line["Shapes"]):
                             lineShapesContentBoxes.append(ContentBoxElem(ContentBox([
                                 ContentBoxElem(ContentBox(
                                     getMoveArrowsList(line["Shapes"],shapeIndex,"h")
                                 ,"h")),
-                                ContentBoxElem(ContentBox([
-                                    ContentBoxElem(renderShape(shape["Shape"]),True),
-                                    ContentBoxElem(defaultRenderText(str(shape["Amount"])),True)
-                                ],"h")),
+                                ContentBoxElem(renderShape(shape["Shape"]),True),
+                                ContentBoxElem(defaultRenderText(str(shape["Amount"])),True),
                                 ContentBoxElem(**DEFAULT_REMOVE_BUTTON_KWARGS)
                             ],"v"),bgColor=ELEM_ON_ELEM_ON_ELEM_COLOR))
 
                         lineShapesContentBoxes = addAddButtons(lineShapesContentBoxes,"h")
+
+                        curLineReuseType = line["reuseType"]
+                        if curLineReuseType["type"] == "nextMilestone":
+                            curLineReuseContentBox0 = ContentBoxElem(SHAPE_LINE_REUSE_NEXT_MILESTONE,True)
+                            curLineReuseContentBox1 = ContentBoxElem(EMPTY_SURF,hPadding=0,vPadding=0)
+                        elif curLineReuseType["type"] == "sameMilestone":
+                            curLineReuseContentBox0 = ContentBoxElem(SHAPE_LINE_REUSE_SAME_MILESTONE,True)
+                            if curLineReuseType["sameMilestoneValue"] == "up":
+                                curLineReuseContentBox1 = ContentBoxElem(SHAPE_LINE_REUSE_SAME_MILESTONE_UP,True)
+                            else:
+                                curLineReuseContentBox1 = ContentBoxElem(SHAPE_LINE_REUSE_SAME_MILESTONE_DOWN,True)
+                        elif curLineReuseType["type"] == "sideGoal":
+                            curLineReuseContentBox0 = ContentBoxElem(SHAPE_LINE_REUSE_SIDEGOAL,True)
+                            curLineReuseContentBox1 = ContentBoxElem(defaultRenderText(curLineReuseType["sideGoalValue"]),True)
+                        else:
+                            curLineReuseContentBox0 = ContentBoxElem(SHAPE_LINE_REUSE_NO_REUSE,True)
+                            curLineReuseContentBox1 = ContentBoxElem(EMPTY_SURF,hPadding=0,vPadding=0)
+
+                        curLineReuseContentBox = ContentBoxElem(ContentBox([
+                            curLineReuseContentBox0,
+                            curLineReuseContentBox1
+                        ],"h"))
 
                         linesContentBoxes.append(ContentBoxElem(ContentBox([
                             ContentBoxElem(ContentBox(
                                 getMoveArrowsList(level["Lines"],lineIndex,"v")
                             ,"v")),
                             ContentBoxElem(ContentBox(
-                                lineShapesContentBoxes
+                                lineSpacingsContentBoxes
+                                + lineShapesContentBoxes
+                                + [curLineReuseContentBox]
                             ,"h")),
                             ContentBoxElem(**DEFAULT_REMOVE_BUTTON_KWARGS)
-                        ],"h"),bgColor=ELEM_ON_ELEM_COLOR))
+                        ],"h"),hAlignment="l",bgColor=ELEM_ON_ELEM_COLOR))
 
                     linesContentBoxes = addAddButtons(linesContentBoxes,"v")
 
@@ -2111,6 +2399,10 @@ def main() -> None:
                         ContentBoxElem(ContentBox([
                             ContentBoxElem(defaultRenderText("Description :",True)),
                             ContentBoxElem(defaultRenderText(level["Description"]),True)
+                        ],"h"),hAlignment="l"),
+                        ContentBoxElem(ContentBox([
+                            ContentBoxElem(defaultRenderText("Wiki entry :",True)),
+                            ContentBoxElem(renderCanBeNoneText(defaultRenderText,level["WikiEntryId"]),True)
                         ],"h"),hAlignment="l"),
                         ContentBoxElem(defaultRenderText("Shape lines :",True),hAlignment="l"),
                         ContentBoxElem(ContentBox(
@@ -2196,6 +2488,10 @@ def main() -> None:
                             ContentBoxElem(ContentBox([
                                 ContentBoxElem(defaultRenderText("Description :",True)),
                                 ContentBoxElem(defaultRenderText(sideUpgrade["Description"]),True)
+                            ],"h"),hAlignment="l"),
+                            ContentBoxElem(ContentBox([
+                                ContentBoxElem(defaultRenderText("Hidden :",True)),
+                                ContentBoxElem(renderBoolText(sideUpgrade["Hidden"]),True)
                             ],"h"),hAlignment="l"),
                         ],"v"),vAlignment="t"),
                         ContentBoxElem(defaultRenderText(""),bgColor=ELEM_ON_ELEM_COLOR),

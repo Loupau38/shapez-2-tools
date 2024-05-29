@@ -2,7 +2,10 @@
     "FormatVersion": 1,
     "GameVersion": 0,
     "UniqueId": "",
-    "GameMode": "",
+    "SupportedGameModes": [],
+    "Title": "",
+    "Description": "",
+    "ExampleShapes": [],
     "Config": {
         "BaseChunkLimitMultiplier": 0,
         "LayerMechanicIds": [],
@@ -10,7 +13,6 @@
         "RailsMechanicId": "",
         "IslandManagementMechanicId": "",
         "BlueprintCurrencyShapes": [],
-        "BlueprintDiscountUpgradeId": "",
         "HubInputSizeUpgradeId": "",
         "ShapesConfigurationId": "",
         "ColorSchemeConfigurationId": "",
@@ -20,7 +22,9 @@
             "StackerSpeed": "",
             "PainterSpeed": ""
         },
-        "IntroductionWikiEntryId": ""
+        "IntroductionWikiEntryId": "",
+        "InitiallyUnlockedUpgrades": [],
+        "TutorialConfig": ""
     },
     "Progression": {
         "Levels": [],
@@ -37,10 +41,10 @@
             "LayoutId": "Layout_HUB"
         },
         "InitialViewport": {
-            "PositionX": -48.7,
-            "PositionY": -8.8,
+            "PositionX": -11.3,
+            "PositionY": -45.65,
             "Zoom": 11.0,
-            "Angle": 60.0,
+            "Angle": 75.0,
             "ShowAllLayers": true
         },
         "InitialIslands": [
@@ -249,12 +253,14 @@
         "StartingChunks": [
             {
                 "GuaranteedShapePatches": [
-                    "RbRbRbRu",
+                    "RbRuRbRu",
                     "CrCrCrCu",
-                    "RuRuRu--",
+                    "CrCuCuCu",
+                    "RuSuRu--",
                     "RuRuRuRu",
                     "--CuCuCu",
                     "SuSuCu--",
+                    "--RbSuCr",
                     "CuCuCuCu"
                 ],
                 "GuaranteedColorPatches": [
@@ -277,6 +283,18 @@
                 },
                 "GuaranteedShapePatches": [
                     "--WuWuCu"
+                ],
+                "GuaranteedColorPatches": [
+                    "g"
+                ]
+            },
+            {
+                "SuperChunk": {
+                    "x": -1,
+                    "y": -1
+                },
+                "GuaranteedShapePatches": [
+                    "--WuCu--"
                 ]
             }
         ]
