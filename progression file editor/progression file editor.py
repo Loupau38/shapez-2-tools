@@ -6,8 +6,15 @@ del os
 import json
 import pygame
 import typing
-import shapeViewer
 import sys
+from string import digits as DIGITS
+
+try:
+    import shapeViewer
+except ModuleNotFoundError:
+    print("File 'shapeViewer.py' is required if using the .py version")
+    input("Press enter to exit")
+    exit()
 
 # Put the file to edit's path here if you can't use drag and drop
 FILE_PATH_OVERRIDE = None
@@ -924,7 +931,6 @@ def main() -> None:
             moveArrows.append(ContentBoxElem(EMPTY_SURF,hPadding=0,vPadding=0))
         return moveArrows
 
-    DIGITS = [str(i) for i in range(10)]
     def isDigit(char:str):
         return char in DIGITS
 
@@ -1280,6 +1286,7 @@ def main() -> None:
                             "PreviewImageId" : defaultValues["images"][0],
                             "Title" : defaultValues["nodeTitles"][0],
                             "Description" : defaultValues["nodeDescriptions"][0],
+                            "WikiEntryId" : None,
                             "Lines" : [],
                             "UnlockBuildingVariants" : [],
                             "UnlockLayouts" : [],
@@ -1858,8 +1865,13 @@ def main() -> None:
             if valueInputNoneClickedCheck():
                 return
 
-    with open(DEFAULT_VALUES_PATH,encoding="utf-8") as f:
-        defaultValues = json.load(f)
+    try:
+        with open(DEFAULT_VALUES_PATH,encoding="utf-8") as f:
+            defaultValues = json.load(f)
+    except FileNotFoundError:
+        print(f"File '{DEFAULT_VALUES_PATH}' not found, make sure to include it in the same folder")
+        input("Press enter to exit")
+        exit()
 
     if SET_DPI_AWARE:
         import ctypes
@@ -2122,7 +2134,7 @@ def main() -> None:
 
         if screen == "inputFile":
 
-            textLines = ["Drag and drop a file in this window at any time to open it"]
+            textLines = ["Drag and drop a scenario file in this window at any time to open it"]
             if curInputFileError is not None:
                 textLines.append(f"Error while decoding file : {curInputFileError}")
                 if curInputFileError.__cause__ is not None:
