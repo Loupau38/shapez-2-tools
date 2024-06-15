@@ -8,6 +8,7 @@
     "ExampleShapes": [],
     "Config": {
         "BaseChunkLimitMultiplier": 0,
+        "InitialResearchPoints": 0,
         "LayerMechanicIds": [],
         "BlueprintsMechanicId": "",
         "RailsMechanicId": "",
@@ -41,10 +42,10 @@
             "LayoutId": "Layout_HUB"
         },
         "InitialViewport": {
-            "PositionX": -11.3,
-            "PositionY": -45.65,
-            "Zoom": 11.0,
-            "Angle": 75.0,
+            "PositionX": -49.08,
+            "PositionY": -11.76,
+            "Zoom": 12.02,
+            "Angle": 67.27,
             "ShowAllLayers": true
         },
         "InitialIslands": [
@@ -169,7 +170,7 @@
         ],
         "FixedPatches": [
             {
-                "Shape": "CuCuCuCu",
+                "Shape": "RuRuRuRu",
                 "Position_LC": {
                     "x": 31,
                     "y": 30
@@ -190,7 +191,7 @@
                 ]
             },
             {
-                "Shape": "CuCuCuCu",
+                "Shape": "RuRuRuRu",
                 "Position_LC": {
                     "x": 31,
                     "y": 34
@@ -211,7 +212,7 @@
                 ]
             },
             {
-                "Shape": "RuRuRuRu",
+                "Shape": "CuCuCuCu",
                 "Position_LC": {
                     "x": 29,
                     "y": 32
@@ -231,7 +232,7 @@
                 ]
             },
             {
-                "Shape": "RuRuRuRu",
+                "Shape": "CuCuCuCu",
                 "Position_LC": {
                     "x": 33,
                     "y": 32

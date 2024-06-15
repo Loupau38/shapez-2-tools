@@ -14,12 +14,13 @@
     "ExampleShapes": [
         "RbRbRbRb:CrCrCrCr",
         "RuRgRuRg:SbSbSbSb",
-        "RbCbCbCb:RuCuCuCu:WgWrWgWr",
+        "RbCbCbCb:RuCuCuCu",
         "SuP-P-Su:P-P-P-P-:RbCgCgRb",
         "RyP-RyP-:SwRuSwRu"
     ],
     "Config": {
         "BaseChunkLimitMultiplier": 100,
+        "InitialResearchPoints": 0,
         "LayerMechanicIds": [
             "RULayer2",
             "RULayer3"
@@ -68,7 +69,17 @@
             "RNInitial",
             "RNStackerLayer2",
             "RNBlueprints",
-            "RNIslandBuilding"
+            "RNIslandBuilding",
+            "SG_Stacker_3_1",
+            "SG_Stacker_3_2",
+            "SG_Stacker_3_3",
+            "SG_Stacker_3_4",
+            "SG_Stacker_2_1",
+            "SG_Stacker_2_2",
+            "SG_Stacker_2_3",
+            "SG_Stacker_2_4",
+            "SG_Stacker_4_1",
+            "SG_Stacker_4_2"
         ],
         "TutorialConfig": "TCMainTutorial"
     },
@@ -86,6 +97,10 @@
                         "Amount": 2000
                     },
                     {
+                        "$type": "MechanicReward",
+                        "MechanicId": "RUFluids"
+                    },
+                    {
                         "$type": "IslandLayoutReward",
                         "LayoutId": "Layout_FluidMiner"
                     },
@@ -100,10 +115,6 @@
                     {
                         "$type": "IslandLayoutReward",
                         "LayoutId": "Layout_SpacePipeTunnel_Exit"
-                    },
-                    {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_FluidMinerExtension"
                     },
                     {
                         "$type": "BuildingReward",
@@ -123,19 +134,20 @@
                     },
                     {
                         "$type": "BuildingReward",
-                        "BuildingVariantId": "FluidBridgeSenderVariant"
+                        "BuildingVariantId": "FluidPortSenderVariant"
                     },
                     {
                         "$type": "BuildingReward",
-                        "BuildingVariantId": "FluidBridgeReceiverVariant"
+                        "BuildingVariantId": "FluidPortReceiverVariant"
                     },
                     {
-                        "$type": "MechanicReward",
-                        "MechanicId": "RUFluids"
+                        "$type": "WikiEntryReward",
+                        "EntryId": "WKFluids"
                     }
                 ],
-                "VideoId": "Painter_Top",
+                "WikiEntryId": "WKFluids",
                 "PreviewImageId": "RNFluids",
+                "VideoId": "Milestone_FluidsVD",
                 "Title": "@research.RNFluids.title",
                 "Description": "@research.RNFluids.description",
                 "Lines": [
@@ -234,9 +246,15 @@
                     {
                         "$type": "MechanicReward",
                         "MechanicId": "RURailManagement"
+                    },
+                    {
+                        "$type": "WikiEntryReward",
+                        "EntryId": "WKTrains"
                     }
                 ],
                 "PreviewImageId": "RNTrains",
+                "WikiEntryId": "WKTrains",
+                "VideoId": "Milestone_TrainsVD",
                 "Title": "@research.RNTrains.title",
                 "Description": "@research.RNTrains.description",
                 "Lines": [
@@ -295,6 +313,8 @@
                 ],
                 "PreviewImageId": "RNPinPusher",
                 "Title": "@research.RNPinPusher.title",
+                "WikiEntryId": "WKPinPusher",
+                "VideoId": "Milestone_PinPusherVD",
                 "Description": "@research.RNPinPusher.description",
                 "Lines": [
                     {
@@ -343,11 +363,16 @@
                     {
                         "$type": "BuildingReward",
                         "BuildingVariantId": "MixerDefaultVariant"
+                    },
+                    {
+                        "$type": "WikiEntryReward",
+                        "EntryId": "WKMixing"
                     }
                 ],
-                "VideoId": "Fluid_Mixing",
+                "VideoId": "Milestone_MixerVD",
                 "PreviewImageId": "RNColorMixing",
                 "Title": "@research.RNColorMixing.title",
+                "WikiEntryId": "WKMixing",
                 "Description": "@research.RNColorMixing.description",
                 "Lines": [
                     {
@@ -392,11 +417,16 @@
                     {
                         "$type": "BuildingReward",
                         "BuildingVariantId": "CrystalGeneratorDefaultVariant"
+                    },
+                    {
+                        "$type": "WikiEntryReward",
+                        "EntryId": "WKCrystals"
                     }
                 ],
-                "VideoId": "Crystallizer",
                 "PreviewImageId": "RNCrystals",
                 "Title": "@research.RNCrystals.title",
+                "VideoId": "Milestone_CrystalsVD",
+                "WikiEntryId": "WKCrystals",
                 "Description": "@research.RNCrystals.description",
                 "Lines": [
                     {
@@ -450,6 +480,7 @@
                 "PreviewImageId": "RNPlaceholder",
                 "Title": "@research.RNEndOfGame.title",
                 "Description": "@research.RNEndOfGame.description",
+                "VideoId": "Milestone_FinalVD",
                 "Lines": [
                     {
                         "Shapes": [
@@ -482,7 +513,7 @@
         ],
         "SideQuestGroups": [
             {
-                "Title": "@sideGoal.placeholder",
+                "Title": "@side-goal.mushroom",
                 "RequiredUpgradeIds": [
                     "RNIslandBuilding"
                 ],
@@ -566,7 +597,7 @@
                 ]
             },
             {
-                "Title": "@sideGoal.placeholder",
+                "Title": "@side-goal.gray-with-red",
                 "RequiredUpgradeIds": [
                     "RNIslandBuilding"
                 ],
@@ -669,7 +700,7 @@
                 ]
             },
             {
-                "Title": "@sideGoal.placeholder",
+                "Title": "@side-goal.rotated-stacking",
                 "RequiredUpgradeIds": [
                     "RNIslandBuilding"
                 ],
@@ -753,7 +784,7 @@
                 ]
             },
             {
-                "Title": "@sideGoal.placeholder",
+                "Title": "@side-goal.colorful-star",
                 "RequiredUpgradeIds": [
                     "RNIslandBuilding"
                 ],
@@ -921,7 +952,7 @@
                 ]
             },
             {
-                "Title": "@sideGoal.placeholder",
+                "Title": "@side-goal.stack-cut-cut",
                 "RequiredUpgradeIds": [
                     "RNFluids"
                 ],
@@ -1024,7 +1055,7 @@
                 ]
             },
             {
-                "Title": "@sideGoal.placeholder",
+                "Title": "@side-goal.painting-basics",
                 "RequiredUpgradeIds": [
                     "RNFluids"
                 ],
@@ -1127,7 +1158,7 @@
                 ]
             },
             {
-                "Title": "@sideGoal.placeholder",
+                "Title": "@side-goal.emerald",
                 "RequiredUpgradeIds": [
                     "RNFluids"
                 ],
@@ -1230,7 +1261,7 @@
                 ]
             },
             {
-                "Title": "@sideGoal.placeholder",
+                "Title": "@side-goal.red-fly",
                 "RequiredUpgradeIds": [
                     "RNFluids"
                 ],
@@ -1379,7 +1410,7 @@
                 ]
             },
             {
-                "Title": "@sideGoal.placeholder",
+                "Title": "@side-goal.alternating-parts",
                 "RequiredUpgradeIds": [
                     "RNTrains"
                 ],
@@ -1482,7 +1513,7 @@
                 ]
             },
             {
-                "Title": "@sideGoal.placeholder",
+                "Title": "@side-goal.circle-star-rect",
                 "RequiredUpgradeIds": [
                     "RNTrains"
                 ],
@@ -1669,7 +1700,7 @@
                 ]
             },
             {
-                "Title": "@sideGoal.placeholder",
+                "Title": "@side-goal.green-blue-checker",
                 "RequiredUpgradeIds": [
                     "RNTrains"
                 ],
@@ -1772,7 +1803,7 @@
                 ]
             },
             {
-                "Title": "@sideGoal.placeholder",
+                "Title": "@side-goal.mushroom-2",
                 "RequiredUpgradeIds": [
                     "RNTrains"
                 ],
@@ -1959,7 +1990,7 @@
                 ]
             },
             {
-                "Title": "@sideGoal.placeholder",
+                "Title": "@side-goal.pin-experiments",
                 "RequiredUpgradeIds": [
                     "RNPinPusher"
                 ],
@@ -2249,7 +2280,7 @@
                 ]
             },
             {
-                "Title": "@sideGoal.placeholder",
+                "Title": "@side-goal.yellow-bug",
                 "RequiredUpgradeIds": [
                     "RNColorMixing"
                 ],
@@ -3206,7 +3237,7 @@
         "SideUpgrades": [
             {
                 "Id": "RNIslandLayouts1",
-                "PreviewImageId": "RNIslandLayouts1",
+                "PreviewImageId": "Shop_PlatformLayouts1",
                 "Title": "@research.RNIslandLayouts1.title",
                 "Description": "@research.RNIslandLayouts1.description",
                 "RequiredUpgradeIds": [
@@ -3227,7 +3258,7 @@
             },
             {
                 "Id": "RNIslandLayouts2",
-                "PreviewImageId": "RNIslandLayouts2",
+                "PreviewImageId": "Shop_PlatformLayouts2",
                 "Title": "@research.RNIslandLayouts2.title",
                 "Description": "@research.RNIslandLayouts2.description",
                 "RequiredUpgradeIds": [
@@ -3248,7 +3279,7 @@
             },
             {
                 "Id": "RNIslandLayouts3",
-                "PreviewImageId": "RNIslandLayouts3",
+                "PreviewImageId": "Shop_PlatformLayouts3",
                 "Title": "@research.RNIslandLayouts3.title",
                 "Description": "@research.RNIslandLayouts3.description",
                 "RequiredUpgradeIds": [
@@ -3273,7 +3304,7 @@
             },
             {
                 "Id": "RNIslandLayouts4",
-                "PreviewImageId": "RNIslandLayouts4",
+                "PreviewImageId": "Shop_PlatformLayouts4",
                 "Title": "@research.RNIslandLayouts4.title",
                 "Description": "@research.RNIslandLayouts4.description",
                 "RequiredUpgradeIds": [
@@ -3294,7 +3325,7 @@
             },
             {
                 "Id": "RNWireBasics",
-                "PreviewImageId": "RNWires",
+                "PreviewImageId": "Shop_WireBasics",
                 "Title": "@research.RNWireBasics.title",
                 "Description": "@research.RNWireBasics.description",
                 "RequiredUpgradeIds": [
@@ -3351,7 +3382,7 @@
             },
             {
                 "Id": "RNWireLogicGates",
-                "PreviewImageId": "RNWires",
+                "PreviewImageId": "Shop_LogicGates",
                 "Title": "@research.RNWireLogicGates.title",
                 "Description": "@research.RNWireLogicGates.description",
                 "RequiredUpgradeIds": [
@@ -3392,7 +3423,7 @@
             },
             {
                 "Id": "RNWireVirtualProcessing",
-                "PreviewImageId": "RNWires",
+                "PreviewImageId": "Shop_VirtualProcessors",
                 "Title": "@research.RNWireVirtualProcessing.title",
                 "Description": "@research.RNWireVirtualProcessing.description",
                 "RequiredUpgradeIds": [
@@ -3437,7 +3468,7 @@
             },
             {
                 "Id": "RNWireTransmission",
-                "PreviewImageId": "RNWires",
+                "PreviewImageId": "Shop_GlobalWireTransmitter",
                 "Title": "@research.RNWireTransmission.title",
                 "Description": "@research.RNWireTransmission.description",
                 "RequiredUpgradeIds": [
@@ -3462,7 +3493,7 @@
             },
             {
                 "Id": "RNFluidTank",
-                "PreviewImageId": "RNFluidTank",
+                "PreviewImageId": "Shop_FluidTank",
                 "VideoId": "Fluid_Tank",
                 "Title": "@research.RNFluidTank.title",
                 "Description": "@research.RNFluidTank.description",
@@ -3484,7 +3515,7 @@
             },
             {
                 "Id": "RNFluidMinerExtension",
-                "PreviewImageId": "",
+                "PreviewImageId": "Shop_FluidMinerExtension",
                 "Title": "@research.RNFluidMinerExtension.title",
                 "Description": "@research.RNFluidMinerExtension.description",
                 "RequiredUpgradeIds": [
@@ -3505,7 +3536,7 @@
             },
             {
                 "Id": "RNTrainsGreen",
-                "PreviewImageId": "",
+                "PreviewImageId": "Shop_TrainsGreen",
                 "Title": "@research.RNTrainsGreen.title",
                 "Description": "@research.RNTrainsGreen.description",
                 "RequiredUpgradeIds": [
@@ -3530,7 +3561,7 @@
             },
             {
                 "Id": "RNTrainsBlue",
-                "PreviewImageId": "",
+                "PreviewImageId": "Shop_TrainsBlue",
                 "Title": "@research.RNTrainsBlue.title",
                 "Description": "@research.RNTrainsBlue.description",
                 "RequiredUpgradeIds": [
@@ -3555,7 +3586,7 @@
             },
             {
                 "Id": "RNTrainsWhite",
-                "PreviewImageId": "",
+                "PreviewImageId": "Shop_TrainsWhite",
                 "Title": "@research.RNTrainsWhite.title",
                 "Description": "@research.RNTrainsWhite.description",
                 "RequiredUpgradeIds": [
@@ -3580,7 +3611,7 @@
             },
             {
                 "Id": "RNTrainsFillerWagon",
-                "PreviewImageId": "",
+                "PreviewImageId": "Shop_TrainsFillerWagon",
                 "Title": "@research.RNTrainsFillerWagon.title",
                 "Description": "@research.RNTrainsFillerWagon.description",
                 "RequiredUpgradeIds": [
@@ -3601,7 +3632,7 @@
             },
             {
                 "Id": "RNTrainsFluidWagons",
-                "PreviewImageId": "",
+                "PreviewImageId": "Shop_TrainsFluidWagons",
                 "Title": "@research.RNTrainsFluidWagons.title",
                 "Description": "@research.RNTrainsFluidWagons.description",
                 "RequiredUpgradeIds": [
@@ -3642,7 +3673,7 @@
             },
             {
                 "Id": "RNRailRollerCoasterDLCContent",
-                "PreviewImageId": "",
+                "PreviewImageId": "Shop_TrainsRollerCoaster",
                 "Title": "@research.RNRailRollerCoasterDLCContent.title",
                 "Description": "@research.RNRailRollerCoasterDLCContent.description",
                 "RequiredUpgradeIds": [
@@ -3740,10 +3771,10 @@
             "LayoutId": "Layout_HUB"
         },
         "InitialViewport": {
-            "PositionX": -11.3,
-            "PositionY": -45.65,
-            "Zoom": 11.0,
-            "Angle": 75.0,
+            "PositionX": -49.08,
+            "PositionY": -11.76,
+            "Zoom": 12.02,
+            "Angle": 67.27,
             "ShowAllLayers": true
         },
         "InitialIslands": [
@@ -3868,7 +3899,7 @@
         ],
         "FixedPatches": [
             {
-                "Shape": "CuCuCuCu",
+                "Shape": "RuRuRuRu",
                 "Position_LC": {
                     "x": 31,
                     "y": 30
@@ -3889,7 +3920,7 @@
                 ]
             },
             {
-                "Shape": "CuCuCuCu",
+                "Shape": "RuRuRuRu",
                 "Position_LC": {
                     "x": 31,
                     "y": 34
@@ -3910,7 +3941,7 @@
                 ]
             },
             {
-                "Shape": "RuRuRuRu",
+                "Shape": "CuCuCuCu",
                 "Position_LC": {
                     "x": 29,
                     "y": 32
@@ -3930,7 +3961,7 @@
                 ]
             },
             {
-                "Shape": "RuRuRuRu",
+                "Shape": "CuCuCuCu",
                 "Position_LC": {
                     "x": 33,
                     "y": 32

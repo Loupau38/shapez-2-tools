@@ -197,6 +197,7 @@ PROGRESSION_FORMAT = {
     "ExampleShapes" : [str],
     "Config" : {
         "BaseChunkLimitMultiplier" : int,
+        "InitialResearchPoints" : OptionalValueFormat(int,None),
         "MaxShapeLayers" : OptionalValueFormat(int,4),
         "LayerMechanicIds" : [str],
         "BlueprintsMechanicId" : str,
@@ -1155,12 +1156,13 @@ def main() -> None:
                         return
             curElemIndex += 1
 
-            for key in [
-                "BaseChunkLimitMultiplier",
-                "MaxShapeLayers"
+            for key,canBeNone in [
+                ("BaseChunkLimitMultiplier",False),
+                ("MaxShapeLayers",False),
+                ("InitialResearchPoints",True)
             ]:
                 if configScreenContentBox.elems[curElemIndex].elem.elems[1].boundingRect.collidepoint(rectifiedMousePos):
-                    askForInput("int",curProgression["Config"],key)
+                    askForInput("int",curProgression["Config"],key,canBeNone=canBeNone)
                     return
                 curElemIndex += 1
 
@@ -2237,6 +2239,13 @@ def main() -> None:
                         ("MaxShapeLayers","Max shape layers")
                     ]
                 ]+[
+                    ContentBoxElem(ContentBox([
+                        ContentBoxElem(defaultRenderText("Initial research points :",True)),
+                        ContentBoxElem(renderCanBeNoneText(
+                            defaultRenderText,
+                            None if (t:=curProgression["Config"]["InitialResearchPoints"]) is None else str(t)
+                        ),True)
+                    ],"h"),**configScreenContentBoxElemStyle),
                     ContentBoxElem(
                         defaultRenderText("Layer mechanics :",True),
                         **configScreenContentBoxElemStyle
