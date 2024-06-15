@@ -31,3 +31,8 @@ When a blueprint gets processed :
 
 - If its version is less than 1064 (alpha 21) :
   - Mirrorable building IDs get updated
+
+- If its version is less than 1067 (alpha 22.2) :
+  - Fluid catapult IDs get updated
+  - Old space pipe specific fluid catapults get removed
+  - Space belts, pipes and rails get updated to the new format

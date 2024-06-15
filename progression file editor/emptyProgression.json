@@ -8,7 +8,6 @@
     "ExampleShapes": [],
     "Config": {
         "BaseChunkLimitMultiplier": 0,
-        "InitialResearchPoints": 0,
         "LayerMechanicIds": [],
         "BlueprintsMechanicId": "",
         "RailsMechanicId": "",

@@ -189,6 +189,50 @@ def alpha21Fix(bp:dict) -> None:
             if island.get("B") is not None:
                 fixBuildingBp(island["B"])
 
+def alpha22Fix(bp:dict) -> None:
+
+    CHANGED_BUILDING_IDS = {
+        "FluidBridgeSenderInternalVariant"   : "FluidPortSenderInternalVariant",
+        "FluidBridgeReceiverInternalVariant" : "FluidPortReceiverInternalVariant"
+    }
+    REMOVED_BUILDING_IDS = [
+        "BlobLauncherInternalVariant",
+        "BlobCatcherInternalVariant"
+    ]
+
+    def fixBuildingBp(bp:dict) -> None:
+        newEntries = []
+        for entry in bp["Entries"]:
+            if entry["T"] not in REMOVED_BUILDING_IDS:
+                entry["T"] = CHANGED_BUILDING_IDS.get(entry["T"],entry["T"])
+                newEntries.append(entry)
+        bp["Entries"] = newEntries
+
+    if bp["BP"].get("$type",BUILDING_BP_TYPE) == BUILDING_BP_TYPE:
+        fixBuildingBp(bp["BP"])
+    else:
+        for island in bp["BP"]["Entries"]:
+
+            if island.get("B") is not None:
+                fixBuildingBp(island["B"])
+                if len(island["B"]["Entries"]) == 0:
+                    island.pop("B")
+
+            spaceBelt = "Layout_SpaceBeltNode"
+            spacePipe = "Layout_SpacePipeNode"
+            rail = "Layout_RailNode"
+
+            islandType = island["T"]
+            if islandType in (spaceBelt,spacePipe,rail):
+                extra = base64.b64decode(island["C"])
+
+                if islandType in (spaceBelt,spacePipe):
+                    extra = b"\x14" + extra
+                elif islandType == rail:
+                    extra = b"\x0a" + extra
+
+                island["C"] = base64.b64encode(extra).decode()
+
 def allVersionFix(bp:str) -> str:
 
     decodedBP = json.loads(gzip.decompress(base64.b64decode(bp.removeprefix("SHAPEZ2-1-").removesuffix("$"))))
@@ -208,6 +252,9 @@ def allVersionFix(bp:str) -> str:
 
     if bpVersion < 1064:
         alpha21Fix(decodedBP)
+
+    if bpVersion < 1067:
+        alpha22Fix(decodedBP)
 
     encodedBP = "SHAPEZ2-1-" + base64.b64encode(gzip.compress(json.dumps(decodedBP,separators=(",",":")).encode())).decode() + "$"
 
