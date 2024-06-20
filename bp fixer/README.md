@@ -21,7 +21,7 @@ When a blueprint gets processed :
   - The shape miner platform ID gets updated
 
 - If its version is less than 1045 (alpha 18) :
-  - Island IDs get updated
+  - Platform IDs get updated
   - Purple is changed to magenta in shape, fluid and signal producers
   - Item and signal producers are reset to `CuCuCuCu` if they contain a shape or fluid crate
 
@@ -36,3 +36,7 @@ When a blueprint gets processed :
   - Fluid catapult IDs get updated
   - Old space pipe specific fluid catapults get removed
   - Space belts, pipes and rails get updated to the new format
+
+- If its version is less than 1071 (alpha 22.3) :
+  - The `"$type"` key gets set to `"Building"` if it doesn't have a value
+  - Platforms that don't have additional data get given the default value

@@ -189,7 +189,7 @@ def alpha21Fix(bp:dict) -> None:
             if island.get("B") is not None:
                 fixBuildingBp(island["B"])
 
-def alpha22Fix(bp:dict) -> None:
+def alpha22_2Fix(bp:dict) -> None:
 
     CHANGED_BUILDING_IDS = {
         "FluidBridgeSenderInternalVariant"   : "FluidPortSenderInternalVariant",
@@ -233,28 +233,30 @@ def alpha22Fix(bp:dict) -> None:
 
                 island["C"] = base64.b64encode(extra).decode()
 
+def alpha22_3Fix(bp:dict) -> None:
+
+    bp["BP"]["$type"] = bp["BP"].get("$type",BUILDING_BP_TYPE)
+
+    if bp["BP"]["$type"] == ISLAND_BP_TYPE:
+        for entry in bp["BP"]["Entries"]:
+            entry["C"] = entry.get("C",base64.b64encode(bytes([0])).decode())
+
 def allVersionFix(bp:str) -> str:
 
     decodedBP = json.loads(gzip.decompress(base64.b64decode(bp.removeprefix("SHAPEZ2-1-").removesuffix("$"))))
     bpVersion = decodedBP["V"]
 
-    if bpVersion < 1024:
-        alpha8Fix(decodedBP)
-
-    if bpVersion < 1040:
-        alpha17Fix(decodedBP)
-
-    if bpVersion < 1045:
-        alpha19Fix(decodedBP)
-
-    if bpVersion < 1057:
-        alpha20Fix(decodedBP)
-
-    if bpVersion < 1064:
-        alpha21Fix(decodedBP)
-
-    if bpVersion < 1067:
-        alpha22Fix(decodedBP)
+    for version,func in [
+        (1024,alpha8Fix),
+        (1040,alpha17Fix),
+        (1045,alpha19Fix),
+        (1057,alpha20Fix),
+        (1064,alpha21Fix),
+        (1067,alpha22_2Fix),
+        (1071,alpha22_3Fix)
+    ]:
+        if bpVersion < version:
+            func(decodedBP)
 
     encodedBP = "SHAPEZ2-1-" + base64.b64encode(gzip.compress(json.dumps(decodedBP,separators=(",",":")).encode())).decode() + "$"
 
@@ -302,6 +304,9 @@ def main() -> None:
             f.write(fixedBP)
         if outputToStdOut:
             sys.stdout.write(newPath)
+        else:
+            print(f"Wrote fixed blueprint to {newPath}")
+            input("Press enter to exit")
 
     else:
 
@@ -321,6 +326,9 @@ def main() -> None:
         fixDir(inputtedDir,fixedDirPath)
         if outputToStdOut:
             sys.stdout.write(str(fixedDirPath))
+        else:
+            print(f"Wrote fixed blueprints to {fixedDirPath}")
+            input("Press enter to exit")
 
 if __name__ == "__main__":
     main()
