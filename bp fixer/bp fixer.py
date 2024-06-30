@@ -239,7 +239,8 @@ def alpha22_3Fix(bp:dict) -> None:
 
     if bp["BP"]["$type"] == ISLAND_BP_TYPE:
         for entry in bp["BP"]["Entries"]:
-            entry["C"] = entry.get("C",base64.b64encode(bytes([0])).decode())
+            if entry.get("C") in (None,""):
+                entry["C"] = base64.b64encode(bytes([0])).decode()
 
 def allVersionFix(bp:str) -> str:
 
