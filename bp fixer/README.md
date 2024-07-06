@@ -40,3 +40,8 @@ When a blueprint gets processed :
 - If its version is less than 1071 (alpha 22.3) :
   - The `"$type"` key gets set to `"Building"` if it doesn't have a value
   - Platforms that don't have additional data get given the default value
+
+- If its version is less than 1082 (alpha 23) :
+  - Icon IDs get updated
+  - Global wire receivers get updated to the new format
+  - Painters and crystal generators get moved one tile to account for their layout change

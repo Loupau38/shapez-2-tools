@@ -242,10 +242,101 @@ def alpha22_3Fix(bp:dict) -> None:
             if entry.get("C") in (None,""):
                 entry["C"] = base64.b64encode(bytes([0])).decode()
 
+def alpha23Fix(bp:dict) -> None:
+
+    painter = "PainterDefaultInternalVariant"
+    painterMirrored = "PainterDefaultInternalVariantMirrored"
+    crystalGen = "CrystalGeneratorDefaultInternalVariant"
+    crystalGenMirrored = "CrystalGeneratorDefaultInternalVariantMirrored"
+
+    def fixBuildingBp(bp:dict) -> None:
+        for entry in bp["Entries"]:
+            entryType = entry["T"]
+            entryRot = entry.get("R",0)
+            if entryType == "WireGlobalTransmitterReceiverInternalVariant":
+                entry["C"] = base64.b64encode(base64.b64decode(entry["C"])+bytes([2])).decode()
+            elif entryType in (painter,painterMirrored,crystalGen,crystalGenMirrored):
+                if entryType in (painter,crystalGen):
+                    if entryRot == 0:
+                        offsets = (0,-1)
+                    elif entryRot == 1:
+                        offsets = (1,0)
+                    elif entryRot == 2:
+                        offsets = (0,1)
+                    else:
+                        offsets = (-1,0)
+                else:
+                    if entryRot == 0:
+                        offsets = (0,1)
+                    elif entryRot == 1:
+                        offsets = (-1,0)
+                    elif entryRot == 2:
+                        offsets = (0,-1)
+                    else:
+                        offsets = (1,0)
+                entry["X"] = entry.get("X",0) + offsets[0]
+                entry["Y"] = entry.get("Y",0) + offsets[1]
+
+    if bp["BP"].get("Icon") is not None:
+
+        toConvertIcons:list[str] = []
+        toConvertIconIndexes:list[int] = []
+        for i,icon in enumerate(bp["BP"]["Icon"]["Data"]):
+            if (type(icon) == str) and (icon.startswith("icon:")):
+                toConvertIcons.append(icon.removeprefix("icon:"))
+                toConvertIconIndexes.append(i)
+
+        for old,new in [
+            ("toolbar.building.island-layout.Layout_RailNode.title","toolbar.islands.island-layout.Layout_RailNode"),
+            (".title",""),
+            (".description",""),
+            ("toolbar.building.building-variant.","building."),
+            ("toolbar.building.island-layout.","layout."),
+            ("toolbar.building.island-toolbar.","toolbar.islands.island-toolbar."),
+            ("toolbar.building.building.","toolbar.buildings.building.")
+        ]:
+            toConvertIcons = [i.replace(old,new) for i in toConvertIcons]
+        for oldStart,oldEnd,newStart,newEnd,exceptions in [
+            ("layout.Space","PathPlacement","layout.Layout_Space","Node",[]),
+            ("toolbar.buildings.building.","Building","building.","DefaultVariant",[
+                "Cutter",
+                "LogicGate",
+                "Rotator",
+                "VirtualProcessor"
+            ])
+        ]:
+            for i,icon in enumerate(toConvertIcons):
+                if icon.startswith(oldStart) and icon.endswith(oldEnd):
+                    keepStr = icon.removeprefix(oldStart).removesuffix(oldEnd)
+                    if keepStr in exceptions:
+                        continue
+                    toConvertIcons[i] = newStart + keepStr + newEnd
+        for old,new in [
+            ("PipeDefaultVariant","Pipe1LayerVariant"),
+            ("WireBeltInteraction","BeltFilter"),
+            ("WireButton","Button"),
+            ("WireConstantSignal","ConstantSignal"),
+            ("WireDisplay","Display")
+        ]:
+            toConvertIcons = [i.replace(old,new) for i in toConvertIcons]
+
+        for i,icon in zip(toConvertIconIndexes,toConvertIcons):
+            bp["BP"]["Icon"]["Data"][i] = f"icon:{icon}"
+
+    if bp["BP"]["$type"] == BUILDING_BP_TYPE:
+        fixBuildingBp(bp["BP"])
+    else:
+        for island in bp["BP"]["Entries"]:
+            if island.get("B") is not None:
+                fixBuildingBp(island["B"])
+
 def allVersionFix(bp:str) -> str:
 
     decodedBP = json.loads(gzip.decompress(base64.b64decode(bp.removeprefix("SHAPEZ2-1-").removesuffix("$"))))
     bpVersion = decodedBP["V"]
+
+    if bpVersion == 99999: # alpha 22.4-wiretest1
+        bpVersion = 1075 # in between alpha 22.4 and 23
 
     for version,func in [
         (1024,alpha8Fix),
@@ -254,7 +345,8 @@ def allVersionFix(bp:str) -> str:
         (1057,alpha20Fix),
         (1064,alpha21Fix),
         (1067,alpha22_2Fix),
-        (1071,alpha22_3Fix)
+        (1071,alpha22_3Fix),
+        (1082,alpha23Fix)
     ]:
         if bpVersion < version:
             func(decodedBP)
