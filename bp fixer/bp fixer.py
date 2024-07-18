@@ -330,6 +330,19 @@ def alpha23Fix(bp:dict) -> None:
             if island.get("B") is not None:
                 fixBuildingBp(island["B"])
 
+def v0_0_2Fix(bp:dict) -> None:
+
+    if bp["BP"]["$type"] == ISLAND_BP_TYPE:
+        for entry in bp["BP"]["Entries"]:
+            if entry["T"] in (
+                "Layout_TrainStation",
+                "Layout_TrainProducer_Red",
+                "Layout_TrainProducer_Green",
+                "Layout_TrainProducer_Blue",
+                "Layout_TrainProducer_White"
+            ):
+                entry.pop("C")
+
 def allVersionFix(bp:str) -> str:
 
     decodedBP = json.loads(gzip.decompress(base64.b64decode(bp.removeprefix("SHAPEZ2-1-").removesuffix("$"))))
@@ -346,7 +359,8 @@ def allVersionFix(bp:str) -> str:
         (1064,alpha21Fix),
         (1067,alpha22_2Fix),
         (1071,alpha22_3Fix),
-        (1082,alpha23Fix)
+        (1082,alpha23Fix),
+        (1091,v0_0_2Fix)
     ]:
         if bpVersion < version:
             func(decodedBP)
