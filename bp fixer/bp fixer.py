@@ -335,7 +335,6 @@ def v0_0_2Fix(bp:dict) -> None:
     if bp["BP"]["$type"] == ISLAND_BP_TYPE:
         for entry in bp["BP"]["Entries"]:
             if entry["T"] in (
-                "Layout_TrainStation",
                 "Layout_TrainProducer_Red",
                 "Layout_TrainProducer_Green",
                 "Layout_TrainProducer_Blue",

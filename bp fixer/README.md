@@ -47,4 +47,4 @@ When a blueprint gets processed :
   - Painters and crystal generators get moved one tile to account for their layout change
 
 - If its version is less than 1091 (0.0.2) :
-  - The additional data of train stops and depots gets removed
+  - The additional data of train locomotives gets removed
