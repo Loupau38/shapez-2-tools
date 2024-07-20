@@ -1,0 +1,14 @@
+[
+    {
+        "Id": "HubDefaultVariant",
+        "Title": "Hub",
+        "InternalVariants": [
+            {
+                "Id": "HubDefaultInternalVariant",
+                "Tiles": [
+                    {}
+                ]
+            }
+        ]
+    }
+]
