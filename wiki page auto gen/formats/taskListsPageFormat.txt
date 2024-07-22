@@ -1,0 +1,31 @@
+<!--
+
+Important note :
+
+This page has been automatically generated using data from the game files.
+
+To change this page's content, refer to https://github.com/Loupau38/shapez-2-tools/tree/main/wiki%20page%20auto%20gen or the #wiki channel on the Shapez 2 Discord.
+
+-->
+
+== Overview ==
+
+<todo>
+
+== Task Lists ==
+
+Tasks are divided into their respective scenarios.
+
+The number of shapes required to complete each task, as well as the rewards for completing each task vary depending on the Goal Multiplier, the Copy/Paste Cost, and the Platform Limit selected through the [[Game Modes#Difficulties| Difficulty]] setting. The numbers provided in the following sections are for each of these settings at 100%. If Copy/Paste is free and/or the Platform Limit is unlimited, the respective rewards will not be shown or awarded.
+
+{{| class="wikitable"
+! Reward Type !! Icon
+|-
+| Research Points || [[File:Research-Icon-100.png|50px]]
+|-
+| Platform Units || [[File:Platform-Units-Icon-100.png|50px]]
+|-
+| Blueprint Points || [[File:Blueprint-Points-Icon-100.png|50px]]
+|}}
+
+{taskLists}
