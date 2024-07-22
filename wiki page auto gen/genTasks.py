@@ -3,6 +3,8 @@ import pygamePIL
 import json
 import os
 
+GAME_VERSION_NAME = "0.0.4"
+
 FORMAT_NAMES = [
     "firstTask",
     "taskBlueprintPointsReward",
@@ -137,6 +139,7 @@ def main() -> None:
         )
 
     output = formats["taskListsPage"].format(
+        gameVersion = GAME_VERSION_NAME,
         taskLists = taskLists
     )
 

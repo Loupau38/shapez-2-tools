@@ -130,7 +130,7 @@
             "GoalLines": [
                 {
                     "Id": "Reuse_Fluids",
-                    "Shape": "GbHrHuHuHrGb:GuFgGbGbFgGu",
+                    "Shape": "GbHrHuHuHrGb:--FgGbGbFg--",
                     "StartingAmount": 10000,
                     "ExponentialGrowthPercentPerLevel": 14,
                     "RequiredUpgrade": "RNFluids"
@@ -140,14 +140,14 @@
                     "Shape": "HbHbHbHbHbHb:GgGgGgGgGgGg:FrFrFrFrFrFr",
                     "StartingAmount": 10000,
                     "ExponentialGrowthPercentPerLevel": 15,
-                    "RequiredUpgrade": "RNFluids"
+                    "RequiredUpgrade": "RNTrains"
                 },
                 {
                     "Id": "Reuse_PinPusher",
                     "Shape": "FbGrFbGrFbGr:Gr--Gr--Gr--",
                     "StartingAmount": 10000,
                     "ExponentialGrowthPercentPerLevel": 14,
-                    "RequiredUpgrade": "RNTrains"
+                    "RequiredUpgrade": "RNColorMixing"
                 },
                 {
                     "Id": "Reuse_Mixing",
@@ -161,7 +161,7 @@
                     "Shape": "P-FcP-FcP-Fc:FcFyFcFyFcFy:P---P---P---:Fy--Fy--Fy--",
                     "StartingAmount": 10000,
                     "ExponentialGrowthPercentPerLevel": 12,
-                    "RequiredUpgrade": "RNColorMixing"
+                    "RequiredUpgrade": "RNCrystals"
                 },
                 {
                     "Id": "Reuse_Final",
@@ -175,6 +175,14 @@
                     "Randomized": true,
                     "StartingAmount": 1000,
                     "ExponentialGrowthPercentPerLevel": 5,
+                    "RequiredUpgrade": "RNEndOfGame"
+                },
+                {
+                    "Id": "Random2",
+                    "Randomized": true,
+                    "RandomizedUseCrystals": true,
+                    "StartingAmount": 500,
+                    "ExponentialGrowthPercentPerLevel": 4,
                     "RequiredUpgrade": "RNEndOfGame"
                 }
             ]

@@ -192,8 +192,6 @@
     "menu.modeconfig.scenario-preset": "Scenario",
     "menu.modeconfig.scenario-preset.description": "Determines the progression of the game, which shapes are required & generated on the map and much more.",
     "menu.modeconfig.scenario-preset.locked": "Scenario can't be changed.",
-    "menu.modeconfig.mapgen.preset": "Load Preset / Export",
-    "menu.modeconfig.mapgen.preset.todo": "Planned feature!",
     "menu.modeconfig.mapgen.preview.toggle-visibility.title": "Toggle preview",
     "menu.modeconfig.mapgen.preview.toggle-visibility.description": "You can disable the preview to avoid spoiling yourself.",
     "menu.modeconfig.mapgen.fluids": "Fluid Asteroids",

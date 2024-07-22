@@ -2,7 +2,6 @@ import os
 import json
 
 GAME_VERSION = 1094
-GAME_VERSION_NAME = "0.0.3"
 
 BASE_PATH = os.path.expandvars(f"%LOCALAPPDATA%low/tobspr Games/shapez 2/basedata-v{GAME_VERSION}")
 GAME_SCENARIO_PATHS = [

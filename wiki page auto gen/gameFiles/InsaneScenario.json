@@ -408,8 +408,16 @@
                 {
                     "Id": "Random1",
                     "Randomized": true,
-                    "StartingAmount": 1500,
+                    "StartingAmount": 2000,
                     "ExponentialGrowthPercentPerLevel": 7,
+                    "RequiredUpgrade": "RNEndOfGame"
+                },
+                {
+                    "Id": "Random2",
+                    "Randomized": true,
+                    "RandomizedUseCrystals": true,
+                    "StartingAmount": 1000,
+                    "ExponentialGrowthPercentPerLevel": 4,
                     "RequiredUpgrade": "RNEndOfGame"
                 }
             ]
