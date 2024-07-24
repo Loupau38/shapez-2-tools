@@ -5018,11 +5018,11 @@
                 "GuaranteedShapePatches": [
                     "--FgFuFuFg--",
                     "FuFuGuGuGuGu",
-                    "GbGbGuGu----",
-                    "--HrHuHuHr--",
+                    "GuGuGuGu----",
+                    "--HuHuHuHu--",
                     "--FuFuFuFu--",
-                    "HuHuHuHuHuHu",
-                    "GuGuGuGuGuGu",
+                    "HuHrHrHrHuHu",
+                    "GbGuGuGuGbGb",
                     "FgFgFuFu----"
                 ],
                 "GuaranteedColorPatches": [

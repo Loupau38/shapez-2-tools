@@ -605,11 +605,11 @@
                     {
                         "Shapes": [
                             {
-                                "Shape": "CuRuWrWr",
+                                "Shape": "Ru----Rb",
                                 "Amount": 3000
                             },
                             {
-                                "Shape": "WrWrRbCb:RuCuWrWr",
+                                "Shape": "RuCbCuRb:--WrWr--",
                                 "Amount": 4000
                             },
                             {

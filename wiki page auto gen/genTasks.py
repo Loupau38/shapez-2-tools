@@ -3,7 +3,7 @@ import pygamePIL
 import json
 import os
 
-GAME_VERSION_NAME = "0.0.4"
+GAME_VERSION_NAME = "0.0.6"
 
 FORMAT_NAMES = [
     "firstTask",
