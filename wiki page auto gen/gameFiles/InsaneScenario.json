@@ -23,8 +23,9 @@
         "RmCcWcCm:--cm--cc:RcccCmcm:cmcccccm:cw--cw--"
     ],
     "Config": {
-        "BaseChunkLimitMultiplier": 125,
-        "InitialResearchPoints": "0",
+        "BaseChunkLimitMultiplier": 200,
+        "BaseBlueprintRewardMultiplier": 500,
+        "InitialResearchPoints": 0,
         "MaxShapeLayers": 5,
         "LayerMechanicIds": [
             "RULayer2",
@@ -305,7 +306,7 @@
                         },
                         {
                             "$type": "BlueprintCurrencyReward",
-                            "Amount": 100000
+                            "Amount": 20000
                         },
                         {
                             "$type": "ResearchPointsReward",
@@ -322,7 +323,7 @@
                         },
                         {
                             "$type": "BlueprintCurrencyReward",
-                            "Amount": 50000
+                            "Amount": 10000
                         },
                         {
                             "$type": "ResearchPointsReward",
@@ -339,7 +340,7 @@
                         },
                         {
                             "$type": "BlueprintCurrencyReward",
-                            "Amount": 25000
+                            "Amount": 5000
                         },
                         {
                             "$type": "ResearchPointsReward",
@@ -416,7 +417,7 @@
                     "Id": "Random2",
                     "Randomized": true,
                     "RandomizedUseCrystals": true,
-                    "StartingAmount": 1000,
+                    "StartingAmount": 2000,
                     "ExponentialGrowthPercentPerLevel": 4,
                     "RequiredUpgrade": "RNEndOfGame"
                 }
@@ -644,7 +645,7 @@
                     },
                     {
                         "$type": "BlueprintCurrencyReward",
-                        "Amount": 2500
+                        "Amount": 5000
                     },
                     {
                         "$type": "BuildingReward",
@@ -703,7 +704,7 @@
                     },
                     {
                         "$type": "BlueprintCurrencyReward",
-                        "Amount": 750
+                        "Amount": 15000
                     },
                     {
                         "$type": "WikiEntryReward",
@@ -764,6 +765,10 @@
                         "Amount": 500
                     },
                     {
+                        "$type": "BlueprintCurrencyReward",
+                        "Amount": 25000
+                    },
+                    {
                         "$type": "BuildingReward",
                         "BuildingVariantId": "CrystalGeneratorDefaultVariant"
                     },
@@ -790,7 +795,7 @@
                             },
                             {
                                 "Shape": "RyRyRyRy:P-RmRmP-:CmRwRwCm:P-P-P-P-:--CmCm--",
-                                "Amount": 30000
+                                "Amount": 45000
                             }
                         ],
                         "ReusedForPlayerLevel": true
@@ -807,7 +812,7 @@
                             },
                             {
                                 "Shape": "CmCmCmCm:CyCwCwCy:CwP-P-Cw:CyCyCyCy:P-CwCwP-",
-                                "Amount": 30000
+                                "Amount": 45000
                             }
                         ],
                         "ReusedForPlayerLevel": true
@@ -847,7 +852,7 @@
                             },
                             {
                                 "Shape": "RmCcWcCm:--cm--cc:RcccCmcm:cmcccccm:cw--cw--",
-                                "Amount": 80000
+                                "Amount": 100000
                             }
                         ],
                         "ReusedForPlayerLevel": true
@@ -864,7 +869,7 @@
                             },
                             {
                                 "Shape": "RmCmWcCc:--Cu--Cu:RcCcCmCm:cwWucwWu",
-                                "Amount": 22000
+                                "Amount": 50000
                             }
                         ]
                     }

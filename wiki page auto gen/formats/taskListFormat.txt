@@ -1,6 +1,6 @@
 === {scenarioName} ===
 
-<div class="mw-collapsible mw-collapsed">
+<div class="mw-collapsible mw-collapsed">{basedOnScenarioNote}
 {{| class="wikitable"
 ! rowspan="2"|Task Group Title !! colspan="5"|Tasks !! rowspan="2"|Milestone<br/>Required
 |-

@@ -3,13 +3,14 @@ import pygamePIL
 import json
 import os
 
-GAME_VERSION_NAME = "0.0.6"
+GAME_VERSION_NAME = "0.0.7"
 
 FORMAT_NAMES = [
     "firstTask",
     "taskBlueprintPointsReward",
     "task",
     "taskGroup",
+    "taskListBasedOnScenarioNote",
     "taskList",
     "taskListsPage",
     "taskPlatformUnitsReward",
@@ -52,21 +53,29 @@ def main() -> None:
 
     taskLists = ""
     taskListLens = {}
+    scenarioNames = {}
 
     for scenario in scenarios:
 
         taskGroups = ""
+        scenarioId = scenario["UniqueId"]
         scenarioName = getTranslation(scenario["Title"])
+        scenarioNames[scenarioId] = scenarioName
         curOutputPath = SHAPES_OUTPUT_PATH_FORMAT.format(
             scenarioName = scenarioName
         )
         os.makedirs(curOutputPath,exist_ok=True)
 
-        taskListLens[scenario["UniqueId"]] = len(scenario["Progression"]["SideQuestGroups"])
+        taskListLens[scenarioId] = len(scenario["Progression"]["SideQuestGroups"])
         if scenario.get("BasedOnScenarioId") is None:
             toAddTaskGroupIndex = 0
+            basedOnScenarioNote = ""
         else:
-            toAddTaskGroupIndex = taskListLens[scenario["BasedOnScenarioId"]]
+            basedOnScenarioId = scenario["BasedOnScenarioId"]
+            toAddTaskGroupIndex = taskListLens[basedOnScenarioId]
+            basedOnScenarioNote = formats["taskListBasedOnScenarioNote"].format(
+                basedOnScenario = scenarioNames[basedOnScenarioId]
+            )
 
         for taskGroupIndex,taskGroup in enumerate(scenario["Progression"]["SideQuestGroups"],start=1):
 
@@ -84,7 +93,7 @@ def main() -> None:
                         ))
                     elif reward["$type"] == "BlueprintCurrencyReward":
                         rewards.append(formats["taskBlueprintPointsReward"].format(
-                            amount = reward["Amount"]
+                            amount = round(reward["Amount"]*(scenario["Config"]["BaseBlueprintRewardMultiplier"]/100))
                         ))
                     elif reward["$type"] == "ChunkLimitReward":
                         rewards.append(formats["taskPlatformUnitsReward"].format(
@@ -104,6 +113,7 @@ def main() -> None:
                         shapeViewer.SHAPE_CONFIG_QUAD
                     ))
                     pygamePIL.image_save(shapeRendered,curShapeOutputPath)
+                    print(f"Generated new shape : {curShapeOutputPath}")
 
                 tasks.append((
                     taskIndex,
@@ -135,6 +145,7 @@ def main() -> None:
 
         taskLists += formats["taskList"].format(
             scenarioName = scenarioName,
+            basedOnScenarioNote = basedOnScenarioNote,
             taskGroups = taskGroups
         )
 

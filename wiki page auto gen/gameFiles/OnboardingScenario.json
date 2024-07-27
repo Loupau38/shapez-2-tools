@@ -18,7 +18,8 @@
         "CuCuCuRu:CuCuCuCu"
     ],
     "Config": {
-        "BaseChunkLimitMultiplier": 150,
+        "BaseChunkLimitMultiplier": 200,
+        "BaseBlueprintRewardMultiplier": 500,
         "LayerMechanicIds": [
             "RULayer2",
             "RULayer3"

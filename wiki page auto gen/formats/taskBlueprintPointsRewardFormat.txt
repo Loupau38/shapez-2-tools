@@ -1,1 +1,1 @@
-[[File:Blueprint-Points-Icon-100.png|20px]] {amount}
+[[File:Blueprint-Points-Icon-100.png|20px|link=]] {amount}

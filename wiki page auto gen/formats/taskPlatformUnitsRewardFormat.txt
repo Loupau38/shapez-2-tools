@@ -1,1 +1,1 @@
-[[File:Platform-Units-Icon-100.png|20px]] {amount}
+[[File:Platform-Units-Icon-100.png|20px|link=]] {amount}
