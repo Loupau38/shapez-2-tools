@@ -12,7 +12,9 @@ This page was generated for game version {gameVersion}.
 
 == Overview ==
 
-<todo>
+Tasks are sequences of goals where each step builds on the prior step, with increasing complexity. Completing Tasks awards <span class="gl">Research Points</span>.
+
+Each [[Game_Modes#Scenarios|Scenario]] has its own set of Tasks.
 
 == Task Lists ==
 
