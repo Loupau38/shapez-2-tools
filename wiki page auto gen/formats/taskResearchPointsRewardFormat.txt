@@ -1,1 +1,1 @@
-[[File:Research-Icon-100.png|20px|link=]] {amount}
+{{{{Reward-RP|{amount}}}}}

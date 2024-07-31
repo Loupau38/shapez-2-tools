@@ -1,1 +1,1 @@
-[[File:Blueprint-Points-Icon-100.png|20px|link=]] {amount}
+{{{{Reward-BP|{amount}}}}}

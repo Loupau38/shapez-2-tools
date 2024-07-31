@@ -10,26 +10,4 @@ This page was generated for game version {gameVersion}.
 
 -->
 
-== Overview ==
-
-Tasks are sequences of goals where each step builds on the prior step, with increasing complexity. Completing Tasks awards <span class="gl">Research Points</span>.
-
-Each [[Game_Modes#Scenarios|Scenario]] has its own set of Tasks.
-
-== Task Lists ==
-
-Tasks are divided into their respective scenarios.
-
-The number of shapes required to complete each task, as well as the rewards for completing each task vary depending on the Goal Multiplier, the Copy/Paste Cost, and the Platform Limit selected through the [[Game Modes#Difficulties| Difficulty]] setting. The numbers provided in the following sections are for each of these settings at 100%. If Copy/Paste is free and/or the Platform Limit is unlimited, the respective rewards will not be shown or awarded.
-
-{{| class="wikitable"
-! Reward Type !! Icon
-|-
-| Research Points || [[File:Research-Icon-100.png|50px]]
-|-
-| Platform Units || [[File:Platform-Units-Icon-100.png|50px]]
-|-
-| Blueprint Points || [[File:Blueprint-Points-Icon-100.png|50px]]
-|}}
-
 {taskLists}

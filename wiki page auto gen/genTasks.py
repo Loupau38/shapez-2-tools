@@ -120,7 +120,7 @@ def main() -> None:
                     shapeCodeFileSafe,
                     shapeCode,
                     task["Costs"][0]["Amount"],
-                    "<br/>".join(rewards)
+                    "<br>".join(rewards)
                 ))
 
             taskGroups += formats["taskGroup"].format(
