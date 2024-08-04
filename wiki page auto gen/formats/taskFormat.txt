@@ -1,2 +1,0 @@
-|-
-| {taskIndex} || [[File:Task-Shape-{taskShapeImage}-100.png|50px]] || <code>{taskShapeCode}</code> || {taskShapeAmount} || {taskRewards}

@@ -1,0 +1,9 @@
+=== {scenarioName} ===
+
+<div class="mw-collapsible mw-collapsed">{basedOnScenarioNote}
+{{| class="wikitable" style="text-align: center;"
+! Name and<br>Description !! colspan="6"|Shapes !! Rewards !! New Upgrades !! New Tasks
+
+{milestones}|}}
+</div>
+

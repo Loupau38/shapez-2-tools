@@ -1,3 +1,0 @@
-|- style="border-style: solid none none none; border-width: 3px;"
-{firstTask}
-{tasks}

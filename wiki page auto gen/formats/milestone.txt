@@ -1,0 +1,6 @@
+|- style="border-style: solid none none none; border-width: 3px;"
+| rowspan="{numShapeLines}"|#{milestoneIndex} {{{{tooltip|{milestoneName}|Milestone Description: {milestoneDescription}}}}}
+{firstShapeLine}| rowspan="{numShapeLines}"|{milestoneRewards}
+| rowspan="{numShapeLines}"| {unlockedUpgrades}
+| rowspan="{numShapeLines}"| {unlockedTasks}
+{shapeLines}

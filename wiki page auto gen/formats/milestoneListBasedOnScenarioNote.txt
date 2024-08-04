@@ -1,0 +1,3 @@
+
+
+Note : This scenario is based on the '{basedOnScenario}' scenario. This means that milestones from that scenario will also be displayed in the 'Milestones' research menu in-game.

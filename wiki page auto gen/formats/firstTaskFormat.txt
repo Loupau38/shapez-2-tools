@@ -1,1 +1,0 @@
-| rowspan="{numTasks}"|#{taskGroupIndex} {taskGroupName} || 1 || [[File:Task-Shape-{taskShapeImage}-100.png|50px]] || <code>{taskShapeCode}</code> || {taskShapeAmount} || {taskRewards} || rowspan="{numTasks}"|{taskGroupMilestoneRequired}
