@@ -235,7 +235,11 @@ def alpha22_2Fix(bp:dict) -> None:
 
 def alpha22_3Fix(bp:dict) -> None:
 
-    bp["BP"]["$type"] = bp["BP"].get("$type",BUILDING_BP_TYPE)
+    if bp["BP"].get("$type") is None:
+        newBP = {"$type":BUILDING_BP_TYPE}
+        for key,value in bp["BP"].items():
+            newBP[key] = value
+        bp["BP"] = newBP
 
     if bp["BP"]["$type"] == ISLAND_BP_TYPE:
         for entry in bp["BP"]["Entries"]:
