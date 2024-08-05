@@ -1,6 +1,8 @@
 __pycache__
 savegames/temp
-wiki page auto gen/taskShapesOutput
-wiki page auto gen/milestoneShapesOutput
-wiki page auto gen/taskListsOutput.txt
-wiki page auto gen/milestoneListsOutput.txt
+wiki page auto gen/outputBpShapeShapes
+wiki page auto gen/outputMilestoneShapes
+wiki page auto gen/outputTaskShapes
+wiki page auto gen/outputBpShapeLists.txt
+wiki page auto gen/outputMilestoneLists.txt
+wiki page auto gen/outputTaskLists.txt

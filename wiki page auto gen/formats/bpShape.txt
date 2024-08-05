@@ -1,0 +1,2 @@
+|-
+| [[File:Blueprint-Shape-{shapeImage}-100.png|50px]] || <code>{shapeCode}</code> || {pointsReward} || {milestoneRequired}

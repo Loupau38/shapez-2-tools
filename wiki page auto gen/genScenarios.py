@@ -6,6 +6,9 @@ import os
 GAME_VERSION_NAME = "0.0.7"
 
 FORMAT_NAMES = [
+    "bpShape",
+    "bpShapeList",
+    "bpShapeListsPage",
     "milestone",
     "milestoneList",
     "milestoneListBasedOnScenarioNote",
@@ -46,13 +49,17 @@ SCENARIO_PATHS = [
 ]
 TRANSLATIONS_PATH = "./gameFiles/translations-en-US.json"
 
-TASKS_OUTPUT_PATH = "./taskListsOutput.txt"
-TASK_SHAPES_OUTPUT_PATH_FORMAT = "./taskShapesOutput/{scenarioName}/"
+TASKS_OUTPUT_PATH = "./outputTaskLists.txt"
+TASK_SHAPES_OUTPUT_PATH = "./outputTaskShapes/"
 TASK_SHAPES_OUTPUT_FILE_NAME_FORMAT = "Task-Shape-{shapeCode}-100.png"
 
-MILESTONES_OUTPUT_PATH = "./milestoneListsOutput.txt"
-MILESTONE_SHAPES_OUTPUT_PATH_FORMAT = "./milestoneShapesOutput/{scenarioName}/"
+MILESTONES_OUTPUT_PATH = "./outputMilestoneLists.txt"
+MILESTONE_SHAPES_OUTPUT_PATH = "./outputMilestoneShapes/"
 MILESTONE_SHAPES_OUTPUT_FILE_NAME_FORMAT = "Milestone-Shape-{shapeCode}-100.png"
+
+BP_SHAPES_OUTPUT_PATH = "./outputBpShapeLists.txt"
+BP_SHAPE_SHAPES_OUTPUT_PATH = "./outputBpShapeShapes/"
+BP_SHAPE_SHAPES_OUTPUT_FILE_NAME_FORMAT = "Blueprint-Shape-{shapeCode}-100.png"
 
 SHAPE_SIZE = 100
 
@@ -164,6 +171,8 @@ def main() -> None:
     milestoneLists = ""
     milestoneListLens = {}
 
+    bpShapeLists = ""
+
     for scenario in scenarios:
 
         scenarioId = scenario["UniqueId"]
@@ -187,9 +196,7 @@ def main() -> None:
             )
 
         taskGroups = ""
-        curTaskShapesOutputPath = TASK_SHAPES_OUTPUT_PATH_FORMAT.format(
-            scenarioName = scenarioName
-        )
+        curTaskShapesOutputPath = TASK_SHAPES_OUTPUT_PATH
         os.makedirs(curTaskShapesOutputPath,exist_ok=True)
         taskListLens[scenarioId] = len(scenario["Progression"]["SideQuestGroups"])
 
@@ -234,9 +241,7 @@ def main() -> None:
         #####
 
         milestones = ""
-        curMilestoneShapesOutputPath = MILESTONE_SHAPES_OUTPUT_PATH_FORMAT.format(
-            scenarioName = scenarioName
-        )
+        curMilestoneShapesOutputPath = MILESTONE_SHAPES_OUTPUT_PATH
         os.makedirs(curMilestoneShapesOutputPath,exist_ok=True)
         milestoneListLens[scenarioId] = len(scenario["Progression"]["Levels"])
         maxMilestoneShapesPerLine = max(0 if len(m["Lines"]) == 0 else max(len(l["Shapes"]) for l in m["Lines"]) for m in scenario["Progression"]["Levels"])
@@ -339,6 +344,30 @@ def main() -> None:
                 ) for sl in shapeLines[1:])
             )
 
+        #####
+
+        bpShapes = ""
+        curBPShapesOutputPath = BP_SHAPE_SHAPES_OUTPUT_PATH
+        os.makedirs(curBPShapesOutputPath,exist_ok=True)
+
+        for bpShape in scenario["Config"]["BlueprintCurrencyShapes"]:
+
+            shapeCode = bpShape["Shape"]
+            shapeCodeFileSafe = shapeCode.replace(":","-")
+            curShapeOutputPath = curBPShapesOutputPath + BP_SHAPE_SHAPES_OUTPUT_FILE_NAME_FORMAT.format(
+                shapeCode = shapeCodeFileSafe
+            )
+            renderShape(shapeCode,scenario,curShapeOutputPath)
+
+            bpShapes += formats["bpShape"].format(
+                shapeImage = shapeCodeFileSafe,
+                shapeCode = shapeCode,
+                pointsReward = bpShape["Amount"],
+                milestoneRequired = getTranslation(f"research.{bpShape['RequiredUpgradeId']}.title")
+            )
+
+        #####
+
         taskLists += formats["taskList"].format(
             scenarioName = scenarioName,
             basedOnScenarioNote = taskBasedOnScenarioNote,
@@ -349,6 +378,11 @@ def main() -> None:
             scenarioName = scenarioName,
             basedOnScenarioNote = milestoneBasedOnScenarioNote,
             milestones = milestones
+        )
+
+        bpShapeLists += formats["bpShapeList"].format(
+            scenarioName = scenarioName,
+            bpShapes = bpShapes
         )
 
     taskListsOutput = formats["taskListsPage"].format(
@@ -364,6 +398,13 @@ def main() -> None:
     )
     with open(MILESTONES_OUTPUT_PATH,"w",encoding="utf-8") as f:
         f.write(milestoneListsOutput)
+
+    bpShapeListsOutput = formats["bpShapeListsPage"].format(
+        gameVersion = GAME_VERSION_NAME,
+        bpShapeLists = bpShapeLists
+    )
+    with open(BP_SHAPES_OUTPUT_PATH,"w",encoding="utf-8") as f:
+        f.write(bpShapeListsOutput)
 
 if __name__ == "__main__":
     main()
