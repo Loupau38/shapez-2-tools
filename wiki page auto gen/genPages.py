@@ -6,9 +6,14 @@ import os
 GAME_VERSION_NAME = "0.0.7"
 
 FORMAT_NAMES = [
+    "autoGenMsg",
     "bpShape",
     "bpShapeList",
     "bpShapeListsPage",
+    "changelogCategory",
+    "changelogEntry",
+    "changelogPage",
+    "changelogVersion",
     "milestone",
     "milestoneList",
     "milestoneListBasedOnScenarioNote",
@@ -48,6 +53,7 @@ SCENARIO_PATHS = [
     "./gameFiles/HexagonalScenario.json"
 ]
 TRANSLATIONS_PATH = "./gameFiles/translations-en-US.json"
+CHANGELOG_PATH = "./gameFiles/Changelog.json"
 
 TASKS_OUTPUT_PATH = "./outputTaskLists.txt"
 TASK_SHAPES_OUTPUT_PATH = "./outputTaskShapes/"
@@ -60,6 +66,8 @@ MILESTONE_SHAPES_OUTPUT_FILE_NAME_FORMAT = "Milestone-Shape-{shapeCode}-100.png"
 BP_SHAPES_OUTPUT_PATH = "./outputBpShapeLists.txt"
 BP_SHAPE_SHAPES_OUTPUT_PATH = "./outputBpShapeShapes/"
 BP_SHAPE_SHAPES_OUTPUT_FILE_NAME_FORMAT = "Blueprint-Shape-{shapeCode}-100.png"
+
+CHANGELOG_OUTPUT_PATH = "./outputChangelog.txt"
 
 SHAPE_SIZE = 100
 
@@ -162,6 +170,13 @@ def main() -> None:
     for path in SCENARIO_PATHS:
         with open(path,encoding="utf-8") as f:
             scenarios.append(json.load(f))
+
+    with open(CHANGELOG_PATH,encoding="utf-8") as f:
+        changelogRaw:list[dict[str,str|list[str]]] = json.load(f)
+
+    autoGenMsg = formats["autoGenMsg"].format(
+        gameVersion = GAME_VERSION_NAME
+    )
 
     scenarioNames = {}
 
@@ -386,25 +401,57 @@ def main() -> None:
         )
 
     taskListsOutput = formats["taskListsPage"].format(
-        gameVersion = GAME_VERSION_NAME,
+        autoGenMsg = autoGenMsg,
         taskLists = taskLists
     )
     with open(TASKS_OUTPUT_PATH,"w",encoding="utf-8") as f:
         f.write(taskListsOutput)
 
     milestoneListsOutput = formats["milestoneListsPage"].format(
-        gameVersion = GAME_VERSION_NAME,
+        autoGenMsg = autoGenMsg,
         milestoneLists = milestoneLists
     )
     with open(MILESTONES_OUTPUT_PATH,"w",encoding="utf-8") as f:
         f.write(milestoneListsOutput)
 
     bpShapeListsOutput = formats["bpShapeListsPage"].format(
-        gameVersion = GAME_VERSION_NAME,
+        autoGenMsg = autoGenMsg,
         bpShapeLists = bpShapeLists
     )
     with open(BP_SHAPES_OUTPUT_PATH,"w",encoding="utf-8") as f:
         f.write(bpShapeListsOutput)
+
+    #####
+
+    changelog = ""
+
+    for versionChangelog in changelogRaw:
+
+        entries = ""
+
+        for entry in versionChangelog["Entries"]:
+
+            if entry.startswith("[[") and entry.endswith("]]"):
+                entries += formats["changelogCategory"].format(
+                    categoryName = entry.removeprefix("[[").removesuffix("]]")
+                )
+            else:
+                entries += formats["changelogEntry"].format(
+                    entryText = entry
+                )
+
+        changelog += formats["changelogVersion"].format(
+            versionName = versionChangelog["Version"],
+            releaseDate = versionChangelog["Date"],
+            entries = entries
+        )
+
+    changelogOutput = formats["changelogPage"].format(
+        autoGenMsg = autoGenMsg,
+        changelog = changelog
+    )
+    with open(CHANGELOG_OUTPUT_PATH,"w",encoding="utf-8") as f:
+        f.write(changelogOutput)
 
 if __name__ == "__main__":
     main()

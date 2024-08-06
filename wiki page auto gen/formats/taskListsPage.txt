@@ -1,13 +1,3 @@
-<!--
-
-Important note :
-
-This page has been automatically generated using data from the game files.
-
-To change this page's content, refer to https://github.com/Loupau38/shapez-2-tools/tree/main/wiki%20page%20auto%20gen or the #wiki channel on the Shapez 2 Discord.
-
-This page was generated for game version {gameVersion}.
-
--->
+{autoGenMsg}
 
 {taskLists}
