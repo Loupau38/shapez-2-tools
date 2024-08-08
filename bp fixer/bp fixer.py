@@ -29,6 +29,9 @@ def alpha19Fix(bp:dict) -> None:
 
     CHANGED_ISLAND_IDS = {
         "Layout_1"                    : "Layout_Normal_1",
+        "Layout_1_Forward"            : "Layout_Normal_1",
+        "Layout_1_LeftTurn"           : "Layout_Normal_1",
+        "Layout_1_RightTurn"          : "Layout_Normal_1",
         "LayoutTunnelEntrance"        : "Layout_SpaceBeltTunnel_Entrance",
         "LayoutTunnelExit"            : "Layout_SpaceBeltTunnel_Exit",
         "ShapeMinerLayout"            : "Layout_ShapeMiner",

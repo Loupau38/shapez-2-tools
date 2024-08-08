@@ -20,7 +20,7 @@ When a blueprint gets processed :
 - If its version is less than 1040 (alpha 17) :
   - The shape miner platform ID gets updated
 
-- If its version is less than 1045 (alpha 18) :
+- If its version is less than 1045 (alpha 19) :
   - Platform IDs get updated
   - Purple is changed to magenta in shape, fluid and signal producers
   - Item and signal producers are reset to `CuCuCuCu` if they contain a shape or fluid crate
