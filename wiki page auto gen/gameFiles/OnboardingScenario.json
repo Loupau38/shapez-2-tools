@@ -29,6 +29,7 @@
         "PlayerLevelMechanicId": "RUPlayerLevel",
         "IslandManagementMechanicId": "RUIslandPlacement",
         "TrainHubDeliveryMechanicId": "RUTrainHubDelivery",
+        "EstimatedUpcomingUpgradesFromFollowup": 145,
         "BlueprintCurrencyShapes": [
             {
                 "Shape": "CuRuCuCu",

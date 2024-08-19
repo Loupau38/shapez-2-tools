@@ -3,7 +3,7 @@ import pygamePIL
 import json
 import os
 
-GAME_VERSION_NAME = "0.0.7"
+GAME_VERSION_NAME = "0.0.8"
 
 FORMAT_NAMES = [
     "autoGenMsg",
@@ -359,6 +359,12 @@ def main() -> None:
                 ) for sl in shapeLines[1:])
             )
 
+        milestoneLists += formats["milestoneList"].format(
+            scenarioName = scenarioName,
+            basedOnScenarioNote = milestoneBasedOnScenarioNote,
+            milestones = milestones
+        )
+
         #####
 
         bpShapes = ""
@@ -380,20 +386,6 @@ def main() -> None:
                 pointsReward = bpShape["Amount"],
                 milestoneRequired = getTranslation(f"research.{bpShape['RequiredUpgradeId']}.title")
             )
-
-        #####
-
-        taskLists += formats["taskList"].format(
-            scenarioName = scenarioName,
-            basedOnScenarioNote = taskBasedOnScenarioNote,
-            taskGroups = taskGroups
-        )
-
-        milestoneLists += formats["milestoneList"].format(
-            scenarioName = scenarioName,
-            basedOnScenarioNote = milestoneBasedOnScenarioNote,
-            milestones = milestones
-        )
 
         bpShapeLists += formats["bpShapeList"].format(
             scenarioName = scenarioName,
