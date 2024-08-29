@@ -3,7 +3,7 @@ import pygamePIL
 import json
 import os
 
-GAME_VERSION_NAME = "0.0.8"
+GAME_VERSION_NAME = "0.0.8-rc3"
 
 FORMAT_NAMES = [
     "autoGenMsg",

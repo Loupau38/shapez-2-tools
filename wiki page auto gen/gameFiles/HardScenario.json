@@ -3766,6 +3766,10 @@
                     },
                     {
                         "$type": "BuildingReward",
+                        "BuildingVariantId": "PipeGateDefaultVariant"
+                    },
+                    {
+                        "$type": "BuildingReward",
                         "BuildingVariantId": "DisplayDefaultVariant"
                     },
                     {
@@ -3873,6 +3877,10 @@
                     {
                         "$type": "BuildingReward",
                         "BuildingVariantId": "VirtualPainterDefaultVariant"
+                    },
+                    {
+                        "$type": "BuildingReward",
+                        "BuildingVariantId": "VirtualPinPusherDefaultVariant"
                     },
                     {
                         "$type": "BuildingReward",
@@ -4129,6 +4137,10 @@
                     {
                         "$type": "IslandLayoutReward",
                         "LayoutId": "Layout_TrainRollerCoasterLoop"
+                    },
+                    {
+                        "$type": "IslandLayoutReward",
+                        "LayoutId": "Layout_TrainRollerCoasterLoop_Flipped"
                     }
                 ],
                 "Costs": [

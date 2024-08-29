@@ -1,13 +1,16 @@
 [
     {
-        "Date": "August 19, 2024",
+        "Date": "August 27, 2024",
         "Version": "0.0.8",
         "Entries": [
             "[[General]]",
             "Updated Unity version to (hopefully!) resolve various issues with DirectX 12, Wayland and more.",
+            "[[Balancing & New Content]]",
+            "Added pipe gate",
+            "Added virtual pin pusher",
             "[[UI/UX]]",
             "Space belts, pipes & rails now automatically place tunnels while dragging!",
-            "Added 'replace with clipboard' option when editing blueprint for an improved blueprint editing workflow",
+            "Added 'Save As' option as well as 'Replace' for an improved blueprint editing workflow",
             "Added 'Invert Y Axis' option",
             "Added visualizations for trains",
             "Added visualization for map markers in overview mode",
@@ -16,6 +19,8 @@
             "Added setting to control animation quality/fps when zooming out",
             "Properly display conflict indicators for rails if blocked by an adjacent platform",
             "Disable research points 'flashing' reminder for 15 minutes when clicking it",
+            "[[Visuals]]",
+            "Improved train loader / unloader package icon meshes",
             "[[Localization]]",
             "Improved bent stacker description to mention it's faster than the normal stacker",
             "Fixed inconsistent names between 'Halves Swapper' and 'Swapper' as well as 'Halves Destroyer' vs 'Half Destroyer'",
@@ -23,13 +28,19 @@
             "[[Bugfixes]]",
             "Fixed space belts / pipes sometimes not accepting / delivering items at expected throughput",
             "Fixed train unloaders producing a small gap when switching packages",
+            "Fluid catcher not transferring fluid to other launcher when the former is on a platform edge",
             "Fixed blueprint toolbar not updating when changing folder contents",
+            "Fixed screenshots being stored in wrong folder, now saved in user pictures folder",
+            "Fixed some specific space belt loops crashing the game",
+            "Fixed blueprints drag-n-drop in library not working when folder list was scrollable",
             "Fixed crash when connecting item producer directly to trash",
             "Fixed research progression statistic showing 100% during tutorial",
             "Fixed overriding blueprints with different case not working as expected",
             "Fixed invalid space pipe throughput display",
+            "Fixed rare crash when analytics failed to init",
             "Fixed various pipe/wire path placement issues",
-            "Fixed fluid launchers not always displaying throughput / contents"
+            "Fixed fluid launchers not always displaying throughput / contents",
+            "Fixed incorrect fluid providing flow"
         ]
     },
     {
