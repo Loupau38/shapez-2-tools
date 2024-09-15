@@ -1,6 +1,6 @@
 ==== {scenarioName} ====
 
-<div class="mw-collapsible mw-collapsed>
+<div class="mw-collapsible mw-collapsed collapse-button-no-float">
 {{| class="wikitable"
 ! Shape<br>Image !! Shape Code !! Points<br>Given !! Required Milestone
 {bpShapes}|}}
