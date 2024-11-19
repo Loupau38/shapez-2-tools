@@ -94,8 +94,7 @@ class RandomResearchShapeGenerator:
             # Starting from level N, also use pin pusher operations
             if (level > Int32(50)) and (self.Rng.TestPercentage(Int32(15))):
 
-                # Loupau note : In the 2 lines below, the references to 'shape' should be to 'stackedShape'
-                stackedShape = self.Shapes.Op_PushPin(shape)
+                stackedShape = self.Shapes.Op_PushPin(stackedShape)
                 assert not shape.IsEmpty()
 
             # Stack the newly generated shape on top of the previous one
