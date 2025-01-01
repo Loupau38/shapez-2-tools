@@ -23,7 +23,7 @@
         "RmCcWcCm:--cm--cc:RcccCmcm:cmcccccm:cw--cw--"
     ],
     "Config": {
-        "BaseChunkLimitMultiplier": 200,
+        "BaseChunkLimitMultiplier": 250,
         "BaseBlueprintRewardMultiplier": 500,
         "InitialResearchPoints": 0,
         "MaxShapeLayers": 5,
@@ -64,6 +64,7 @@
             }
         ],
         "HubInputSizeUpgradeId": "LRUHubInputSize",
+        "ShapeQuantityUpgradeId": "LRUShapeQuantity",
         "ShapesConfigurationId": "DefaultShapesQuadConfiguration",
         "ColorSchemeConfigurationId": "DefaultColorSchemeRGBFlex",
         "SpeedsToLinearUpgradeMappings": {
@@ -446,20 +447,24 @@
                         "MechanicId": "RUPlayerLevel"
                     },
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_FluidMiner"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "FluidMinerExtractorsGroup"
                     },
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_SpacePipeNode"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "FluidMinerChainsGroup"
                     },
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_SpacePipeTunnel_Entrance"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "SpacePipesGroup"
                     },
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_SpacePipeTunnel_Exit"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "SpacePipeTunnelEntrancesGroup"
+                    },
+                    {
+                        "$type": "IslandGroupReward",
+                        "GroupId": "SpacePipeTunnelExitsGroup"
                     },
                     {
                         "$type": "BuildingReward",
@@ -542,51 +547,35 @@
                     },
                     {
                         "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_RailNode"
-                    },
-                    {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_RailPath_Universal"
-                    },
-                    {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_RailPath_Red"
-                    },
-                    {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainStation"
-                    },
-                    {
-                        "$type": "IslandLayoutReward",
                         "LayoutId": "Layout_TrainProducer_Red"
                     },
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainShapeWagonExtension"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "RailsGroup"
                     },
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainLoader_Shapes"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "TrainLaunchersGroup"
                     },
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainLoader_Shapes_Flipped"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "TrainCatchersGroup"
                     },
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainUnloader_Shapes"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "TrainStationsGroup"
                     },
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainUnloader_Shapes_Flipped"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "TrainShapeLoadersGroup"
                     },
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainLauncher"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "TrainShapeUnloadersGroup"
                     },
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainCatcher"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "ShapeCargoFactoriesGroup"
                     },
                     {
                         "$type": "MechanicReward",
@@ -3688,6 +3677,10 @@
                     {
                         "$type": "IslandLayoutReward",
                         "LayoutId": "Layout_Normal_3_L"
+                    },
+                    {
+                        "$type": "IslandLayoutReward",
+                        "LayoutId": "Layout_Normal_3x1"
                     }
                 ],
                 "Costs": [
@@ -3709,6 +3702,10 @@
                     {
                         "$type": "IslandLayoutReward",
                         "LayoutId": "Layout_Normal_4_T"
+                    },
+                    {
+                        "$type": "IslandLayoutReward",
+                        "LayoutId": "Layout_Normal_4_2x2"
                     }
                 ],
                 "Costs": [
@@ -3729,11 +3726,11 @@
                 "Rewards": [
                     {
                         "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_Normal_4_2x2"
+                        "LayoutId": "Layout_Normal_5_Cross"
                     },
                     {
                         "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_Normal_5_Cross"
+                        "LayoutId": "Layout_Normal_3x2"
                     }
                 ],
                 "Costs": [
@@ -3972,27 +3969,6 @@
                 ]
             },
             {
-                "Id": "RNFluidMinerExtension",
-                "PreviewImageId": "Shop_FluidMinerExtension",
-                "Title": "@research.RNFluidMinerExtension.title",
-                "Description": "@research.RNFluidMinerExtension.description",
-                "RequiredUpgradeIds": [
-                    "RNFluids"
-                ],
-                "Rewards": [
-                    {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_FluidMinerExtension"
-                    }
-                ],
-                "Costs": [
-                    {
-                        "$type": "ResearchPointsCost",
-                        "Amount": 25
-                    }
-                ]
-            },
-            {
                 "Id": "RNTrainsGreen",
                 "PreviewImageId": "Shop_TrainsGreen",
                 "Title": "@research.RNTrainsGreen.title",
@@ -4077,8 +4053,8 @@
                 ],
                 "Rewards": [
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainFillerWagonExtension"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "FillerCargoFactoriesGroup"
                     }
                 ],
                 "Costs": [
@@ -4105,7 +4081,7 @@
                 "Costs": [
                     {
                         "$type": "ResearchPointsCost",
-                        "Amount": 60
+                        "Amount": 200
                     }
                 ]
             },
@@ -4119,24 +4095,16 @@
                 ],
                 "Rewards": [
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainFluidWagonExtension"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "FluidCargoFactoriesGroup"
                     },
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainLoader_Fluids"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "TrainFluidLoadersGroup"
                     },
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainLoader_Fluids_Flipped"
-                    },
-                    {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainUnloader_Fluids"
-                    },
-                    {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainUnloader_Fluids_Flipped"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "TrainFluidUnloadersGroup"
                     }
                 ],
                 "Costs": [
@@ -4156,16 +4124,12 @@
                 ],
                 "Rewards": [
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainTwister"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "TrainTwistersGroup"
                     },
                     {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainRollerCoasterLoop"
-                    },
-                    {
-                        "$type": "IslandLayoutReward",
-                        "LayoutId": "Layout_TrainRollerCoasterLoop_Flipped"
+                        "$type": "IslandGroupReward",
+                        "GroupId": "TrainLoopsGroup"
                     }
                 ],
                 "Costs": [

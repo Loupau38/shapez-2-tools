@@ -3,7 +3,7 @@ import pygamePIL
 import json
 import os
 
-GAME_VERSION_NAME = "0.0.8-rc3"
+GAME_VERSION_NAME = "0.0.9-rc7"
 
 FORMAT_NAMES = [
     "autoGenMsg",
@@ -134,7 +134,14 @@ def getFormattedRewards(rawRewards:list[dict[str,str]],scenario:dict) -> str:
                 seenBuildingNames.append(buildingName)
         elif reward["$type"] == "IslandLayoutReward":
             platformName = getTranslation(f"island-layout.{reward['LayoutId']}.title")
-            if platformName not in  seenPlatformNames:
+            if platformName not in seenPlatformNames:
+                rewards.append(formats["rewardPlatform"].format(
+                    platform = platformName
+                ))
+                seenPlatformNames.append(platformName)
+        elif reward["$type"] == "IslandGroupReward":
+            platformName = getTranslation(f"island-group.{reward['GroupId']}.title")
+            if platformName not in seenPlatformNames:
                 rewards.append(formats["rewardPlatform"].format(
                     platform = platformName
                 ))

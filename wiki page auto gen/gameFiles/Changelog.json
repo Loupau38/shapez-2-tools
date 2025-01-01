@@ -1,6 +1,137 @@
 [
     {
-        "Date": "August 27, 2024",
+        "Date": "December 17, 2024",
+        "Version": "0.0.9-rc7",
+        "Entries": [
+            "Improve readability of space belts / pipes from farther distance",
+            "[[Bugfixes]]",
+            "Fixed global wire transmitters from older game versions sometimes not working",
+            "Fixed 2 layer pipes not rendering gears when empty",
+            "Fixed exception when deleting conveyor belts while having the details panel open"
+        ]
+    },
+    {
+        "Date": "December 12, 2024",
+        "Version": "0.0.9-rc6",
+        "Entries": [
+            "This is the final, stable release candidate for 0.0.9.",
+            "[[Bugfixes]]",
+            "Fixed some rare issues with multithreading",
+            "Disabled 'Parallel Rendering' setting by default as it causes stuttering for some players."
+        ]
+    },
+    {
+        "Date": "December 9, 2024",
+        "Version": "0.0.9-rc5",
+        "Entries": [
+            "[[Balancing]]",
+            "Increased platform limit in Hard, Hexagonal and Insane scenario",
+            "Increased train vortex delivery research cost",
+            "[[Bugfixes]]",
+            "Fixed details panel showing wrong building efficiency",
+            "Fixed shape previews not showing up correctly",
+            "Fixed crystal generator not working at expected speed",
+            "Fixed rotators displaying wrong speed",
+            "Fixed 'ghost' buildings being created",
+            "Fixed excessive memory usage over time",
+            "Fixed knowledge panel showing old mixing mechanics for mixers",
+            "Fixed various multi-threading related issues",
+            "Fixed tutorial not highlighting platforms",
+            "Fixed items clipping on space belts",
+            "Fixed supporter edition content being available by default",
+            "Fixed placement indicators not working correctly for flipped platforms",
+            "Fixed error when selecting pumps/extractors on locked tiles",
+            "Fixed precision issues in the statistics panel",
+            "Fixed unlock screen missing some tooltips",
+            "Fixed some issues loading old savegames",
+            "Fixed some issues related to selecting buildings",
+            "Fixed belt filter using outdated signal values",
+            "Fixed belt filter not showing digits correctly on minimal graphics",
+            "Fixed various other issues"
+        ]
+    },
+    {
+        "Date": "November 26, 2024",
+        "Version": "0.0.9-rc3",
+        "Entries": [
+            "[[Bugfixes]]",
+            "Fixed savegames from 0.0.9-rc1 not loading",
+            "Fixed visual issue with mirrored mixer",
+            "Fixed mirroring 3x2 platforms",
+            "Fixed some issues with blueprints, esp. rail blueprints",
+            "Fixed trash not working as expected",
+            "Fixed missing translation"
+        ]
+    },
+    {
+        "Date": "November 22, 2024",
+        "Version": "0.0.9-rc2",
+        "Entries": [
+            "[[Compatibility]]",
+            "Savegames below 0.0.8-rc3 (pre-release) are not compatible with this version",
+            "Savegames from 0.0.9-rc1 might have some train routing broken, if possible use a backup from 0.0.8 instead",
+            "[[Major Changes]]",
+            "Speed up saving duration for automatic save by using multiple threads.",
+            "[[Bugfixes]]",
+            "Fixed various issues introduced by 0.0.9-rc1",
+            "Fixed trash not working",
+            "Fixed wires keeping signals even when disconnected",
+            "Fixed various fluid related buildings not working as expected",
+            "Fixed debug.export-game-data not working",
+            "Fixed visual issue with wire bridge",
+            "Fixed new 1x3 and 2x3 platforms not being available in hard, insane and hex modes",
+            "Fixed being unable to delete space belts sometimes",
+            "Fixed fluid mixer issues / artifacts",
+            "Fixed being able to place belt launchers on locked vortex slots",
+            "Fixed wire simulation not behaving as expected",
+            "Fixed various visual issues"
+        ]
+    },
+    {
+        "Date": "November 11, 2024",
+        "Version": "0.0.9-rc1",
+        "Entries": [
+            "[[General]]",
+            "Savegames below 0.0.8-rc3 (pre-release) are not compatible with this version",
+            "[[Major Changes]]",
+            "Support for multi-threaded simulation (enabled by default) for up to 40x improved simulation performance.",
+            "Added end-game shape multiplier upgrade which multiplies all your shape deliveries by up to 6x",
+            "Random operator level goals now automatically complete, so you don't need to manually level them up",
+            "Added statistics panel, showing shape delivery statistics and structure counts",
+            "Fluid miner extensions are now unlocked together with the regular fluid miner already",
+            "Reworked space belt visuals - although space pipe visuals remain work in progress",
+            "Replaced T-, L- and Cross platforms with 1x3 and 2x3 platforms - old ones will continue to work, but can't be placed anymore.",
+            "[[Interface]]",
+            "Improved game creation flow to highlight the alternative game modes (hexagonal / hard / insane)",
+            "Labels now support special characters, numbers and multiline text.",
+            "Added space belts + pipes to the train toolbar",
+            "Added hotkey (default 'N') to reset the camera to point North again",
+            "Added generic text support (numbers, special characters) to labels - some might not properly work yet though",
+            "Added autosave countdown",
+            "Improved outdated knowledge panel entries and made train behaviour more clear",
+            "Removed 'low graphics quality' warning",
+            "[[Other]]",
+            "Improved rendering and shader performance, especially for older GPUs",
+            "Improved performance when saving game",
+            "[[Bugfixes]]",
+            "Fixed various simulation precision issues (esp. off-screen)",
+            "Fixed random operator level shape generation",
+            "Fixed comparison gate not being mirrorable",
+            "Fixed blueprint icon being overridden with save-as",
+            "Fixed blueprint toolbar configuration not synced via steam cloud",
+            "Fixed ability to create infinite paint by mixing tertiary/secondary with primary colors",
+            "Fixed various number formatting issues",
+            "Fixed performance issues when using trashes as decorations",
+            "Fixed Intel Arc(TM) gpus being detected as low-end",
+            "Fixed escape sequences breaking blueprint names",
+            "Fixed empty markers showing broken tooltips",
+            "Fixed rail twisters breaking train line preview",
+            "Fixed train (un)loaders not showing progress on lower graphics quality",
+            "Lots of other bug fixes and improvements"
+        ]
+    },
+    {
+        "Date": "August 19, 2024",
         "Version": "0.0.8",
         "Entries": [
             "[[General]]",
@@ -39,8 +170,7 @@
             "Fixed invalid space pipe throughput display",
             "Fixed rare crash when analytics failed to init",
             "Fixed various pipe/wire path placement issues",
-            "Fixed fluid launchers not always displaying throughput / contents",
-            "Fixed incorrect fluid providing flow"
+            "Fixed fluid launchers not always displaying throughput / contents"
         ]
     },
     {
