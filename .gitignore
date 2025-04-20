@@ -6,4 +6,7 @@ wiki page auto gen/outputTaskShapes
 wiki page auto gen/outputBpShapeLists.txt
 wiki page auto gen/outputChangelog.txt
 wiki page auto gen/outputMilestoneLists.txt
+wiki page auto gen/outputOLGoalLineLists.txt
+wiki page auto gen/outputOLRewardLists.txt
+wiki page auto gen/outputOLShapeBadgeLists.txt
 wiki page auto gen/outputTaskLists.txt

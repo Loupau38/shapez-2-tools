@@ -1,0 +1,10 @@
+=== {scenarioName} ===
+
+<div class="mw-collapsible mw-collapsed collapse-button-no-float">
+{{| class="wikitable" style="text-align: center;"
+! Image !! Shape Code !! Milestone<br/>Required !! Starting<br/>Amount !! Growth Percent<br/>Per Level !! Reaches Max<br/>Cost At Level
+{OLGoalLines}|}}
+
+[[File:OS_Num_{scenarioName}.svg|450px]]
+</div>
+

@@ -5,45 +5,7 @@ import os
 
 GAME_VERSION_NAME = "0.0.9-rc7"
 
-FORMAT_NAMES = [
-    "autoGenMsg",
-    "bpShape",
-    "bpShapeList",
-    "bpShapeListsPage",
-    "changelogCategory",
-    "changelogEntry",
-    "changelogPage",
-    "changelogVersion",
-    "milestone",
-    "milestoneList",
-    "milestoneListBasedOnScenarioNote",
-    "milestoneListsPage",
-    "milestoneShape",
-    "milestoneShapeContainer",
-    "milestoneShapeEmpty",
-    "milestoneShapeLineContainer",
-    "milestoneShapeReuse",
-    "milestoneShapeReuseAbove",
-    "milestoneShapeReuseBelow",
-    "milestoneShapeReuseNext",
-    "milestoneShapeReuseNone",
-    "milestoneShapeReuseOperatorLevel",
-    "rewardBlueprintPoints",
-    "rewardBuilding",
-    "rewardKnowledgePanelEntry",
-    "rewardMechanic",
-    "rewardPlatform",
-    "rewardPlatformUnits",
-    "rewardResearchPoints",
-    "rewardsJoiner",
-    "task",
-    "taskContainer",
-    "taskGroup",
-    "taskList",
-    "taskListBasedOnScenarioNote",
-    "taskListsPage"
-]
-FORMAT_PATHS = [f"./formats/{f}.txt" for f in FORMAT_NAMES]
+FORMATS_PATH = "./formats"
 
 SCENARIO_PATHS = [
     "./gameFiles/OnboardingScenario.json",
@@ -67,9 +29,15 @@ BP_SHAPES_OUTPUT_PATH = "./outputBpShapeLists.txt"
 BP_SHAPE_SHAPES_OUTPUT_PATH = "./outputBpShapeShapes/"
 BP_SHAPE_SHAPES_OUTPUT_FILE_NAME_FORMAT = "Blueprint-Shape-{shapeCode}-100.png"
 
+OL_REWARDS_OUTPUT_PATH = "./outputOLRewardLists.txt"
+OL_SHAPE_BADGES_OUTPUT_PATH = "./outputOLShapeBadgeLists.txt"
+OL_GOAL_LINES_OUTPUT_PATH = "./outputOLGoalLineLists.txt"
+
 CHANGELOG_OUTPUT_PATH = "./outputChangelog.txt"
 
 SHAPE_SIZE = 100
+
+MAX_OL_GOAL_LINE_COST = 2_147_482_600
 
 def loadTranslations() -> dict[str,str]:
 
@@ -97,15 +65,31 @@ translations = loadTranslations()
 def getTranslation(key:str) -> str:
     return translations[key.removeprefix("@")]
 
-def loadFormats() -> dict[str,str]:
+def loadFormats(folder:str) -> dict[str,str]:
     formats:dict[str,str] = {}
-    for name,path in zip(FORMAT_NAMES,FORMAT_PATHS):
-        with open(path,encoding="utf-8") as f:
-            formats[name] = f.read()
+    for dirEntry in os.scandir(folder):
+        if dirEntry.is_dir():
+            formats.update(loadFormats(dirEntry.path))
+        else:
+            with open(dirEntry.path,encoding="utf-8") as f:
+                formats[dirEntry.name.removesuffix(".txt")] = f.read()
     return formats
-formats = loadFormats()
+formats = loadFormats(FORMATS_PATH)
 
-def getFormattedRewards(rawRewards:list[dict[str,str]],scenario:dict) -> str:
+def parseAndFormatCurrencyReward(reward:dict[str,str|int],scenario:dict) -> str:
+    for rewardType,formatName,multiplier in [
+        ("ResearchPointsReward","rewardResearchPoints",100),
+        ("BlueprintCurrencyReward","rewardBlueprintPoints",scenario["Config"]["BaseBlueprintRewardMultiplier"]),
+        ("ChunkLimitReward","rewardPlatformUnits",scenario["Config"]["BaseChunkLimitMultiplier"])
+    ]:
+        if reward["$type"] == rewardType:
+            actualAmount = round(reward["Amount"]*(multiplier/100))
+            return formats[formatName].format(
+                amount = f"{actualAmount:,}"
+            )
+    raise ValueError("unknown reward type")
+
+def getFormattedRewards(rawRewards:list[dict[str,str|int]],scenario:dict) -> str:
 
     rewards = []
     seenBuildingNames = []
@@ -113,18 +97,8 @@ def getFormattedRewards(rawRewards:list[dict[str,str]],scenario:dict) -> str:
 
     for reward in rawRewards:
 
-        if reward["$type"] == "ResearchPointsReward":
-            rewards.append(formats["rewardResearchPoints"].format(
-                amount = reward["Amount"]
-            ))
-        elif reward["$type"] == "BlueprintCurrencyReward":
-            rewards.append(formats["rewardBlueprintPoints"].format(
-                amount = round(reward["Amount"]*(scenario["Config"]["BaseBlueprintRewardMultiplier"]/100))
-            ))
-        elif reward["$type"] == "ChunkLimitReward":
-            rewards.append(formats["rewardPlatformUnits"].format(
-                amount = round(reward["Amount"]*(scenario["Config"]["BaseChunkLimitMultiplier"]/100))
-            ))
+        if reward["$type"] in ("ResearchPointsReward","BlueprintCurrencyReward","ChunkLimitReward"):
+            rewards.append(parseAndFormatCurrencyReward(reward,scenario))
         elif reward["$type"] == "BuildingReward":
             buildingName = getTranslation(f"building-variant.{reward['BuildingVariantId']}.title")
             if buildingName not in seenBuildingNames:
@@ -171,6 +145,12 @@ def renderShape(shapeCode:str,scenario:dict,outputPath:str) -> None:
 def getTooltipSafeString(string:str) -> str:
     return string.replace("<span class=\"gl\">","").replace("</span>","").replace("\n"," ")
 
+def OLGoalLineAmountFormula(level:int,startingAmount:int,growth:int) -> int:
+    """level in [0;+inf["""
+    amount = startingAmount * ((1+(growth/100))**level)
+    amount = min(amount,(2**31)-1001)
+    return round(amount/100) * 100
+
 def main() -> None:
 
     scenarios = []
@@ -194,6 +174,10 @@ def main() -> None:
     milestoneListLens = {}
 
     bpShapeLists = ""
+
+    OLRewardLists = ""
+    OLShapeBadgesNoDuplicates:list[tuple[list[str],tuple[int,list[str]]]] = []
+    OLGoalLineLists = ""
 
     for scenario in scenarios:
 
@@ -399,6 +383,137 @@ def main() -> None:
             bpShapes = bpShapes
         )
 
+        #####
+
+        playerLevelConfig = scenario["Config"]["PlayerLevelConfig"]
+        if playerLevelConfig["GoalLines"] != []: # only consider scenarios with OL reachable
+
+            OLRewards = ""
+            scenarioOLRewards = list(reversed(playerLevelConfig["Rewards"]))
+
+            for i,OLReward in enumerate(scenarioOLRewards):
+
+                if i+1 < len(scenarioOLRewards):
+                    levels = formats["levelRange"].format(
+                        levelStart = OLReward["MinimumLevel"],
+                        levelEnd = scenarioOLRewards[i+1]["MinimumLevel"] - 1
+                    )
+                else:
+                    levels = formats["levelThreshold"].format(
+                        levelStart = OLReward["MinimumLevel"]
+                    )
+
+                formattedRewards = {
+                    reward["$type"] : parseAndFormatCurrencyReward(reward,scenario)
+                    for reward in OLReward["Rewards"]
+                }
+
+                OLRewards += formats["OLReward"].format(
+                    levels = levels,
+                    PURewards = formattedRewards["ChunkLimitReward"],
+                    BPRewards = formattedRewards["BlueprintCurrencyReward"],
+                    RPRewards = formattedRewards["ResearchPointsReward"]
+                )
+
+            OLRewardLists += formats["OLRewardList"].format(
+                scenarioName = scenarioName,
+                OLRewards = OLRewards
+            )
+
+            #####
+
+            newShapeBadgeList = True
+            for scenarioIds,(shapeInterval,shapeBadges) in OLShapeBadgesNoDuplicates:
+                if (
+                    (playerLevelConfig["IconicLevelShapes"] == shapeBadges)
+                    and (playerLevelConfig["IconicLevelShapeInterval"] == shapeInterval)
+                ):
+                    newShapeBadgeList = False
+                    scenarioIds.append(scenarioId)
+                    break
+
+            if newShapeBadgeList:
+                OLShapeBadgesNoDuplicates.append(([scenarioId],(
+                    playerLevelConfig["IconicLevelShapeInterval"],
+                    playerLevelConfig["IconicLevelShapes"]
+                )))
+
+            #####
+
+            OLGoalLines = ""
+
+            for goalLine in playerLevelConfig["GoalLines"]:
+
+                level = 0
+                while True:
+                    cost = OLGoalLineAmountFormula(
+                        level,
+                        goalLine["StartingAmount"],
+                        goalLine["ExponentialGrowthPercentPerLevel"]
+                    )
+                    if cost >= MAX_OL_GOAL_LINE_COST:
+                        break
+                    level += 1
+
+                if goalLine.get("Randomized"):
+                    if goalLine.get("RandomizedUseCrystals"):
+                        shapeInfo = formats["OLGoalLineRandomShapeCrystals"].format()
+                    else:
+                        shapeInfo = formats["OLGoalLineRandomShape"].format()
+                else:
+                    shapeInfo = formats["OLGoalLineShape"].format(
+                        shapeCode = goalLine["Shape"]
+                    )
+
+                OLGoalLines += formats["OLGoalLine"].format(
+                    shapeInfo = shapeInfo,
+                    milestoneRequired = getTranslation(f"research.{goalLine["RequiredUpgrade"]}.title"),
+                    startingAmount = goalLine["StartingAmount"],
+                    growth = goalLine["ExponentialGrowthPercentPerLevel"],
+                    maxCostAtLevel = level
+                )
+
+            OLGoalLineLists += formats["OLGoalLineList"].format(
+                scenarioName = scenarioName,
+                OLGoalLines = OLGoalLines
+            )
+
+    #####
+
+    OLShapeBadgeLists = ""
+
+    for scenarioIds,(shapeInterval,shapeBadges) in OLShapeBadgesNoDuplicates:
+
+        OLShapeBadges = ""
+
+        for i,shapeBadge in enumerate(shapeBadges):
+
+            if i+1 == len(shapeBadges):
+                levels = formats["levelThreshold"].format(
+                    levelStart = i
+                )
+            elif shapeInterval == 1:
+                levels = formats["levelSingle"].format(
+                    level = i
+                )
+            else:
+                levels = formats["levelRange"].format(
+                    levelStart = i,
+                    levelEnd = i + shapeInterval - 1
+                )
+
+            OLShapeBadges += formats["OLShapeBadge"].format(
+                levels = levels,
+                shapeCode = shapeBadge
+            )
+
+        OLShapeBadgeLists += formats["OLShapeBadgeList"].format(
+            scenarioNames = ", ".join(scenarioNames[id] for id in scenarioIds),
+            OLShapeBadges = OLShapeBadges
+        )
+
+    #####
+
     taskListsOutput = formats["taskListsPage"].format(
         autoGenMsg = autoGenMsg,
         taskLists = taskLists
@@ -419,6 +534,27 @@ def main() -> None:
     )
     with open(BP_SHAPES_OUTPUT_PATH,"w",encoding="utf-8") as f:
         f.write(bpShapeListsOutput)
+
+    OLRewardListsOutput = formats["OLRewardListsPage"].format(
+        autoGenMsg = autoGenMsg,
+        OLRewardLists = OLRewardLists
+    )
+    with open(OL_REWARDS_OUTPUT_PATH,"w",encoding="utf-8") as f:
+        f.write(OLRewardListsOutput)
+
+    OLShapeBadgeListsOutput = formats["OLShapeBadgeListsPage"].format(
+        autoGenMsg = autoGenMsg,
+        OLShapeBadgeLists = OLShapeBadgeLists
+    )
+    with open(OL_SHAPE_BADGES_OUTPUT_PATH,"w",encoding="utf-8") as f:
+        f.write(OLShapeBadgeListsOutput)
+
+    OLGoalLineListsOutput = formats["OLGoalLineListsPage"].format(
+        autoGenMsg = autoGenMsg,
+        OLGoalLineLists = OLGoalLineLists
+    )
+    with open(OL_GOAL_LINES_OUTPUT_PATH,"w",encoding="utf-8") as f:
+        f.write(OLGoalLineListsOutput)
 
     #####
 

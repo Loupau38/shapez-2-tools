@@ -1,0 +1,2 @@
+|-
+| {shapeInfo} || {milestoneRequired} || {startingAmount} || {growth} || {maxCostAtLevel}

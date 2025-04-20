@@ -1,0 +1,8 @@
+==== {scenarioNames} ====
+
+<div class="mw-collapsible mw-collapsed collapse-button-no-float">
+{{| class="wikitable" style="text-align: center;"
+! Level(s) !! Image !! Shape Code
+{OLShapeBadges}|}}
+</div>
+

@@ -1,0 +1,8 @@
+==== {scenarioName} ====
+
+<div class="mw-collapsible mw-collapsed collapse-button-no-float">
+{{| class="wikitable"
+! Level !! Platform Units !! Blueprint Points !! Research Points
+{OLRewards}|}}
+</div>
+
