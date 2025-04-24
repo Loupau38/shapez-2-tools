@@ -1,1 +1,1 @@
-soon™ || <code>{shapeCode}</code>
+{{{{ShapeRender|{shapeCode}|50|{shapesConfig}}}}} || <code>{shapeCode}</code>

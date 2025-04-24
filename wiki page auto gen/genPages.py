@@ -1,5 +1,3 @@
-import shapeViewer
-import pygamePIL
 import json
 import os
 
@@ -18,16 +16,10 @@ TRANSLATIONS_PATH = "./gameFiles/translations-en-US.json"
 CHANGELOG_PATH = "./gameFiles/Changelog.json"
 
 TASKS_OUTPUT_PATH = "./outputTaskLists.txt"
-TASK_SHAPES_OUTPUT_PATH = "./outputTaskShapes/"
-TASK_SHAPES_OUTPUT_FILE_NAME_FORMAT = "Task-Shape-{shapeCode}-100.png"
 
 MILESTONES_OUTPUT_PATH = "./outputMilestoneLists.txt"
-MILESTONE_SHAPES_OUTPUT_PATH = "./outputMilestoneShapes/"
-MILESTONE_SHAPES_OUTPUT_FILE_NAME_FORMAT = "Milestone-Shape-{shapeCode}-100.png"
 
 BP_SHAPES_OUTPUT_PATH = "./outputBpShapeLists.txt"
-BP_SHAPE_SHAPES_OUTPUT_PATH = "./outputBpShapeShapes/"
-BP_SHAPE_SHAPES_OUTPUT_FILE_NAME_FORMAT = "Blueprint-Shape-{shapeCode}-100.png"
 
 OL_REWARDS_OUTPUT_PATH = "./outputOLRewardLists.txt"
 OL_SHAPE_BADGES_OUTPUT_PATH = "./outputOLShapeBadgeLists.txt"
@@ -132,16 +124,6 @@ def getFormattedRewards(rawRewards:list[dict[str,str|int]],scenario:dict) -> str
 
     return formats["rewardsJoiner"].format().join(rewards)
 
-def renderShape(shapeCode:str,scenario:dict,outputPath:str) -> None:
-    if not os.path.exists(outputPath):
-        shapeRendered = shapeViewer.renderShape(shapeCode,SHAPE_SIZE,shapeConfig=(
-            shapeViewer.SHAPE_CONFIG_HEX
-            if scenario["Config"]["ShapesConfigurationId"] == "DefaultShapesHexagonalConfiguration" else
-            shapeViewer.SHAPE_CONFIG_QUAD
-        ))
-        pygamePIL.image_save(shapeRendered,outputPath)
-        print(f"Generated new shape : {outputPath}")
-
 def getTooltipSafeString(string:str) -> str:
     return string.replace("<span class=\"gl\">","").replace("</span>","").replace("\n"," ")
 
@@ -176,7 +158,7 @@ def main() -> None:
     bpShapeLists = ""
 
     OLRewardLists = ""
-    OLShapeBadgesNoDuplicates:list[tuple[list[str],tuple[int,list[str]]]] = []
+    OLShapeBadgesNoDuplicates:list[tuple[list[str],tuple[int,str,list[str]]]] = []
     OLGoalLineLists = ""
 
     for scenario in scenarios:
@@ -184,6 +166,12 @@ def main() -> None:
         scenarioId = scenario["UniqueId"]
         scenarioName = getTranslation(scenario["Title"])
         scenarioNames[scenarioId] = scenarioName
+        if scenario["Config"]["ShapesConfigurationId"] == "DefaultShapesQuadConfiguration":
+            curShapesConfig = "quad"
+        elif scenario["Config"]["ShapesConfigurationId"] == "DefaultShapesHexagonalConfiguration":
+            curShapesConfig = "hex"
+        else:
+            raise ValueError("Unknown shapes config")
 
         if scenario.get("BasedOnScenarioId") is None:
             toAddTaskGroupIndex = 0
@@ -201,9 +189,9 @@ def main() -> None:
                 basedOnScenario = scenarioNames[basedOnScenarioId]
             )
 
+        #####
+
         taskGroups = ""
-        curTaskShapesOutputPath = TASK_SHAPES_OUTPUT_PATH
-        os.makedirs(curTaskShapesOutputPath,exist_ok=True)
         taskListLens[scenarioId] = len(scenario["Progression"]["SideQuestGroups"])
 
         for taskGroupIndex,taskGroup in enumerate(scenario["Progression"]["SideQuestGroups"],start=1):
@@ -212,17 +200,10 @@ def main() -> None:
 
             for taskIndex,task in enumerate(taskGroup["SideQuests"],start=1):
 
-                shapeCode:str = task["Costs"][0]["Shape"]
-                shapeCodeFileSafe = shapeCode.replace(":","-")
-                curShapeOutputPath = curTaskShapesOutputPath + TASK_SHAPES_OUTPUT_FILE_NAME_FORMAT.format(
-                    shapeCode = shapeCodeFileSafe
-                )
-                renderShape(shapeCode,scenario,curShapeOutputPath)
-
                 tasks.append(formats["task"].format(
                     taskIndex = taskIndex,
-                    taskShapeImage = shapeCodeFileSafe,
-                    taskShapeCode = shapeCode,
+                    taskShapeCode = task["Costs"][0]["Shape"],
+                    taskShapesConfig = curShapesConfig,
                     taskShapeAmount = task["Costs"][0]["Amount"],
                     taskRewards = getFormattedRewards(task["Rewards"],scenario)
                 ))
@@ -247,8 +228,6 @@ def main() -> None:
         #####
 
         milestones = ""
-        curMilestoneShapesOutputPath = MILESTONE_SHAPES_OUTPUT_PATH
-        os.makedirs(curMilestoneShapesOutputPath,exist_ok=True)
         milestoneListLens[scenarioId] = len(scenario["Progression"]["Levels"])
         maxMilestoneShapesPerLine = max(0 if len(m["Lines"]) == 0 else max(len(l["Shapes"]) for l in m["Lines"]) for m in scenario["Progression"]["Levels"])
 
@@ -295,15 +274,9 @@ def main() -> None:
                     if toFormatShape["shape"]["type"] == "none":
                         curShape = formats["milestoneShapeEmpty"].format()
                     elif toFormatShape["shape"]["type"] == "shape":
-                        shapeCode = toFormatShape["shape"]["code"]
-                        shapeCodeFileSafe = shapeCode.replace(":","-")
-                        curShapeOutputPath = curMilestoneShapesOutputPath + MILESTONE_SHAPES_OUTPUT_FILE_NAME_FORMAT.format(
-                            shapeCode = shapeCodeFileSafe
-                        )
-                        renderShape(shapeCode,scenario,curShapeOutputPath)
                         curShape = formats["milestoneShape"].format(
-                            shapeImage = shapeCodeFileSafe,
-                            shapeCode = shapeCode,
+                            shapeCode = toFormatShape["shape"]["code"],
+                            shapesConfig = curShapesConfig,
                             shapeAmount = toFormatShape["shape"]["amount"]
                         )
                     elif toFormatShape["shape"]["type"] == "reuse":
@@ -359,21 +332,12 @@ def main() -> None:
         #####
 
         bpShapes = ""
-        curBPShapesOutputPath = BP_SHAPE_SHAPES_OUTPUT_PATH
-        os.makedirs(curBPShapesOutputPath,exist_ok=True)
 
         for bpShape in scenario["Config"]["BlueprintCurrencyShapes"]:
 
-            shapeCode = bpShape["Shape"]
-            shapeCodeFileSafe = shapeCode.replace(":","-")
-            curShapeOutputPath = curBPShapesOutputPath + BP_SHAPE_SHAPES_OUTPUT_FILE_NAME_FORMAT.format(
-                shapeCode = shapeCodeFileSafe
-            )
-            renderShape(shapeCode,scenario,curShapeOutputPath)
-
             bpShapes += formats["bpShape"].format(
-                shapeImage = shapeCodeFileSafe,
-                shapeCode = shapeCode,
+                shapeCode = bpShape["Shape"],
+                shapesConfig = curShapesConfig,
                 pointsReward = bpShape["Amount"],
                 milestoneRequired = getTranslation(f"research.{bpShape['RequiredUpgradeId']}.title")
             )
@@ -423,7 +387,7 @@ def main() -> None:
             #####
 
             newShapeBadgeList = True
-            for scenarioIds,(shapeInterval,shapeBadges) in OLShapeBadgesNoDuplicates:
+            for scenarioIds,(shapeInterval,_,shapeBadges) in OLShapeBadgesNoDuplicates:
                 if (
                     (playerLevelConfig["IconicLevelShapes"] == shapeBadges)
                     and (playerLevelConfig["IconicLevelShapeInterval"] == shapeInterval)
@@ -435,6 +399,7 @@ def main() -> None:
             if newShapeBadgeList:
                 OLShapeBadgesNoDuplicates.append(([scenarioId],(
                     playerLevelConfig["IconicLevelShapeInterval"],
+                    curShapesConfig,
                     playerLevelConfig["IconicLevelShapes"]
                 )))
 
@@ -462,7 +427,8 @@ def main() -> None:
                         shapeInfo = formats["OLGoalLineRandomShape"].format()
                 else:
                     shapeInfo = formats["OLGoalLineShape"].format(
-                        shapeCode = goalLine["Shape"]
+                        shapeCode = goalLine["Shape"],
+                        shapesConfig = curShapesConfig
                     )
 
                 OLGoalLines += formats["OLGoalLine"].format(
@@ -482,7 +448,7 @@ def main() -> None:
 
     OLShapeBadgeLists = ""
 
-    for scenarioIds,(shapeInterval,shapeBadges) in OLShapeBadgesNoDuplicates:
+    for scenarioIds,(shapeInterval,shapesConfig,shapeBadges) in OLShapeBadgesNoDuplicates:
 
         OLShapeBadges = ""
 
@@ -504,7 +470,8 @@ def main() -> None:
 
             OLShapeBadges += formats["OLShapeBadge"].format(
                 levels = levels,
-                shapeCode = shapeBadge
+                shapeCode = shapeBadge,
+                shapesConfig = shapesConfig
             )
 
         OLShapeBadgeLists += formats["OLShapeBadgeList"].format(

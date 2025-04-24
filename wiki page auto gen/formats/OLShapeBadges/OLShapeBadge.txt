@@ -1,2 +1,2 @@
 |-
-| {levels} || soon™ || <code>{shapeCode}</code>
+| {levels} || {{{{ShapeRender|{shapeCode}|50|{shapesConfig}}}}} || <code>{shapeCode}</code>

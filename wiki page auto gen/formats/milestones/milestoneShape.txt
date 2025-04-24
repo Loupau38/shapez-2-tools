@@ -1,1 +1,1 @@
-[[File:Milestone-Shape-{shapeImage}-100.png|50px]]<br><code>{shapeCode}</code><br>x{shapeAmount}
+{{{{ShapeRender|{shapeCode}|50|{shapesConfig}}}}}<br><code>{shapeCode}</code><br>x{shapeAmount}
