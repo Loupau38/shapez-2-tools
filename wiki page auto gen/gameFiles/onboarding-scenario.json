@@ -1,0 +1,1792 @@
+{
+    "FormatVersion": 2,
+    "GameVersion": 1058,
+    "UniqueId": "onboarding-scenario",
+    "IsTutorial": true,
+    "SupportedGameModes": [
+        "RegularGameMode"
+    ],
+    "NextScenarios": [
+        "default-scenario",
+        "hard-scenario"
+    ],
+    "ExampleShapes": [
+        "CuCuCuCu",
+        "RuCuRuCu",
+        "CuCuCuRu:CuCuCuCu"
+    ],
+    "Title": "@scenario.onboarding.title",
+    "Description": "@scenario.onboarding.description",
+    "PreviewImageId": "Scenario_Onboarding",
+    "ResearchConfig": {
+        "BaseChunkLimitMultiplier": 200,
+        "BaseBlueprintRewardMultiplier": 500,
+        "MaxShapeLayers": 4,
+        "ShapesConfigurationId": "DefaultShapesQuadConfiguration",
+        "ColorSchemeConfigurationId": "DefaultColorSchemeRGBFlex",
+        "ResearchLevelsAreProgressive": true,
+        "BlueprintCurrencyShapes": [
+            {
+                "Shape": "CuRuCuCu",
+                "RequiredUpgradeIds": [
+                    "RNBlueprints"
+                ],
+                "RequiredMechanicIds": [],
+                "Amount": 1
+            },
+            {
+                "Shape": "CuRuCuCu:CuCuCuCu",
+                "RequiredUpgradeIds": [
+                    "RNBlueprints"
+                ],
+                "RequiredMechanicIds": [],
+                "Amount": 2
+            }
+        ],
+        "IntroductionWikiEntryId": "WKWelcome",
+        "InitiallyUnlockedUpgrades": [
+            "RNInitial"
+        ],
+        "TutorialConfig": "TCMainTutorial"
+    },
+    "Progression": {
+        "Levels": {
+            "Levels": [
+                {
+                    "Definition": {
+                        "Id": "RNInitial",
+                        "VideoId": "Milestone_InitialVD",
+                        "PreviewImageId": "RNInitial",
+                        "Title": "@research.RNInitial.title",
+                        "Description": "@research.RNInitial.description",
+                        "WikiEntryId": "WKWelcome"
+                    },
+                    "Lines": {
+                        "Lines": []
+                    },
+                    "Rewards": {
+                        "Rewards": [
+                            {
+                                "$type": "BuildingReward",
+                                "BuildingDefinitionGroupId": "BeltDefaultVariant"
+                            },
+                            {
+                                "$type": "BuildingReward",
+                                "BuildingDefinitionGroupId": "ExtractorDefaultVariant"
+                            },
+                            {
+                                "$type": "BuildingReward",
+                                "BuildingDefinitionGroupId": "CutterHalfVariant"
+                            },
+                            {
+                                "$type": "BuildingReward",
+                                "BuildingDefinitionGroupId": "RotatorOneQuadVariant"
+                            },
+                            {
+                                "$type": "BuildingReward",
+                                "BuildingDefinitionGroupId": "BeltPortSenderVariant"
+                            },
+                            {
+                                "$type": "BuildingReward",
+                                "BuildingDefinitionGroupId": "BeltPortReceiverVariant"
+                            },
+                            {
+                                "$type": "BuildingReward",
+                                "BuildingDefinitionGroupId": "Merger2To1Variant"
+                            },
+                            {
+                                "$type": "BuildingReward",
+                                "BuildingDefinitionGroupId": "Merger3To1Variant"
+                            },
+                            {
+                                "$type": "BuildingReward",
+                                "BuildingDefinitionGroupId": "MergerTShapeVariant"
+                            },
+                            {
+                                "$type": "BuildingReward",
+                                "BuildingDefinitionGroupId": "Splitter1To2Variant"
+                            },
+                            {
+                                "$type": "BuildingReward",
+                                "BuildingDefinitionGroupId": "Splitter1To3Variant"
+                            },
+                            {
+                                "$type": "BuildingReward",
+                                "BuildingDefinitionGroupId": "SplitterTShapeVariant"
+                            },
+                            {
+                                "$type": "WikiEntryReward",
+                                "EntryId": "WKWelcome"
+                            },
+                            {
+                                "$type": "WikiEntryReward",
+                                "EntryId": "WKShapes"
+                            },
+                            {
+                                "$type": "WikiEntryReward",
+                                "EntryId": "WKCameraControls"
+                            },
+                            {
+                                "$type": "WikiEntryReward",
+                                "EntryId": "WKBasicControls"
+                            },
+                            {
+                                "$type": "WikiEntryReward",
+                                "EntryId": "WKBeltPlacement"
+                            },
+                            {
+                                "$type": "WikiEntryReward",
+                                "EntryId": "WKCutting"
+                            },
+                            {
+                                "$type": "WikiEntryReward",
+                                "EntryId": "WKRotating"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "Definition": {
+                        "Id": "RNStackerLayer2",
+                        "VideoId": "Milestone_StackerLayer2VD",
+                        "PreviewImageId": "RNStacker",
+                        "Title": "@research.RNStackerLayer2.title",
+                        "Description": "@research.RNStackerLayer2.description",
+                        "WikiEntryId": "WKStacking"
+                    },
+                    "Lines": {
+                        "Lines": [
+                            {
+                                "Shapes": [
+                                    {
+                                        "Shape": "CuCuCuCu",
+                                        "Amount": 10
+                                    },
+                                    {
+                                        "Shape": "CuCu----",
+                                        "Amount": 40
+                                    },
+                                    {
+                                        "Shape": "Cu------",
+                                        "Amount": 60
+                                    }
+                                ]
+                            },
+                            {
+                                "ReusedAtNextMilestone": true,
+                                "StartingOffset": 1,
+                                "Shapes": [
+                                    {
+                                        "Shape": "RuRuRuRu",
+                                        "Amount": 10
+                                    },
+                                    {
+                                        "Shape": "RuRu----",
+                                        "Amount": 40
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Rewards": {
+                        "Rewards": [
+                            {
+                                "$type": "BuildingReward",
+                                "BuildingDefinitionGroupId": "StackerStraightVariant"
+                            },
+                            {
+                                "$type": "BuildingReward",
+                                "BuildingDefinitionGroupId": "Lift1LayerVariant"
+                            },
+                            {
+                                "$type": "MechanicReward",
+                                "MechanicId": "RULayer2"
+                            },
+                            {
+                                "$type": "MechanicReward",
+                                "MechanicId": "RUSideUpgrades"
+                            },
+                            {
+                                "$type": "WikiEntryReward",
+                                "EntryId": "WKStacking"
+                            },
+                            {
+                                "$type": "WikiEntryReward",
+                                "EntryId": "WKResearch"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "Definition": {
+                        "Id": "RNBlueprints",
+                        "VideoId": "Milestone_BlueprintsVD",
+                        "PreviewImageId": "RNBlueprints",
+                        "Title": "@research.RNBlueprints.title",
+                        "Description": "@research.RNBlueprints.description",
+                        "WikiEntryId": "WKBlueprints"
+                    },
+                    "Lines": {
+                        "Lines": [
+                            {
+                                "Shapes": [
+                                    {
+                                        "Shape": "RuRuRuRu:CuCuCuCu",
+                                        "Amount": 240
+                                    },
+                                    {
+                                        "Shape": "RuRu----:CuCu----",
+                                        "Amount": 400
+                                    },
+                                    {
+                                        "Shape": "Ru------:Cu------",
+                                        "Amount": 720
+                                    }
+                                ]
+                            },
+                            {
+                                "ReusedAtNextMilestone": true,
+                                "Shapes": [
+                                    {
+                                        "Shape": "Ru------",
+                                        "Amount": 240
+                                    },
+                                    {
+                                        "Shape": "Ru------:Ru------",
+                                        "Amount": 400
+                                    },
+                                    {
+                                        "Shape": "Ru--Ru--",
+                                        "Amount": 720
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Rewards": {
+                        "Rewards": [
+                            {
+                                "$type": "BlueprintCurrencyReward",
+                                "Amount": 500
+                            },
+                            {
+                                "$type": "WikiEntryReward",
+                                "EntryId": "WKBlueprints"
+                            },
+                            {
+                                "$type": "MechanicReward",
+                                "MechanicId": "RUBlueprints"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "Definition": {
+                        "Id": "RNIslandBuilding",
+                        "VideoId": "Milestone_SpacePlatformsVD",
+                        "PreviewImageId": "RNIslandBuilding",
+                        "Title": "@research.RNIslandBuilding.title",
+                        "Description": "@research.RNIslandBuilding.description",
+                        "WikiEntryId": "WKPlatforms"
+                    },
+                    "Lines": {
+                        "Lines": [
+                            {
+                                "ReusedAtSameMilestone": true,
+                                "ReusedAtSameMilestoneOffset": 1,
+                                "StartingOffset": 1,
+                                "Shapes": [
+                                    {
+                                        "Shape": "Cu--Cu--",
+                                        "Amount": 320
+                                    }
+                                ]
+                            },
+                            {
+                                "Shapes": [
+                                    {
+                                        "Shape": "RuCuRuCu",
+                                        "Amount": 320
+                                    },
+                                    {
+                                        "Shape": "RuRuRuRu:RuCuRuCu",
+                                        "Amount": 640
+                                    },
+                                    {
+                                        "Shape": "RuRuRuRu:RuCuRuCu:Cu--Cu--",
+                                        "Amount": 960
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "Rewards": {
+                        "Rewards": [
+                            {
+                                "$type": "ChunkLimitReward",
+                                "Amount": 250
+                            },
+                            {
+                                "$type": "BlueprintCurrencyReward",
+                                "Amount": 1000
+                            },
+                            {
+                                "$type": "MechanicReward",
+                                "MechanicId": "RUIslandPlacement"
+                            },
+                            {
+                                "$type": "MechanicReward",
+                                "MechanicId": "RUIslandLayer2"
+                            },
+                            {
+                                "$type": "IslandGroupReward",
+                                "GroupId": "SpaceBeltsGroup"
+                            },
+                            {
+                                "$type": "IslandGroupReward",
+                                "GroupId": "FoundationGroup_1x1"
+                            },
+                            {
+                                "$type": "IslandGroupReward",
+                                "GroupId": "FoundationGroup_1x2"
+                            },
+                            {
+                                "$type": "IslandGroupReward",
+                                "GroupId": "ShapeMinerExtractorsGroup"
+                            },
+                            {
+                                "$type": "IslandGroupReward",
+                                "GroupId": "ShapeMinerChainsGroup"
+                            },
+                            {
+                                "$type": "WikiEntryReward",
+                                "EntryId": "WKPlatforms"
+                            },
+                            {
+                                "$type": "WikiEntryReward",
+                                "EntryId": "WKExpanding"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "SideQuestGroups": {
+            "SideQuestGroups": [
+                {
+                    "Title": "@side-goal.cutting-step-by-step",
+                    "RequiredUpgradeIds": [
+                        "RNStackerLayer2"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "SideQuests": [
+                        {
+                            "Id": "SG_Stacker_3_1",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 1
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "CuCuCuCu:CuCuCuCu",
+                                    "Amount": 160
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Stacker_3_2",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "CuCu----:CuCu----",
+                                    "Amount": 320
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Stacker_3_3",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "Cu------:Cu------",
+                                    "Amount": 320
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Stacker_3_4",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 6
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "Cu--Cu--:Cu--Cu--",
+                                    "Amount": 460
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Title": "@side-goal.halves-with-halves",
+                    "RequiredUpgradeIds": [
+                        "RNStackerLayer2"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "SideQuests": [
+                        {
+                            "Id": "SG_Stacker_2_1",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 1
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "RuRuRuRu:RuRuRuRu",
+                                    "Amount": 160
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Stacker_2_2",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "RuRu----:RuRu----",
+                                    "Amount": 320
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Stacker_2_3",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "RuRuCuCu:RuRu----",
+                                    "Amount": 320
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Stacker_2_4",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 6
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "RuRuCuCu:RuRuCuCu",
+                                    "Amount": 460
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Title": "@side-goal.pyramid",
+                    "RequiredUpgradeIds": [
+                        "RNStackerLayer2"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "SideQuests": [
+                        {
+                            "Id": "SG_Stacker_4_1",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "RuRuRuRu:RuRuRuRu:RuRuRuRu",
+                                    "Amount": 140
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Stacker_4_2",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 4
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "RuRuRuRu:RuRuRuRu:RuRuRuRu:RuRuRuRu",
+                                    "Amount": 280
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Title": "@side-goal.recycling",
+                    "RequiredUpgradeIds": [
+                        "RNStackerLayer2"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "SideQuests": [
+                        {
+                            "Id": "SG_Stacker_1_1",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "CuRuRu--",
+                                    "Amount": 160
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Stacker_1_2",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "CuRu----",
+                                    "Amount": 240
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Stacker_1_3",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "CuRu----:CuCuCuCu",
+                                    "Amount": 320
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Stacker_1_4",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 6
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "CuRu----:CuCu----",
+                                    "Amount": 460
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Title": "@side-goal.blueprints",
+                    "RequiredUpgradeIds": [
+                        "RNBlueprints"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "SideQuests": [
+                        {
+                            "Id": "SG_Blueprint_1_1",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 1
+                                },
+                                {
+                                    "$type": "BlueprintCurrencyReward",
+                                    "Amount": 1000
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "CuRuCuCu",
+                                    "Amount": 240
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Blueprint_1_2",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                },
+                                {
+                                    "$type": "BlueprintCurrencyReward",
+                                    "Amount": 1000
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "CuRuCuCu:CuCuCuCu",
+                                    "Amount": 460
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Blueprint_1_3",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                },
+                                {
+                                    "$type": "BlueprintCurrencyReward",
+                                    "Amount": 2000
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "CuRuCuCu:CuCuCuCu:CuCuCuCu",
+                                    "Amount": 460
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Blueprint_1_4",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 6
+                                },
+                                {
+                                    "$type": "BlueprintCurrencyReward",
+                                    "Amount": 2000
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "CuRuCuCu:CuCuCuCu:CuCuCuCu:CuCuCuCu",
+                                    "Amount": 560
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Title": "@side-goal.missing-a-quarter",
+                    "RequiredUpgradeIds": [
+                        "RNBlueprints"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "SideQuests": [
+                        {
+                            "Id": "SG_Blueprint_2_1",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 1
+                                },
+                                {
+                                    "$type": "BlueprintCurrencyReward",
+                                    "Amount": 1000
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "RuRuRu--",
+                                    "Amount": 240
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Blueprint_2_2",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                },
+                                {
+                                    "$type": "BlueprintCurrencyReward",
+                                    "Amount": 2000
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "RuRuRu--:RuRuRu--",
+                                    "Amount": 460
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Blueprint_2_3",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                },
+                                {
+                                    "$type": "BlueprintCurrencyReward",
+                                    "Amount": 2000
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "RuRuRuCu:RuRuRu--",
+                                    "Amount": 460
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Blueprint_2_4",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 6
+                                },
+                                {
+                                    "$type": "BlueprintCurrencyReward",
+                                    "Amount": 2000
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "RuRuRuCu:RuRuRuCu",
+                                    "Amount": 560
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Title": "@side-goal.recycling",
+                    "RequiredUpgradeIds": [
+                        "RNBlueprints"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "SideQuests": [
+                        {
+                            "Id": "SG_Blueprint_3_1",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                },
+                                {
+                                    "$type": "BlueprintCurrencyReward",
+                                    "Amount": 1000
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "Ru--Ru--:Cu--Cu--",
+                                    "Amount": 240
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Blueprint_3_2",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                },
+                                {
+                                    "$type": "BlueprintCurrencyReward",
+                                    "Amount": 1000
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "Ru--Ru--:Cu--Cu--:Cu--Cu--",
+                                    "Amount": 460
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_Blueprint_3_3",
+                            "Rewards": [
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 6
+                                },
+                                {
+                                    "$type": "BlueprintCurrencyReward",
+                                    "Amount": 2000
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "Ru--Ru--:Cu--Cu--:Cu--Cu--:Cu--Cu--",
+                                    "Amount": 560
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "SideUpgrades": {
+            "UpgradeCategories": [
+                "ProcessingSpeeds",
+                "Buildings",
+                "Decorations",
+                "Other"
+            ],
+            "SideUpgrades": [
+                {
+                    "Id": "RNFullCutter",
+                    "PreviewImageId": "Shop_Cutter",
+                    "Title": "@research.RNFullCutter.title",
+                    "Description": "@research.RNFullCutter.description",
+                    "Category": "Buildings",
+                    "RequiredUpgradeIds": [],
+                    "RequiredMechanicIds": [],
+                    "Rewards": [
+                        {
+                            "$type": "BuildingReward",
+                            "BuildingDefinitionGroupId": "CutterDefaultVariant"
+                        }
+                    ],
+                    "Costs": [
+                        {
+                            "$type": "ResearchPointsCost",
+                            "Amount": 6
+                        }
+                    ]
+                },
+                {
+                    "Id": "RNHalvesSwapper",
+                    "PreviewImageId": "Shop_HalvesSwapper",
+                    "Title": "@research.RNHalvesSwapper.title",
+                    "Description": "@research.RNHalvesSwapper.description",
+                    "Category": "Buildings",
+                    "RequiredUpgradeIds": [],
+                    "RequiredMechanicIds": [],
+                    "Rewards": [
+                        {
+                            "$type": "BuildingReward",
+                            "BuildingDefinitionGroupId": "HalvesSwapperDefaultVariant"
+                        }
+                    ],
+                    "Costs": [
+                        {
+                            "$type": "ResearchPointsCost",
+                            "Amount": 12
+                        }
+                    ]
+                },
+                {
+                    "Id": "RNTrash",
+                    "PreviewImageId": "Shop_Trash",
+                    "Title": "@research.RNTrash.title",
+                    "Description": "@research.RNTrash.description",
+                    "Category": "Buildings",
+                    "RequiredUpgradeIds": [],
+                    "RequiredMechanicIds": [],
+                    "Rewards": [
+                        {
+                            "$type": "BuildingReward",
+                            "BuildingDefinitionGroupId": "TrashDefaultVariant"
+                        }
+                    ],
+                    "Costs": [
+                        {
+                            "$type": "ResearchPointsCost",
+                            "Amount": 4
+                        }
+                    ]
+                },
+                {
+                    "Id": "RNRotatorCCW",
+                    "PreviewImageId": "Shop_RotatorCCW",
+                    "Title": "@research.RNRotatorCCW.title",
+                    "Description": "@research.RNRotatorCCW.description",
+                    "Category": "Buildings",
+                    "RequiredUpgradeIds": [],
+                    "RequiredMechanicIds": [],
+                    "Rewards": [
+                        {
+                            "$type": "BuildingReward",
+                            "BuildingDefinitionGroupId": "RotatorOneQuadCCWVariant"
+                        }
+                    ],
+                    "Costs": [
+                        {
+                            "$type": "ResearchPointsCost",
+                            "Amount": 4
+                        }
+                    ]
+                },
+                {
+                    "Id": "RNRotatorHalf",
+                    "PreviewImageId": "Shop_Rotator180",
+                    "Title": "@research.RNRotatorHalf.title",
+                    "Description": "@research.RNRotatorHalf.description",
+                    "Category": "Buildings",
+                    "RequiredUpgradeIds": [],
+                    "RequiredMechanicIds": [],
+                    "Rewards": [
+                        {
+                            "$type": "BuildingReward",
+                            "BuildingDefinitionGroupId": "RotatorHalfVariant"
+                        }
+                    ],
+                    "Costs": [
+                        {
+                            "$type": "ResearchPointsCost",
+                            "Amount": 6
+                        }
+                    ]
+                },
+                {
+                    "Id": "RNBentStacker",
+                    "PreviewImageId": "Shop_BentStacker",
+                    "Title": "@research.RNBentStacker.title",
+                    "Description": "@research.RNBentStacker.description",
+                    "Category": "Buildings",
+                    "RequiredUpgradeIds": [],
+                    "RequiredMechanicIds": [],
+                    "Rewards": [
+                        {
+                            "$type": "BuildingReward",
+                            "BuildingDefinitionGroupId": "StackerDefaultVariant"
+                        }
+                    ],
+                    "Costs": [
+                        {
+                            "$type": "ResearchPointsCost",
+                            "Amount": 6
+                        }
+                    ]
+                },
+                {
+                    "Id": "RNLabel",
+                    "PreviewImageId": "Shop_Label",
+                    "Title": "@research.RNLabel.title",
+                    "Description": "@research.RNLabel.description",
+                    "Category": "Decorations",
+                    "RequiredUpgradeIds": [],
+                    "RequiredMechanicIds": [],
+                    "Rewards": [
+                        {
+                            "$type": "BuildingReward",
+                            "BuildingDefinitionGroupId": "LabelDefaultVariant"
+                        }
+                    ],
+                    "Costs": [
+                        {
+                            "$type": "ResearchPointsCost",
+                            "Amount": 4
+                        }
+                    ]
+                },
+                {
+                    "Id": "RNLayer3",
+                    "PreviewImageId": "Shop_Layer3",
+                    "Title": "@research.RNLayer3.title",
+                    "Description": "@research.RNLayer3.description",
+                    "Category": "Buildings",
+                    "RequiredUpgradeIds": [],
+                    "RequiredMechanicIds": [],
+                    "Rewards": [
+                        {
+                            "$type": "BuildingReward",
+                            "BuildingDefinitionGroupId": "Lift2LayerVariant"
+                        },
+                        {
+                            "$type": "BuildingReward",
+                            "BuildingDefinitionGroupId": "Pipe2LayerVariant"
+                        },
+                        {
+                            "$type": "MechanicReward",
+                            "MechanicId": "RULayer3"
+                        }
+                    ],
+                    "Costs": [
+                        {
+                            "$type": "ResearchPointsCost",
+                            "Amount": 50
+                        }
+                    ]
+                },
+                {
+                    "Id": "RNOverflowSplitter",
+                    "PreviewImageId": "Shop_OverflowSplitter",
+                    "Title": "@research.RNOverflowSplitter.title",
+                    "Description": "@research.RNOverflowSplitter.description",
+                    "Category": "Buildings",
+                    "RequiredUpgradeIds": [],
+                    "RequiredMechanicIds": [],
+                    "Rewards": [
+                        {
+                            "$type": "BuildingReward",
+                            "BuildingDefinitionGroupId": "SplitterOverflowVariant"
+                        }
+                    ],
+                    "Costs": [
+                        {
+                            "$type": "ResearchPointsCost",
+                            "Amount": 20
+                        }
+                    ]
+                },
+                {
+                    "Id": "RNSandboxTools",
+                    "PreviewImageId": "",
+                    "Title": "",
+                    "Description": "",
+                    "Hidden": true,
+                    "Category": "Buildings",
+                    "RequiredUpgradeIds": [],
+                    "RequiredMechanicIds": [],
+                    "Rewards": [
+                        {
+                            "$type": "BlueprintCurrencyReward",
+                            "Amount": 500000
+                        },
+                        {
+                            "$type": "ResearchPointsReward",
+                            "Amount": 10000
+                        },
+                        {
+                            "$type": "BuildingReward",
+                            "BuildingDefinitionGroupId": "SandboxFluidProducerDefaultVariant"
+                        },
+                        {
+                            "$type": "BuildingReward",
+                            "BuildingDefinitionGroupId": "SandboxItemProducerDefaultVariant"
+                        }
+                    ],
+                    "Costs": [
+                        {
+                            "$type": "ResearchPointsCost",
+                            "Amount": 50000
+                        }
+                    ]
+                }
+            ]
+        },
+        "LinearUpgrades": {
+            "HubInputSizeUpgradeId": "LRUHubInputSize",
+            "ShapeQuantityUpgradeId": "LRUShapeQuantity",
+            "SpeedsToLinearUpgradeMappings": {
+                "BeltSpeed": "LRUBeltSpeed",
+                "CutterSpeed": "LRUCuttingSpeed",
+                "StackerSpeed": "LRUStackingSpeed",
+                "PainterSpeed": "LRUPaintingSpeed",
+                "TrainSpeed": "LRUTrainSpeed",
+                "TrainCapacity": "LRUTrainCapacity"
+            },
+            "LinearUpgrades": [
+                {
+                    "Id": "LRUBeltSpeed",
+                    "Title": "@research.LRUBeltSpeed.title",
+                    "DisplayType": 1,
+                    "Levels": [
+                        {
+                            "Value": 50
+                        },
+                        {
+                            "Value": 75,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 2
+                            }
+                        },
+                        {
+                            "Value": 100,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 7
+                            }
+                        },
+                        {
+                            "Value": 125,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 20
+                            }
+                        },
+                        {
+                            "Value": 150,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 50
+                            }
+                        }
+                    ],
+                    "RequiredUpgradeIds": [
+                        "RNStackerLayer2"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "Category": "ProcessingSpeeds"
+                },
+                {
+                    "Id": "LRUCuttingSpeed",
+                    "Title": "@research.LRUCuttingSpeed.title",
+                    "DisplayType": 1,
+                    "Levels": [
+                        {
+                            "Value": 50
+                        },
+                        {
+                            "Value": 75,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 2
+                            }
+                        },
+                        {
+                            "Value": 100,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 7
+                            }
+                        },
+                        {
+                            "Value": 125,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 20
+                            }
+                        },
+                        {
+                            "Value": 150,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 50
+                            }
+                        }
+                    ],
+                    "RequiredUpgradeIds": [
+                        "RNStackerLayer2"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "Category": "ProcessingSpeeds"
+                },
+                {
+                    "Id": "LRUStackingSpeed",
+                    "Title": "@research.LRUStackingSpeed.title",
+                    "DisplayType": 1,
+                    "Levels": [
+                        {
+                            "Value": 50
+                        },
+                        {
+                            "Value": 75,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 2
+                            }
+                        },
+                        {
+                            "Value": 100,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 7
+                            }
+                        },
+                        {
+                            "Value": 125,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 20
+                            }
+                        },
+                        {
+                            "Value": 150,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 50
+                            }
+                        }
+                    ],
+                    "RequiredUpgradeIds": [
+                        "RNStackerLayer2"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "Category": "ProcessingSpeeds"
+                },
+                {
+                    "Id": "LRUHubInputSize",
+                    "Title": "@research.LRUHubInputSize.title",
+                    "DisplayType": 3,
+                    "Levels": [
+                        {
+                            "Value": 4
+                        },
+                        {
+                            "Value": 6,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 3
+                            }
+                        },
+                        {
+                            "Value": 8,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 7
+                            }
+                        },
+                        {
+                            "Value": 10,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 15
+                            }
+                        },
+                        {
+                            "Value": 12,
+                            "Cost": {
+                                "$type": "ResearchPointsCost",
+                                "Amount": 30
+                            }
+                        }
+                    ],
+                    "RequiredUpgradeIds": [
+                        "RNIslandBuilding"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "Category": "Other"
+                },
+                {
+                    "Id": "LRUPaintingSpeed",
+                    "Title": "@research.LRUPaintingSpeed.title",
+                    "DisplayType": 1,
+                    "Levels": [
+                        {
+                            "Value": 100
+                        }
+                    ],
+                    "RequiredUpgradeIds": [
+                        "RNFluids"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "Category": "ProcessingSpeeds"
+                },
+                {
+                    "Id": "LRUTrainSpeed",
+                    "Title": "@research.LRUTrainSpeed.title",
+                    "DisplayType": 2,
+                    "Levels": [
+                        {
+                            "Value": 100
+                        }
+                    ],
+                    "RequiredUpgradeIds": [
+                        "RNTrains"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "Category": "Trains"
+                },
+                {
+                    "Id": "LRUTrainCapacity",
+                    "Title": "@research.LRUTrainCapacity.title",
+                    "DisplayType": 4,
+                    "Levels": [
+                        {
+                            "Value": 100
+                        }
+                    ],
+                    "RequiredUpgradeIds": [
+                        "RNTrains"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "Category": "Trains"
+                },
+                {
+                    "Id": "LRUShapeQuantity",
+                    "Title": "@research.LRUShapeQuantity.title",
+                    "DisplayType": 3,
+                    "Levels": [
+                        {
+                            "Value": 1
+                        }
+                    ],
+                    "RequiredUpgradeIds": [
+                        "RNEndOfGame"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "Category": "Other"
+                }
+            ]
+        }
+    },
+    "StartingLocation": {
+        "InitialViewport": {
+            "PositionX": -45.15,
+            "PositionY": -7.75,
+            "Zoom": 14.22,
+            "Angle": 77.27,
+            "ShowAllBuildingLayers": true,
+            "ShowAllIslandLayers": true
+        },
+        "InitialIslands": {
+            "InitialIslands": [
+                {
+                    "Position_GC": {
+                        "x": -1
+                    },
+                    "LayoutId": "Layout_HUB"
+                },
+                {
+                    "Position_GC": {
+                        "x": -3
+                    },
+                    "LayoutId": "Layout_ShapeMiner"
+                },
+                {
+                    "Position_GC": {
+                        "x": -1,
+                        "y": 2
+                    },
+                    "Rotation": 3,
+                    "LayoutId": "Layout_ShapeMiner"
+                },
+                {
+                    "Position_GC": {
+                        "x": 1
+                    },
+                    "Rotation": 2,
+                    "LayoutId": "Layout_ShapeMiner"
+                },
+                {
+                    "Position_GC": {
+                        "x": -1,
+                        "y": -2
+                    },
+                    "Rotation": 1,
+                    "LayoutId": "Layout_ShapeMiner"
+                },
+                {
+                    "Position_GC": {
+                        "x": -5
+                    },
+                    "LayoutId": "Layout_ShapeMinerExtension"
+                },
+                {
+                    "Position_GC": {
+                        "x": -4,
+                        "y": -1
+                    },
+                    "Rotation": 1,
+                    "LayoutId": "Layout_ShapeMinerExtension"
+                },
+                {
+                    "Position_GC": {
+                        "x": -4
+                    },
+                    "LayoutId": "Layout_ShapeMinerExtension"
+                },
+                {
+                    "Position_GC": {
+                        "x": -2,
+                        "y": -4
+                    },
+                    "Rotation": 1,
+                    "LayoutId": "Layout_ShapeMinerExtension"
+                },
+                {
+                    "Position_GC": {
+                        "x": -2,
+                        "y": -3
+                    },
+                    "LayoutId": "Layout_ShapeMinerExtension"
+                },
+                {
+                    "Position_GC": {
+                        "x": -2,
+                        "y": 3
+                    },
+                    "LayoutId": "Layout_ShapeMinerExtension"
+                },
+                {
+                    "Position_GC": {
+                        "x": -2,
+                        "y": 4
+                    },
+                    "Rotation": 3,
+                    "LayoutId": "Layout_ShapeMinerExtension"
+                },
+                {
+                    "Position_GC": {
+                        "x": -1,
+                        "y": -3
+                    },
+                    "Rotation": 1,
+                    "LayoutId": "Layout_ShapeMinerExtension"
+                },
+                {
+                    "Position_GC": {
+                        "x": -1,
+                        "y": 3
+                    },
+                    "Rotation": 3,
+                    "LayoutId": "Layout_ShapeMinerExtension"
+                },
+                {
+                    "Position_GC": {
+                        "x": 1,
+                        "y": -1
+                    },
+                    "Rotation": 1,
+                    "LayoutId": "Layout_ShapeMinerExtension"
+                },
+                {
+                    "Position_GC": {
+                        "x": 1,
+                        "y": 1
+                    },
+                    "Rotation": 3,
+                    "LayoutId": "Layout_ShapeMinerExtension"
+                },
+                {
+                    "Position_GC": {
+                        "x": 2
+                    },
+                    "Rotation": 2,
+                    "LayoutId": "Layout_ShapeMinerExtension"
+                }
+            ]
+        },
+        "FixedPatches": {
+            "FixedPatches": [
+                {
+                    "Shape": "RuRuRuRu",
+                    "Position_LC": {
+                        "x": 31,
+                        "y": 30
+                    },
+                    "LocalTiles": [
+                        {},
+                        {
+                            "x": -1,
+                            "y": -2
+                        },
+                        {
+                            "y": -1
+                        },
+                        {
+                            "x": -1,
+                            "y": -1
+                        }
+                    ]
+                },
+                {
+                    "Shape": "RuRuRuRu",
+                    "Position_LC": {
+                        "x": 31,
+                        "y": 34
+                    },
+                    "LocalTiles": [
+                        {},
+                        {
+                            "y": 1
+                        },
+                        {
+                            "x": -1,
+                            "y": 1
+                        },
+                        {
+                            "x": -1,
+                            "y": 2
+                        }
+                    ]
+                },
+                {
+                    "Shape": "CuCuCuCu",
+                    "Position_LC": {
+                        "x": 29,
+                        "y": 32
+                    },
+                    "LocalTiles": [
+                        {},
+                        {
+                            "x": -1
+                        },
+                        {
+                            "x": -1,
+                            "y": -1
+                        },
+                        {
+                            "x": -2
+                        }
+                    ]
+                },
+                {
+                    "Shape": "CuCuCuCu",
+                    "Position_LC": {
+                        "x": 33,
+                        "y": 32
+                    },
+                    "LocalTiles": [
+                        {},
+                        {
+                            "x": 1
+                        },
+                        {
+                            "y": 1
+                        },
+                        {
+                            "y": -1
+                        }
+                    ]
+                }
+            ]
+        },
+        "StartingChunks": {
+            "StartingChunks": [
+                {
+                    "GuaranteedShapePatches": [
+                        "RbRuRbRu",
+                        "CrCrCrCu",
+                        "CrCuCuCu",
+                        "RuSuRu--",
+                        "RuRuRuRu",
+                        "--CuCuCu",
+                        "SuSuCu--",
+                        "--RbSuCr",
+                        "CuCuCuCu"
+                    ],
+                    "GuaranteedColorPatches": [
+                        "r",
+                        "b"
+                    ]
+                },
+                {
+                    "SuperChunk": {
+                        "x": -1
+                    },
+                    "GuaranteedShapePatches": [],
+                    "GuaranteedColorPatches": [
+                        "g"
+                    ]
+                },
+                {
+                    "SuperChunk": {
+                        "x": 1,
+                        "y": 1
+                    },
+                    "GuaranteedShapePatches": [
+                        "--WuWuCu"
+                    ],
+                    "GuaranteedColorPatches": [
+                        "g"
+                    ]
+                },
+                {
+                    "SuperChunk": {
+                        "x": -1,
+                        "y": -1
+                    },
+                    "GuaranteedShapePatches": [
+                        "--WuCu--"
+                    ],
+                    "GuaranteedColorPatches": []
+                }
+            ]
+        }
+    },
+    "PlayerLevelConfig": {
+        "IconicLevelShapes": {
+            "LevelShapes": [
+                "CuCuCuCu",
+                "RuRuRuRu"
+            ]
+        },
+        "IconicLevelShapeInterval": 1,
+        "GoalLines": [],
+        "Rewards": [
+            {
+                "Rewards": []
+            }
+        ]
+    },
+    "Mechanics": {
+        "Mechanics": [
+            {
+                "Id": "RUSideUpgrades",
+                "Title": "@research.RUSideUpgrades.title",
+                "Description": "@research.RUSideUpgrades.description",
+                "IconId": "SideUpgrades"
+            },
+            {
+                "Id": "RULayer2",
+                "Title": "@research.RULayer2.title",
+                "Description": "@research.RULayer2.description",
+                "IconId": "GenericLayerUnlock"
+            },
+            {
+                "Id": "RULayer3",
+                "Title": "@research.RULayer3.title",
+                "Description": "@research.RULayer3.description",
+                "IconId": "GenericLayerUnlock"
+            },
+            {
+                "Id": "RUBlueprints",
+                "Title": "@research.RUBlueprints.title",
+                "Description": "@research.RUBlueprints.description",
+                "IconId": "Blueprints"
+            },
+            {
+                "Id": "RUIslandPlacement",
+                "Title": "@research.RUIslandPlacement.title",
+                "Description": "@research.RUIslandPlacement.description",
+                "IconId": "IslandPlacement"
+            },
+            {
+                "Id": "RUTrains",
+                "Title": "@research.RUTrains.title",
+                "Description": "@research.RUTrains.description",
+                "IconId": "Trains"
+            },
+            {
+                "Id": "RUFluids",
+                "Title": "@research.RUFluids.title",
+                "Description": "@research.RUFluids.description",
+                "IconId": "Fluids"
+            },
+            {
+                "Id": "RUWires",
+                "Title": "@research.RUWires.title",
+                "Description": "@research.RUWires.description",
+                "IconId": "Wires"
+            },
+            {
+                "Id": "RUPlayerLevel",
+                "Title": "@research.RUPlayerLevel.title",
+                "Description": "@research.RUPlayerLevel.description",
+                "IconId": "PlayerLevel"
+            },
+            {
+                "Id": "RUTrainHubDelivery",
+                "Title": "@research.RUTrainHubDelivery.title",
+                "Description": "@research.RUTrainHubDelivery.description",
+                "IconId": "Trains"
+            },
+            {
+                "Id": "RUInfiniteGoals",
+                "Title": "@research.RUInfiniteGoals.title",
+                "Description": "@research.RUInfiniteGoals.description",
+                "IconId": "Infinite"
+            },
+            {
+                "Id": "RUIslandLayer2",
+                "Title": "@research.RUIslandLayer2.title",
+                "Description": "@research.RUIslandLayer2.description",
+                "IconId": "GenericLayerUnlock"
+            },
+            {
+                "Id": "RUIslandLayer3",
+                "Title": "@research.RUIslandLayer3.title",
+                "Description": "@research.RUIslandLayer3.description",
+                "IconId": "GenericLayerUnlock"
+            }
+        ],
+        "BuildingLayerMechanicIds": [
+            "RULayer2",
+            "RULayer3"
+        ],
+        "IslandLayerMechanicIds": [
+            "RUIslandLayer2",
+            "RUIslandLayer3"
+        ],
+        "IslandLayersUnlockOrder": [
+            -1,
+            1
+        ],
+        "BlueprintsMechanicId": "RUBlueprints",
+        "RailsMechanicId": "RUTrains",
+        "IslandManagementMechanicId": "RUIslandPlacement",
+        "PlayerLevelMechanicId": "RUPlayerLevel",
+        "TrainHubDeliveryMechanicId": "RUTrainHubDelivery"
+    },
+    "ConvertersConfig": {
+        "Configs": {}
+    },
+    "ResearchStationConfig": {
+        "Recipes": {}
+    },
+    "RailColorsConfig": {
+        "RailColors": [
+            {
+                "Id": {
+                    "RailColorId": "Blue"
+                },
+                "Tint": "197FE5"
+            },
+            {
+                "Id": {
+                    "RailColorId": "Green"
+                },
+                "Tint": "19E566"
+            },
+            {
+                "Id": {
+                    "RailColorId": "Red"
+                },
+                "Tint": "F43F3F"
+            },
+            {
+                "Id": {
+                    "RailColorId": "White"
+                },
+                "Tint": "EAEAEA"
+            },
+            {
+                "Id": {
+                    "RailColorId": "Cyan"
+                },
+                "Tint": "19E5EA"
+            },
+            {
+                "Id": {
+                    "RailColorId": "Magenta"
+                },
+                "Tint": "EA19EA"
+            },
+            {
+                "Id": {
+                    "RailColorId": "Yellow"
+                },
+                "Tint": "EAEA19"
+            }
+        ]
+    },
+    "ToolbarConfig": {
+        "ToolbarDataJson": "{\n  \"RootToolbarElement\": {\n    \"$type\": \"RootToolbarElementData\",\n    \"Children\": [\n      \"#include:Scenarios/Shared/Toolbar/Categories/ShapeBuildings\",\n      \"#include:Scenarios/Shared/Toolbar/Categories/FluidBuildings\",\n      \"#include:Scenarios/Shared/Toolbar/Categories/SignalBuildings\",\n      \"#include:Scenarios/Shared/Toolbar/Categories/DecorationBuildings\",\n      \"#include:Scenarios/Shared/Toolbar/Categories/SandboxBuildings\",\n      \"#split\",\n      \"#include:Scenarios/Shared/Toolbar/Categories/PlatformIslands\",\n      \"#include:Scenarios/Shared/Toolbar/Categories/TrainIslands\",\n      \"#split\"\n    ]\n  }\n}"
+    }
+}

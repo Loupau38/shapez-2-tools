@@ -1,7 +1,7 @@
 === {scenarioName} ===
 
 <div class="mw-collapsible mw-collapsed collapse-button-no-float">{basedOnScenarioNote}
-{{| class="wikitable"
+{{| class="wikitable" style="text-align: center;"
 ! rowspan="2"|Task Group Title !! colspan="5"|Tasks !! rowspan="2"|Milestone<br/>Required
 |-
 ! Task<br>Number !! Shape<br>Image !! Shape Code !! Shapes<br>Required !! Rewards

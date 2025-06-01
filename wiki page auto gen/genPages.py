@@ -1,19 +1,20 @@
 import json
 import os
+import math
 
-GAME_VERSION_NAME = "0.0.9-rc7"
+GAME_VERSION_NAME = "0.1.0-pre8-rc1"
 
 FORMATS_PATH = "./formats"
 
 SCENARIO_PATHS = [
-    "./gameFiles/OnboardingScenario.json",
-    "./gameFiles/DefaultScenario.json",
-    "./gameFiles/HardScenario.json",
-    "./gameFiles/InsaneScenario.json",
-    "./gameFiles/HexagonalScenario.json"
+    "./gameFiles/onboarding-scenario.json",
+    "./gameFiles/default-scenario.json",
+    "./gameFiles/hard-scenario.json",
+    "./gameFiles/insane-scenario.json",
+    "./gameFiles/hexagonal-scenario.json"
 ]
 TRANSLATIONS_PATH = "./gameFiles/translations-en-US.json"
-CHANGELOG_PATH = "./gameFiles/Changelog.json"
+# CHANGELOG_PATH = "./gameFiles/Changelog.json"
 
 TASKS_OUTPUT_PATH = "./outputTaskLists.txt"
 
@@ -25,9 +26,7 @@ OL_REWARDS_OUTPUT_PATH = "./outputOLRewardLists.txt"
 OL_SHAPE_BADGES_OUTPUT_PATH = "./outputOLShapeBadgeLists.txt"
 OL_GOAL_LINES_OUTPUT_PATH = "./outputOLGoalLineLists.txt"
 
-CHANGELOG_OUTPUT_PATH = "./outputChangelog.txt"
-
-SHAPE_SIZE = 100
+# CHANGELOG_OUTPUT_PATH = "./outputChangelog.txt"
 
 MAX_OL_GOAL_LINE_COST = 2_147_482_600
 
@@ -71,11 +70,12 @@ formats = loadFormats(FORMATS_PATH)
 def parseAndFormatCurrencyReward(reward:dict[str,str|int],scenario:dict) -> str:
     for rewardType,formatName,multiplier in [
         ("ResearchPointsReward","rewardResearchPoints",100),
-        ("BlueprintCurrencyReward","rewardBlueprintPoints",scenario["Config"]["BaseBlueprintRewardMultiplier"]),
-        ("ChunkLimitReward","rewardPlatformUnits",scenario["Config"]["BaseChunkLimitMultiplier"])
+        ("BlueprintCurrencyReward","rewardBlueprintPoints",scenario["ResearchConfig"]["BaseBlueprintRewardMultiplier"]),
+        # platform limit shown ingame is divided by 2
+        ("ChunkLimitReward","rewardPlatformUnits",scenario["ResearchConfig"]["BaseChunkLimitMultiplier"]/2)
     ]:
         if reward["$type"] == rewardType:
-            actualAmount = round(reward["Amount"]*(multiplier/100))
+            actualAmount = math.floor(reward["Amount"]*(multiplier/100))
             return formats[formatName].format(
                 amount = f"{actualAmount:,}"
             )
@@ -92,21 +92,14 @@ def getFormattedRewards(rawRewards:list[dict[str,str|int]],scenario:dict) -> str
         if reward["$type"] in ("ResearchPointsReward","BlueprintCurrencyReward","ChunkLimitReward"):
             rewards.append(parseAndFormatCurrencyReward(reward,scenario))
         elif reward["$type"] == "BuildingReward":
-            buildingName = getTranslation(f"building-variant.{reward['BuildingVariantId']}.title")
+            buildingName = getTranslation(f"building-variant.{reward["BuildingDefinitionGroupId"]}.title")
             if buildingName not in seenBuildingNames:
                 rewards.append(formats["rewardBuilding"].format(
                     building = buildingName
                 ))
                 seenBuildingNames.append(buildingName)
-        elif reward["$type"] == "IslandLayoutReward":
-            platformName = getTranslation(f"island-layout.{reward['LayoutId']}.title")
-            if platformName not in seenPlatformNames:
-                rewards.append(formats["rewardPlatform"].format(
-                    platform = platformName
-                ))
-                seenPlatformNames.append(platformName)
         elif reward["$type"] == "IslandGroupReward":
-            platformName = getTranslation(f"island-group.{reward['GroupId']}.title")
+            platformName = getTranslation(f"island-group.{reward["GroupId"]}.title")
             if platformName not in seenPlatformNames:
                 rewards.append(formats["rewardPlatform"].format(
                     platform = platformName
@@ -114,13 +107,15 @@ def getFormattedRewards(rawRewards:list[dict[str,str|int]],scenario:dict) -> str
                 seenPlatformNames.append(platformName)
         elif reward["$type"] == "WikiEntryReward":
             rewards.append(formats["rewardKnowledgePanelEntry"].format(
-                entry = getTranslation(f"wiki.{reward['EntryId']}.title")
+                entry = getTranslation(f"wiki.{reward["EntryId"]}.title")
             ))
         elif reward["$type"] == "MechanicReward":
             rewards.append(formats["rewardMechanic"].format(
                 # mechanic names are defined in scenarios, but they all use the same 'research.<id>.title' structure
-                mechanic = getTranslation(f"research.{reward['MechanicId']}.title")
+                mechanic = getTranslation(f"research.{reward["MechanicId"]}.title")
             ))
+        else:
+            raise ValueError(f"Unknown reward type : {reward["$type"]}")
 
     return formats["rewardsJoiner"].format().join(rewards)
 
@@ -140,8 +135,8 @@ def main() -> None:
         with open(path,encoding="utf-8") as f:
             scenarios.append(json.load(f))
 
-    with open(CHANGELOG_PATH,encoding="utf-8") as f:
-        changelogRaw:list[dict[str,str|list[str]]] = json.load(f)
+    # with open(CHANGELOG_PATH,encoding="utf-8") as f:
+    #     changelogRaw:list[dict[str,str|list[str]]] = json.load(f)
 
     autoGenMsg = formats["autoGenMsg"].format(
         gameVersion = GAME_VERSION_NAME
@@ -150,10 +145,8 @@ def main() -> None:
     scenarioNames = {}
 
     taskLists = ""
-    taskListLens = {}
 
     milestoneLists = ""
-    milestoneListLens = {}
 
     bpShapeLists = ""
 
@@ -166,35 +159,42 @@ def main() -> None:
         scenarioId = scenario["UniqueId"]
         scenarioName = getTranslation(scenario["Title"])
         scenarioNames[scenarioId] = scenarioName
-        if scenario["Config"]["ShapesConfigurationId"] == "DefaultShapesQuadConfiguration":
+        if scenario["ResearchConfig"]["ShapesConfigurationId"] == "DefaultShapesQuadConfiguration":
             curShapesConfig = "quad"
-        elif scenario["Config"]["ShapesConfigurationId"] == "DefaultShapesHexagonalConfiguration":
+        elif scenario["ResearchConfig"]["ShapesConfigurationId"] == "DefaultShapesHexagonalConfiguration":
             curShapesConfig = "hex"
         else:
             raise ValueError("Unknown shapes config")
 
-        if scenario.get("BasedOnScenarioId") is None:
-            toAddTaskGroupIndex = 0
-            toAddMilestoneIndex = 0
+        if scenarioId == "onboarding-scenario":
+            onboardingMilestones = [m["Definition"]["Id"] for m in scenario["Progression"]["Levels"]["Levels"]]
+            onboardingTasks = [t["Title"] for t in scenario["Progression"]["SideQuestGroups"]["SideQuestGroups"]]
+
+        # if the scenario has initially unlocked upgrades, deduce that it is based on another scenario
+        initiallyUnlockedUpgrades = scenario["ResearchConfig"]["InitiallyUnlockedUpgrades"]
+        if initiallyUnlockedUpgrades in ([],["RNInitial"]):
+            basedOnScenario = False
             taskBasedOnScenarioNote = ""
             milestoneBasedOnScenarioNote = ""
         else:
-            basedOnScenarioId = scenario["BasedOnScenarioId"]
-            toAddTaskGroupIndex = taskListLens[basedOnScenarioId]
-            toAddMilestoneIndex = milestoneListLens[basedOnScenarioId]
+            basedOnScenario = True
+            # kind of hack, could be based on a different scenario
+            basedOnScenarioName = getTranslation("@scenario.onboarding.title")
             taskBasedOnScenarioNote = formats["taskListBasedOnScenarioNote"].format(
-                basedOnScenario = scenarioNames[basedOnScenarioId]
+                basedOnScenario = basedOnScenarioName
             )
             milestoneBasedOnScenarioNote = formats["milestoneListBasedOnScenarioNote"].format(
-                basedOnScenario = scenarioNames[basedOnScenarioId]
+                basedOnScenario = basedOnScenarioName
             )
 
         #####
 
         taskGroups = ""
-        taskListLens[scenarioId] = len(scenario["Progression"]["SideQuestGroups"])
 
-        for taskGroupIndex,taskGroup in enumerate(scenario["Progression"]["SideQuestGroups"],start=1):
+        for taskGroupIndex,taskGroup in enumerate(scenario["Progression"]["SideQuestGroups"]["SideQuestGroups"],start=1):
+
+            if basedOnScenario and (taskGroup["Title"] in onboardingTasks):
+                continue # skip task group as it's from another scenario
 
             tasks = []
 
@@ -210,10 +210,14 @@ def main() -> None:
 
             taskGroups += formats["taskGroup"].format(
                 numTasks = len(taskGroup["SideQuests"]),
-                taskGroupIndex = toAddTaskGroupIndex + taskGroupIndex,
+                taskGroupIndex = taskGroupIndex,
                 taskGroupName = getTranslation(taskGroup["Title"]),
                 firstTask = tasks[0],
-                taskGroupMilestoneRequired = getTranslation(f"research.{taskGroup['RequiredUpgradeIds'][0]}.title"),
+                taskGroupMilestoneRequired = (
+                    "/"
+                    if len(taskGroup["RequiredUpgradeIds"]) == 0 else
+                    getTranslation(f"research.{taskGroup["RequiredUpgradeIds"][0]}.title")
+                ),
                 tasks = "".join(formats["taskContainer"].format(
                     task = t
                 ) for t in tasks[1:])
@@ -228,17 +232,26 @@ def main() -> None:
         #####
 
         milestones = ""
-        milestoneListLens[scenarioId] = len(scenario["Progression"]["Levels"])
-        maxMilestoneShapesPerLine = max(0 if len(m["Lines"]) == 0 else max(len(l["Shapes"]) for l in m["Lines"]) for m in scenario["Progression"]["Levels"])
+        maxMilestoneShapesPerLine = max(
+            0
+            if len(m["Lines"]["Lines"]) == 0 else
+            max(
+                len(l["Shapes"]) for l in m["Lines"]["Lines"]
+            )
+            for m in scenario["Progression"]["Levels"]["Levels"]
+        )
 
-        for milestoneIndex,milestone in enumerate(scenario["Progression"]["Levels"]):
+        for milestoneIndex,milestone in enumerate(scenario["Progression"]["Levels"]["Levels"]):
+
+            if basedOnScenario and (milestone["Definition"]["Id"] in onboardingMilestones):
+                continue # skip milestone as it's from another scenario
 
             shapeLines = []
 
-            if milestone["Lines"] == []:
-                milestone["Lines"].append({"Shapes":[]})
+            if milestone["Lines"]["Lines"] == []:
+                milestone["Lines"]["Lines"].append({"Shapes":[]})
 
-            for shapeLine in milestone["Lines"]:
+            for shapeLine in milestone["Lines"]["Lines"]:
 
                 toFormatShapes = []
 
@@ -301,22 +314,36 @@ def main() -> None:
 
                 shapeLines.append(curShapeLine)
 
+            unlockedMechanics = [r["MechanicId"] for r in milestone["Rewards"]["Rewards"] if r["$type"] == "MechanicReward"]
+
             milestones += formats["milestone"].format(
-                numShapeLines = len(milestone["Lines"]),
-                milestoneIndex = toAddMilestoneIndex + milestoneIndex,
-                milestoneName = getTranslation(milestone["Title"]),
-                milestoneDescription = getTooltipSafeString(getTranslation(milestone["Description"])),
+                numShapeLines = len(milestone["Lines"]["Lines"]),
+                milestoneIndex = milestoneIndex,
+                milestoneName = getTranslation(milestone["Definition"]["Title"]),
+                milestoneDescription = getTooltipSafeString(getTranslation(milestone["Definition"]["Description"])),
                 firstShapeLine = shapeLines[0],
-                milestoneRewards = getFormattedRewards(milestone["Rewards"],scenario),
+                milestoneRewards = getFormattedRewards(milestone["Rewards"]["Rewards"],scenario),
                 unlockedUpgrades = formats["rewardsJoiner"].format().join(
                     getTranslation(upgrade["Title"])
-                    for upgrade in scenario["Progression"]["SideUpgrades"]
-                    if (milestone["Id"] in upgrade["RequiredUpgradeIds"]) and (upgrade["Title"] != "")
+                    for upgrade in (
+                        scenario["Progression"]["SideUpgrades"]["SideUpgrades"]
+                        + scenario["Progression"]["LinearUpgrades"]["LinearUpgrades"]
+                    )
+                    if (
+                        (
+                            (milestone["Definition"]["Id"] in upgrade["RequiredUpgradeIds"])
+                            or any(m in upgrade["RequiredMechanicIds"] for m in unlockedMechanics)
+                        )
+                        and (upgrade["Title"] != "")
+                    )
                 ),
                 unlockedTasks = formats["rewardsJoiner"].format().join(
                     getTranslation(taskGroup["Title"])
-                    for taskGroup in scenario["Progression"]["SideQuestGroups"]
-                    if milestone["Id"] in taskGroup["RequiredUpgradeIds"]
+                    for taskGroup in scenario["Progression"]["SideQuestGroups"]["SideQuestGroups"]
+                    if (
+                        (milestone["Definition"]["Id"] in taskGroup["RequiredUpgradeIds"])
+                        or any(m in taskGroup["RequiredMechanicIds"] for m in unlockedMechanics)
+                    )
                 ),
                 shapeLines = "".join(formats["milestoneShapeLineContainer"].format(
                     shapeLine = sl
@@ -333,13 +360,22 @@ def main() -> None:
 
         bpShapes = ""
 
-        for bpShape in scenario["Config"]["BlueprintCurrencyShapes"]:
+        for bpShape in scenario["ResearchConfig"]["BlueprintCurrencyShapes"]:
+
+            if len(bpShape["RequiredMechanicIds"]) != 0:
+                raise ValueError("BP shapes unlocked with mechanics unsupported")
+            if len(bpShape["RequiredUpgradeIds"]) > 1:
+                raise ValueError("BP shapes unlocked with multiple upgrades unsupported")
 
             bpShapes += formats["bpShape"].format(
                 shapeCode = bpShape["Shape"],
                 shapesConfig = curShapesConfig,
                 pointsReward = bpShape["Amount"],
-                milestoneRequired = getTranslation(f"research.{bpShape['RequiredUpgradeId']}.title")
+                milestoneRequired = (
+                    "/"
+                    if len(bpShape["RequiredUpgradeIds"]) == 0 else
+                    getTranslation(f"research.{bpShape["RequiredUpgradeIds"][0]}.title")
+                )
             )
 
         bpShapeLists += formats["bpShapeList"].format(
@@ -349,7 +385,7 @@ def main() -> None:
 
         #####
 
-        playerLevelConfig = scenario["Config"]["PlayerLevelConfig"]
+        playerLevelConfig = scenario["PlayerLevelConfig"]
         if playerLevelConfig["GoalLines"] != []: # only consider scenarios with OL reachable
 
             OLRewards = ""
@@ -389,7 +425,7 @@ def main() -> None:
             newShapeBadgeList = True
             for scenarioIds,(shapeInterval,_,shapeBadges) in OLShapeBadgesNoDuplicates:
                 if (
-                    (playerLevelConfig["IconicLevelShapes"] == shapeBadges)
+                    (playerLevelConfig["IconicLevelShapes"]["LevelShapes"] == shapeBadges)
                     and (playerLevelConfig["IconicLevelShapeInterval"] == shapeInterval)
                 ):
                     newShapeBadgeList = False
@@ -400,7 +436,7 @@ def main() -> None:
                 OLShapeBadgesNoDuplicates.append(([scenarioId],(
                     playerLevelConfig["IconicLevelShapeInterval"],
                     curShapesConfig,
-                    playerLevelConfig["IconicLevelShapes"]
+                    playerLevelConfig["IconicLevelShapes"]["LevelShapes"]
                 )))
 
             #####
@@ -431,9 +467,18 @@ def main() -> None:
                         shapesConfig = curShapesConfig
                     )
 
+                if len(goalLine["RequiredMechanicIds"]) != 0:
+                    raise ValueError("OL goal line unlocked with mechanics unsupported")
+                if len(bpShape["RequiredUpgradeIds"]) > 1:
+                    raise ValueError("OL goal line unlocked with multiple upgrades unsupported")
+
                 OLGoalLines += formats["OLGoalLine"].format(
                     shapeInfo = shapeInfo,
-                    milestoneRequired = getTranslation(f"research.{goalLine["RequiredUpgrade"]}.title"),
+                    milestoneRequired = (
+                        "/"
+                        if len(goalLine["RequiredUpgradeIds"]) == 0 else
+                        getTranslation(f"research.{goalLine["RequiredUpgradeIds"][0]}.title")
+                    ),
                     startingAmount = goalLine["StartingAmount"],
                     growth = goalLine["ExponentialGrowthPercentPerLevel"],
                     maxCostAtLevel = level
@@ -525,35 +570,35 @@ def main() -> None:
 
     #####
 
-    changelog = ""
+    # changelog = ""
 
-    for versionChangelog in changelogRaw:
+    # for versionChangelog in changelogRaw:
 
-        entries = ""
+    #     entries = ""
 
-        for entry in versionChangelog["Entries"]:
+    #     for entry in versionChangelog["Entries"]:
 
-            if entry.startswith("[[") and entry.endswith("]]"):
-                entries += formats["changelogCategory"].format(
-                    categoryName = entry.removeprefix("[[").removesuffix("]]")
-                )
-            else:
-                entries += formats["changelogEntry"].format(
-                    entryText = entry
-                )
+    #         if entry.startswith("[[") and entry.endswith("]]"):
+    #             entries += formats["changelogCategory"].format(
+    #                 categoryName = entry.removeprefix("[[").removesuffix("]]")
+    #             )
+    #         else:
+    #             entries += formats["changelogEntry"].format(
+    #                 entryText = entry
+    #             )
 
-        changelog += formats["changelogVersion"].format(
-            versionName = versionChangelog["Version"],
-            releaseDate = versionChangelog["Date"],
-            entries = entries
-        )
+    #     changelog += formats["changelogVersion"].format(
+    #         versionName = versionChangelog["Version"],
+    #         releaseDate = versionChangelog["Date"],
+    #         entries = entries
+    #     )
 
-    changelogOutput = formats["changelogPage"].format(
-        autoGenMsg = autoGenMsg,
-        changelog = changelog
-    )
-    with open(CHANGELOG_OUTPUT_PATH,"w",encoding="utf-8") as f:
-        f.write(changelogOutput)
+    # changelogOutput = formats["changelogPage"].format(
+    #     autoGenMsg = autoGenMsg,
+    #     changelog = changelog
+    # )
+    # with open(CHANGELOG_OUTPUT_PATH,"w",encoding="utf-8") as f:
+    #     f.write(changelogOutput)
 
 if __name__ == "__main__":
     main()
