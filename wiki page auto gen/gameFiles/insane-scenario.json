@@ -2552,110 +2552,6 @@
                     ]
                 },
                 {
-                    "Title": "@side-goal.insane-alien-astronaut",
-                    "RequiredUpgradeIds": [
-                        "RNPinPusher"
-                    ],
-                    "RequiredMechanicIds": [],
-                    "SideQuests": [
-                        {
-                            "Id": "SG_PinPusher_1_1",
-                            "Rewards": [
-                                {
-                                    "$type": "ChunkLimitReward",
-                                    "Amount": 70
-                                },
-                                {
-                                    "$type": "ResearchPointsReward",
-                                    "Amount": 2
-                                }
-                            ],
-                            "Costs": [
-                                {
-                                    "Shape": "P-P-P-P-:P-WgWgP-:Sg----Sg:Cg----Cg:P-----P-",
-                                    "Amount": 6000
-                                }
-                            ]
-                        },
-                        {
-                            "Id": "SG_PinPusher_1_2",
-                            "Rewards": [
-                                {
-                                    "$type": "ChunkLimitReward",
-                                    "Amount": 70
-                                },
-                                {
-                                    "$type": "ResearchPointsReward",
-                                    "Amount": 3
-                                }
-                            ],
-                            "Costs": [
-                                {
-                                    "Shape": "P-P-P-P-:SrWgWgSr:CrP-P-Cr:CgRrRrCg:P-----P-",
-                                    "Amount": 8000
-                                }
-                            ]
-                        },
-                        {
-                            "Id": "SG_PinPusher_1_3",
-                            "Rewards": [
-                                {
-                                    "$type": "ChunkLimitReward",
-                                    "Amount": 70
-                                },
-                                {
-                                    "$type": "ResearchPointsReward",
-                                    "Amount": 3
-                                }
-                            ],
-                            "Costs": [
-                                {
-                                    "Shape": "P-P-P-P-:SrWrWrSr:CrWuWuCr:CgRrRrCg:P-RwRwP-",
-                                    "Amount": 8000
-                                }
-                            ]
-                        },
-                        {
-                            "Id": "SG_PinPusher_1_4",
-                            "Rewards": [
-                                {
-                                    "$type": "ChunkLimitReward",
-                                    "Amount": 70
-                                },
-                                {
-                                    "$type": "ResearchPointsReward",
-                                    "Amount": 6
-                                }
-                            ],
-                            "Costs": [
-                                {
-                                    "Shape": "P-WwWwP-:SrWmWmSr:CrRwRwCr:CgRuRuCg:P-P-P-P-",
-                                    "Amount": 8000
-                                }
-                            ]
-                        },
-                        {
-                            "Id": "SG_PinPusher_1_5",
-                            "Rewards": [
-                                {
-                                    "$type": "ChunkLimitReward",
-                                    "Amount": 100
-                                },
-                                {
-                                    "$type": "ResearchPointsReward",
-                                    "Amount": 16
-                                }
-                            ],
-                            "Costs": [
-                                {
-                                    "Shape": "SmWwWwSm:CwWmWmCw:CcRwRwCc:P-RuRuP-:--P-P---",
-                                    "Amount": 14000
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
                     "Title": "@side-goal.insane-observation-device",
                     "RequiredUpgradeIds": [
                         "RNColorMixing"
@@ -2754,6 +2650,110 @@
                                 {
                                     "Shape": "CwCrCwCr:CuRcCuRc:Wc--Wc--:WmRmWmRm",
                                     "Amount": 12000
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "Title": "@side-goal.insane-alien-astronaut",
+                    "RequiredUpgradeIds": [
+                        "RNPinPusher"
+                    ],
+                    "RequiredMechanicIds": [],
+                    "SideQuests": [
+                        {
+                            "Id": "SG_PinPusher_1_1",
+                            "Rewards": [
+                                {
+                                    "$type": "ChunkLimitReward",
+                                    "Amount": 70
+                                },
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 2
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "P-P-P-P-:P-WgWgP-:Sg----Sg:Cg----Cg:P-----P-",
+                                    "Amount": 6000
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_PinPusher_1_2",
+                            "Rewards": [
+                                {
+                                    "$type": "ChunkLimitReward",
+                                    "Amount": 70
+                                },
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 3
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "P-P-P-P-:SrWgWgSr:CrP-P-Cr:CgRrRrCg:P-----P-",
+                                    "Amount": 8000
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_PinPusher_1_3",
+                            "Rewards": [
+                                {
+                                    "$type": "ChunkLimitReward",
+                                    "Amount": 70
+                                },
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 3
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "P-P-P-P-:SrWrWrSr:CrWuWuCr:CgRrRrCg:P-RwRwP-",
+                                    "Amount": 8000
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_PinPusher_1_4",
+                            "Rewards": [
+                                {
+                                    "$type": "ChunkLimitReward",
+                                    "Amount": 70
+                                },
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 6
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "P-WwWwP-:SrWmWmSr:CrRwRwCr:CgRuRuCg:P-P-P-P-",
+                                    "Amount": 8000
+                                }
+                            ]
+                        },
+                        {
+                            "Id": "SG_PinPusher_1_5",
+                            "Rewards": [
+                                {
+                                    "$type": "ChunkLimitReward",
+                                    "Amount": 100
+                                },
+                                {
+                                    "$type": "ResearchPointsReward",
+                                    "Amount": 16
+                                }
+                            ],
+                            "Costs": [
+                                {
+                                    "Shape": "SmWwWwSm:CwWmWmCw:CcRwRwCc:P-RuRuP-:--P-P---",
+                                    "Amount": 14000
                                 }
                             ]
                         }

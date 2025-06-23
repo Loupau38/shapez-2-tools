@@ -2,7 +2,7 @@ import json
 import os
 import math
 
-GAME_VERSION_NAME = "0.1.0-pre8-rc1"
+GAME_VERSION_NAME = "0.1.1"
 
 FORMATS_PATH = "./formats"
 
