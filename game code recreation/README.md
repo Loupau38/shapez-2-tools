@@ -1,3 +1,5 @@
+**Moved to https://github.com/Loupau38/shapez2-python/tree/main/shapez2/gameCode. This folder won't be updated if there are changes in the ingame code.**
+
 Snippets of the game's code recreated in python.
 
 Requires the [fixedint library](https://pypi.org/project/fixedint/)
