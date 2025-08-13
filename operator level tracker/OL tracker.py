@@ -1,5 +1,8 @@
-# you might want to set this to False if the window is too small or if not on Windows
+# you might want to set this to False if the window is too small
+# (this constant doesn't have an effect when not on Windows)
 SET_DPI_AWARE = True
+
+MAXIMIZE_WINDOW = True
 
 # if the auto detection doesn't work
 SAVEGAMES_PATH_OVERRIDE:str|None = None
@@ -230,7 +233,10 @@ def main() -> None:
 
     if SET_DPI_AWARE:
         import ctypes
-        ctypes.windll.user32.SetProcessDPIAware()
+        try:
+            ctypes.windll.user32.SetProcessDPIAware()
+        except AttributeError:
+            pass
 
     os.path.expandvars("%LOCALAPPDATA%low/tobspr Games/shapez 2/savegames/")
     if SAVEGAMES_PATH_OVERRIDE is not None:
@@ -251,11 +257,12 @@ def main() -> None:
 
     workingFolder = os.path.join(".","temp")
 
-    win = pygame.display.set_mode((700,700),pygame.RESIZABLE)
+    win = pygame.display.set_mode((1500,700),pygame.RESIZABLE)
     pygame.font.init()
     clock = pygame.time.Clock()
 
-    pygame._sdl2.Window.from_display_module().maximize()
+    if MAXIMIZE_WINDOW:
+        pygame._sdl2.Window.from_display_module().maximize()
 
     FONT = pygame.font.Font(resourcePath("Barlow-Regular.ttf"),25)
     FONT_SMALL = pygame.font.Font(resourcePath("Barlow-Regular.ttf"),20)
@@ -765,36 +772,52 @@ def main() -> None:
 
             curGoalLineWidth = max(s[0].get_width() for s in goalLinesSurf) + (2*BIG_MARGIN)
             curGoalLineHeight = max(s[0].get_height() for s in goalLinesSurf) + (2*BIG_MARGIN)
+
+            curNumGoalLinesPerRow = min(len(goalLinesSurf),NUM_GOAL_LINES_PER_ROW)
+            curScaleFactor = min(1,winWidth / (
+                (curNumGoalLinesPerRow*curGoalLineWidth)
+                + ((curNumGoalLinesPerRow+1)*BIG_MARGIN)
+            ))
+            curGoalLineWidth *= curScaleFactor
+            curGoalLineHeight *= curScaleFactor
+            scaledBigMargin = BIG_MARGIN * curScaleFactor
+
             curGoalLineUntiLevelRects:list[pygame.Rect|None] = []
 
             for goalLineIndex,(goalLineSurf,activeGoalLine,tooltipsPos) in enumerate(goalLinesSurf):
 
-                curX = BIG_MARGIN + ((BIG_MARGIN+curGoalLineWidth)*(goalLineIndex%NUM_GOAL_LINES_PER_ROW))
-                curY = topPartBottom + ((BIG_MARGIN+curGoalLineHeight)*(goalLineIndex//NUM_GOAL_LINES_PER_ROW))
+                curX = scaledBigMargin + ((scaledBigMargin+curGoalLineWidth)*(goalLineIndex%NUM_GOAL_LINES_PER_ROW))
+                curY = topPartBottom + ((scaledBigMargin+curGoalLineHeight)*(goalLineIndex//NUM_GOAL_LINES_PER_ROW))
 
                 pygame.draw.rect(win,GOAL_LINE_BG_COLOR,pygame.Rect(
                     curX,
                     curY,
                     curGoalLineWidth,
                     curGoalLineHeight,
-                ),border_radius=10)
+                ),border_radius=round(10*curScaleFactor))
 
-                win.blit(goalLineSurf,(curX+BIG_MARGIN,curY+BIG_MARGIN))
+                win.blit(
+                    pygame.transform.smoothscale_by(goalLineSurf,curScaleFactor),
+                    (curX+scaledBigMargin,curY+scaledBigMargin)
+                )
 
                 tooltipRects = [pygame.Rect(
-                    curX + BIG_MARGIN + p[0],
-                    curY + BIG_MARGIN + p[1],
-                    ICON_SIZE,
-                    ICON_SIZE
+                    curX + scaledBigMargin + (p[0]*curScaleFactor),
+                    curY + scaledBigMargin + (p[1]*curScaleFactor),
+                    ICON_SIZE * curScaleFactor,
+                    ICON_SIZE * curScaleFactor
                 ) for p in tooltipsPos]
 
                 if activeGoalLine:
 
-                    tooltipRects[4].width = shapeMultIcon.get_width()
-                    tooltipRects[4].height = shapeMultIcon.get_height()
+                    tooltipRects[4].width = shapeMultIcon.get_width() * curScaleFactor
+                    tooltipRects[4].height = shapeMultIcon.get_height() * curScaleFactor
 
-                    curUntilLevelText = FONT.render(str(goalLinesUntilLevel[goalLineIndex]),1,TEXT_COLOR)
-                    tooltipRects[-1].width = curUntilLevelText.get_width() + (2*SMALL_MARGIN)
+                    curUntilLevelText = pygame.transform.smoothscale_by(
+                        FONT.render(str(goalLinesUntilLevel[goalLineIndex]),1,TEXT_COLOR),
+                        curScaleFactor
+                    )
+                    tooltipRects[-1].width = curUntilLevelText.get_width() + (2*SMALL_MARGIN*curScaleFactor)
                     tooltipRects[-1].height = curUntilLevelText.get_height()
                     curUntilLevelRect = tooltipRects[-1]
                     pygame.draw.rect(win,(
@@ -803,7 +826,7 @@ def main() -> None:
                         GOAL_LINE_BUTTON_COLOR
                     ),curUntilLevelRect)
                     win.blit(curUntilLevelText,(
-                        curUntilLevelRect.x + SMALL_MARGIN,
+                        curUntilLevelRect.x + (SMALL_MARGIN*curScaleFactor),
                         curUntilLevelRect.y
                     ))
                     curGoalLineUntiLevelRects.append(curUntilLevelRect)
@@ -848,6 +871,7 @@ def main() -> None:
                 curTooltipText.get_width() + (2*SMALL_MARGIN),
                 curTooltipText.get_height() + (2*SMALL_MARGIN)
             )
+            curTooltipRect.x = min(curTooltipRect.x,winWidth-curTooltipRect.width)
             pygame.draw.rect(win,TOOLTIP_BG_COLOR,curTooltipRect)
             pygame.draw.rect(win,TEXT_COLOR,curTooltipRect,1)
             win.blit(curTooltipText,(curTooltipRect.x+SMALL_MARGIN,curTooltipRect.y+SMALL_MARGIN))
