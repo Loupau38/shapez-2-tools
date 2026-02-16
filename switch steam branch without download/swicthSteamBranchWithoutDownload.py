@@ -133,15 +133,16 @@ while True:
     action = choiceInput([
         "Save current branch and switch to another",
         "Save current branch",
+        "View current branch",
         "Add new game",
         "Change steamapps path",
         "Exit"
     ])
 
-    if action == 5:
+    if action == 6:
         break
 
-    if action == 4:
+    if action == 5:
         steamappsPath = askForSteamappsPath()
         continue
 
@@ -150,7 +151,7 @@ while True:
         if dirEntry.is_dir():
             curSavedGames.append(dirEntry.name)
 
-    if action == 3:
+    if action == 4:
 
         canBeAdded:list[tuple[str,str]] = []
         for dirEntry in os.scandir(steamappsPath):
@@ -213,6 +214,12 @@ while True:
         selectedGameManifest = parseAcf(f.read())
 
     curBranch = selectedGameManifest["AppState"]["UserConfig"]["BetaKey"]
+
+    if action == 3:
+        print(f"Currently on branch '{curBranch}'")
+        print()
+        continue
+
     allBranchesPath = os.path.join(selectedGamePath,BRANCHES_FOLDER_NAME)
     curBranchPath = os.path.join(allBranchesPath,curBranch)
 
