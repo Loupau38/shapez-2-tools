@@ -1,6 +1,8 @@
 import shutil
 import os
 import json
+import traceback
+import sys
 
 DATA_FOLDER_PATH = os.path.join(os.curdir,"SSBWD_data")
 CONFIG_PATH = os.path.join(DATA_FOLDER_PATH,"config.json")
@@ -24,12 +26,6 @@ def askForSteamappsPath() -> str:
         json.dump({"steamappsPath":path},f,indent=4)
     return path
 
-if os.path.exists(CONFIG_PATH):
-    with open(CONFIG_PATH,encoding="utf-8") as f:
-        steamappsPath = json.load(f)["steamappsPath"]
-else:
-    steamappsPath = askForSteamappsPath()
-
 type AcfDict = dict[str,str|AcfDict]
 
 def parseAcf(raw:str) -> AcfDict:
@@ -38,7 +34,7 @@ def parseAcf(raw:str) -> AcfDict:
 
     def parseString() -> str:
         nonlocal index
-        assert raw[index] == '"'
+        assert raw[index] == '"', "String doesn't start with \""
         index += 1
         curString = ""
         while True:
@@ -111,9 +107,20 @@ def serializeAcf(parsed:AcfDict) -> str:
 def choiceInput(choices:list[str]) -> int:
     for i,c in enumerate(choices,start=1):
         print(f"{i} : {c}")
-    choice = int(input("> "))
-    print()
-    return choice
+    while True:
+        choice = input("> ")
+        try:
+            choiceInt = int(choice)
+        except ValueError:
+            print("Not a number")
+            print()
+            continue
+        if (choiceInt < 1) or (choiceInt > len(choices)):
+            print("Number not in range")
+            print()
+            continue
+        print()
+        return choiceInt
 
 def removeDirContents(dirPath:str) -> None:
     for dirEntry in os.scandir(dirPath):
@@ -125,7 +132,8 @@ def removeDirContents(dirPath:str) -> None:
 def copyDirContents(src:str,dest:str) -> None:
     shutil.copytree(src,dest,dirs_exist_ok=True)
 
-while True:
+def mainIteration() -> bool:
+    global steamappsPath
 
     print("Make sure to restart steam after switching branches !")
     print()
@@ -140,11 +148,11 @@ while True:
     ])
 
     if action == 6:
-        break
+        return True
 
     if action == 5:
         steamappsPath = askForSteamappsPath()
-        continue
+        return False
 
     curSavedGames:list[str] = []
     for dirEntry in os.scandir(GAMES_PATH):
@@ -155,21 +163,30 @@ while True:
 
         canBeAdded:list[tuple[str,str]] = []
         for dirEntry in os.scandir(steamappsPath):
-            if (
+            if not (
                 dirEntry.is_file()
                 and dirEntry.name.startswith("appmanifest_")
                 and dirEntry.name.endswith(".acf")
             ):
-                with open(dirEntry.path,encoding="utf-8") as f:
-                    gameInfo = parseAcf(f.read())
+                continue
+            with open(dirEntry.path,encoding="utf-8") as f:
+                gameInfo = parseAcf(f.read())
+            try:
                 gameName = gameInfo["AppState"]["installdir"]
-                if gameName not in curSavedGames:
-                    canBeAdded.append((gameName,gameInfo["AppState"]["appid"]))
+                gameAppId = gameInfo["AppState"]["appid"]
+            except KeyError as e:
+                print("Skipping game info file")
+                print(f"Path : {dirEntry.path}")
+                print(f"Missing key : {e}")
+                print()
+                continue
+            if gameName not in curSavedGames:
+                canBeAdded.append((gameName,gameAppId))
 
         if len(canBeAdded) == 0:
             print("No games to add")
             print()
-            continue
+            return False
 
         print("Select the game to add")
         toAdd = canBeAdded[choiceInput(g[0] for g in canBeAdded)-1]
@@ -183,12 +200,12 @@ while True:
             json.dump({"gameId":toAdd[1]},f,indent=4)
         print(f"Added '{toAdd[0]}'")
         print()
-        continue
+        return False
 
     if len(curSavedGames) == 0:
         print("No games added")
         print()
-        continue
+        return False
 
     if len(curSavedGames) == 1:
         selectedGame = curSavedGames[0]
@@ -213,12 +230,29 @@ while True:
     with open(selectedGameManifestPath,encoding="utf-8") as f:
         selectedGameManifest = parseAcf(f.read())
 
-    curBranch = selectedGameManifest["AppState"]["UserConfig"]["BetaKey"]
+    try:
+        curAppState = selectedGameManifest["AppState"]
+        curUserConfig = curAppState["UserConfig"]
+        curBranch = curUserConfig["BetaKey"]
+        curSizeOnDisk = curAppState["SizeOnDisk"]
+        curBuildId = curAppState["buildid"]
+        curDepots = curAppState["InstalledDepots"]
+        if len(curDepots) == 0:
+            print("Couldn't resolve game infos : 'InstalledDepots' is empty")
+            print()
+            return False
+        curFirstDepot = list(curDepots.values())[0]
+        curManifest = curFirstDepot["manifest"]
+        curMountedConfig = curAppState["MountedConfig"]
+    except KeyError as e:
+        print(f"Couldn't resolve game infos : missing key : {e}")
+        print()
+        return False
 
     if action == 3:
         print(f"Currently on branch '{curBranch}'")
         print()
-        continue
+        return False
 
     allBranchesPath = os.path.join(selectedGamePath,BRANCHES_FOLDER_NAME)
     curBranchPath = os.path.join(allBranchesPath,curBranch)
@@ -234,9 +268,9 @@ while True:
         BRANCH_INFO_FILE_NAME
     ),"w",encoding="utf-8") as f:
         json.dump({
-            "size" : selectedGameManifest["AppState"]["SizeOnDisk"],
-            "buildId" : selectedGameManifest["AppState"]["buildid"],
-            "manifest" : list(selectedGameManifest["AppState"]["InstalledDepots"].values())[0]["manifest"],
+            "size" : curSizeOnDisk,
+            "buildId" : curBuildId,
+            "manifest" : curManifest,
         },f,indent=4)
 
     print(f"Creating copy of branch '{curBranch}'...")
@@ -245,7 +279,7 @@ while True:
     print()
 
     if action == 2:
-        continue
+        return False
 
     selectableBranches:list[str] = []
     for dirEntry in os.scandir(allBranchesPath):
@@ -255,7 +289,7 @@ while True:
     if len(selectableBranches) == 0:
         print("No saved branches other than the current")
         print()
-        continue
+        return False
 
     if len(selectableBranches) == 1:
         switchToBranch = selectableBranches[0]
@@ -270,14 +304,13 @@ while True:
     with open(os.path.join(switchToBranchPath,BRANCH_INFO_FILE_NAME),encoding="utf-8") as f:
         switchToBranchInfo = json.load(f)
 
-    selectedGameManifest["AppState"]["SizeOnDisk"] = switchToBranchInfo["size"]
-    selectedGameManifest["AppState"]["buildid"] = switchToBranchInfo["buildId"]
-    selectedGameManifest["AppState"]["TargetBuildID"] = switchToBranchInfo["buildId"]
-    firstDepot = list(selectedGameManifest["AppState"]["InstalledDepots"].values())[0]
-    firstDepot["manifest"] = switchToBranchInfo["manifest"]
-    firstDepot["size"] = switchToBranchInfo["size"]
-    selectedGameManifest["AppState"]["UserConfig"]["BetaKey"] = switchToBranch
-    selectedGameManifest["AppState"]["MountedConfig"]["BetaKey"] = switchToBranch
+    curAppState["SizeOnDisk"] = switchToBranchInfo["size"]
+    curAppState["buildid"] = switchToBranchInfo["buildId"]
+    curAppState["TargetBuildID"] = switchToBranchInfo["buildId"]
+    curFirstDepot["manifest"] = switchToBranchInfo["manifest"]
+    curFirstDepot["size"] = switchToBranchInfo["size"]
+    curUserConfig["BetaKey"] = switchToBranch
+    curMountedConfig["BetaKey"] = switchToBranch
 
     print("Removing existing installation...")
     removeDirContents(gameInstallPath)
@@ -289,3 +322,31 @@ while True:
     copyDirContents(os.path.join(switchToBranchPath,BRANCH_FILES_FOLDER_NAME),gameInstallPath)
     print(f"Successfully copied branch '{switchToBranch}'")
     print()
+    return False
+
+def mainLoop() -> None:
+    global steamappsPath
+
+    if os.path.exists(CONFIG_PATH):
+        with open(CONFIG_PATH,encoding="utf-8") as f:
+            steamappsPath = json.load(f)["steamappsPath"]
+    else:
+        steamappsPath = askForSteamappsPath()
+
+    while True:
+        if mainIteration():
+            break
+
+def errorHandler() -> None:
+
+    try:
+        mainLoop()
+    except Exception:
+        print()
+        print("Error happened :")
+        print()
+        print("".join(traceback.format_exception(*sys.exc_info())))
+        input("Press enter to quit")
+
+if __name__ == "__main__":
+    errorHandler()
