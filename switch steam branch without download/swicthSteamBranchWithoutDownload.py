@@ -4,7 +4,7 @@ import json
 import traceback
 import sys
 
-DATA_FOLDER_PATH = os.path.join(os.curdir,"SSBWD_data")
+DATA_FOLDER_PATH = os.path.join(os.getcwd(),"SSBWD_data")
 CONFIG_PATH = os.path.join(DATA_FOLDER_PATH,"config.json")
 GAMES_PATH = os.path.join(DATA_FOLDER_PATH,"games")
 STEAM_GAMES_FOLDER = "common"
