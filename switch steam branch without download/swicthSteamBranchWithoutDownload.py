@@ -4,7 +4,8 @@ import json
 import traceback
 import sys
 
-DATA_FOLDER_PATH = os.path.join(os.getcwd(),"SSBWD_data")
+PATH_PREFIX = "\\\\?\\" if os.name == "nt" else ""
+DATA_FOLDER_PATH = os.path.join(PATH_PREFIX+os.getcwd(),"SSBWD_data")
 CONFIG_PATH = os.path.join(DATA_FOLDER_PATH,"config.json")
 GAMES_PATH = os.path.join(DATA_FOLDER_PATH,"games")
 STEAM_GAMES_FOLDER = "common"
@@ -151,7 +152,7 @@ def mainIteration() -> bool:
         return True
 
     if action == 5:
-        steamappsPath = askForSteamappsPath()
+        steamappsPath = PATH_PREFIX + askForSteamappsPath()
         return False
 
     curSavedGames:list[str] = []
@@ -329,9 +330,9 @@ def mainLoop() -> None:
 
     if os.path.exists(CONFIG_PATH):
         with open(CONFIG_PATH,encoding="utf-8") as f:
-            steamappsPath = json.load(f)["steamappsPath"]
+            steamappsPath = PATH_PREFIX + json.load(f)["steamappsPath"]
     else:
-        steamappsPath = askForSteamappsPath()
+        steamappsPath = PATH_PREFIX + askForSteamappsPath()
 
     while True:
         if mainIteration():
