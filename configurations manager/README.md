@@ -1,7 +1,9 @@
 This app allows you to create configurations for the game, a configuration being :
+
 - A Steam beta branch
 - Enabled mods
 - Launch parameters
+
 You can then switch between configurations using this app without having to redownload any content. (before said content is saved by this app, a first download using Steam is required)
 
 Usage : download either `configurationsManager.exe` or `configurationsManager.py` and run it. This app's settings and stored branches/mods are stored in a `data` folder next to the downloaded file, it's thus recommended to move the file outside of the generic downloads folder.
