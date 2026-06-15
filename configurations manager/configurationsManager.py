@@ -129,9 +129,13 @@ def loadAppConfig() -> None:
         editSteamPath()
         editSteamUserId()
 
-def choiceInput(choices:list[str]) -> int:
+def choiceInputChoicesDisplay(choices:list[str]) -> None:
+    numLen = len(str(len(choices)))
     for i,c in enumerate(choices,start=1):
-        print(f"{i} : {c}")
+        print(f"{i:>{numLen}} : {c}")
+
+def choiceInput(choices:list[str]) -> int:
+    choiceInputChoicesDisplay(choices)
     while True:
         choice = input(USER_INPUT_PROMPT)
         try:
@@ -148,8 +152,7 @@ def choiceInput(choices:list[str]) -> int:
         return choiceInt - 1
 
 def multiChoiceInput(choices:list[str]) -> list[int]:
-    for i,c in enumerate(choices,start=1):
-        print(f"{i} : {c}")
+    choiceInputChoicesDisplay(choices)
     while True:
         rawChoices = input("Comma-separated list of numbers : ")
         if rawChoices == "":
@@ -393,7 +396,7 @@ def getModInfo(modId:str,location:typing.Literal["steam","saved"]) -> ModInfo:
         modId,
         MOD_MANIFEST_FILE_NAME
     )
-    with open(manifestPath,encoding="utf-8") as f:
+    with open(manifestPath,"rb") as f:
         modManifest:dict = json.load(f)
     author = modManifest.get("Author")
     description = modManifest.get("Description")

@@ -6,7 +6,7 @@ This app allows you to create configurations for the game, a configuration being
 
 You can then switch between configurations using this app without having to redownload any content. (before said content is saved by this app, a first download using Steam is required)
 
-Usage : download either `configurationsManager.exe` or `configurationsManager.py` and run it. This app's settings and stored branches/mods are stored in a `data` folder next to the downloaded file, it's thus recommended to move the file outside of the generic downloads folder.
+Usage : download either `configurationsManager.exe` or `configurationsManager.py` and run it. This app's settings and saved branches/mods are stored in a `data` folder next to the downloaded file, it's thus recommended to move the file outside of the generic downloads folder.
 
 When launching the app for the first time, you'll need to create a configuration before being able to launch the game. You can also select how the game is launched in the settings.
 
