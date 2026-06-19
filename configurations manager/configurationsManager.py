@@ -744,6 +744,8 @@ def askForMods(alreadySelected:list[str]|None) -> list[str]:
 def deletionConfirmation(objName:str) -> bool:
     print(f"Are you sure you want to delete {objName} ? This action cannot be undone")
     c = input("y/n > ") == "y"
+    if not c:
+        print("Deletion canceled")
     print()
     return c
 
@@ -947,6 +949,13 @@ def removeSavedElem() -> None:
         branch = askForBranch("Select the branch to delete")
         if branch is None:
             return
+        configsUsingBranch = [c.name for c in appConfig.configurations if c.branch == branch]
+        if len(configsUsingBranch) > 0:
+            print(f"Error : The following configurations use the branch '{branch}' :")
+            print(", ".join(configsUsingBranch))
+            print("Either edit or delete those configurations before deleting this branch")
+            print()
+            return
         if deletionConfirmation(f"the saved branch '{branch}'"):
             removeSavedBranch(branch)
             print()
@@ -957,12 +966,19 @@ def removeSavedElem() -> None:
         if modId is None:
             return
         modName = displayMod(modId,getModInfo(modId,"saved"))
+        configsUsingMod = [c for c in appConfig.configurations if modId in c.mods]
+        if len(configsUsingMod) > 0:
+            print(f"Warning : The following configurations use the mod '{modName}' :")
+            print(", ".join(c.name for c in configsUsingMod))
+            print("Deleting this mod will remove it from those configurations")
         if deletionConfirmation(f"the saved mod '{modName}'"):
             print(f"Removing mod '{modName}'...")
+            for c in configsUsingMod:
+                c.mods.remove(modId)
             removeSavedMod(modId)
             if modId in appConfig.modNames:
                 appConfig.modNames.pop(modId)
-                storeAppConfig()
+            storeAppConfig()
             print(f"Mod '{modName}' removed")
             print()
         return
