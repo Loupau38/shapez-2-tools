@@ -1,6 +1,7 @@
 __pycache__
 operator level tracker/temp
 savegames/temp
+savegames format generator/output.md
 configurations manager/data
 wiki page auto gen/outputBpShapeLists.txt
 wiki page auto gen/outputChangelog.txt
