@@ -1,0 +1,1 @@
+Code used to generate https://gist.github.com/Loupau38/08798aa54c4e666f26dc7069f2d24fa9.
