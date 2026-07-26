@@ -59,7 +59,6 @@ class Rotation:
     )
 
 class RailConfig:
-    d="Applies to all rail types (regular, splitter, merger)."
     c=(
         (int,"The number of connection color filters encoded"),
         (Array(
@@ -68,13 +67,19 @@ class RailConfig:
     )
 
 class TrainUnloaderConfig:
-    d="Applies to shape and fluid train unloaders and transfer stations."
     c=(
         (int,"The lanes disabled for unloading, stored as a bit mask, where each lane is `1 << layerIndex`"),
     )
 
 class IIslandConfiguration:
-    d="Represents an island configuration object, the type of which should be deduced from the previously decoded island ID. Can be ", RailConfig, " or ", TrainUnloaderConfig, "."
+    d=(
+        "Represents an island configuration object, the type of which should be deduced from the previously decoded island ID.",
+        [
+            ["Island types","Configuration"],
+            ["All rail types (regular, splitter, merger)",RailConfig],
+            ["Shape and fluid train unloaders and transfer stations",TrainUnloaderConfig]
+        ]
+    )
 
 class IslandTileCoordinate:
     d="Represents a building level positon relative the island center (see the 'Note' in [this section](https://gist.github.com/Loupau38/77907c80c7be3dd9f00a62d416581bb3#blueprint-center))."
@@ -85,7 +90,6 @@ class IslandTileCoordinate:
     )
 
 class LabelConfig:
-    d="Applies to labels."
     c=(
         (str,"The label's text"),
     )
@@ -170,31 +174,26 @@ class ISignal:
     )
 
 class SignalProducerConfig:
-    d="Applies to signal producers."
     c=(
         (ISignal,"The signal produced"),
     )
 
 class ItemProducerConfig:
-    d="Applies to item producers."
     c=(
         (IBeltItem,"The item produced"),
     )
 
 class FluidProducerConfig:
-    d="Applies to fluid producers."
     c=(
         (IFluid,"The fluid produced"),
     )
 
 class ButtonConfig:
-    d="Applies to buttons."
     c=(
         (bool,"Whether the button is activated"),
     )
 
 class CompareGateConfig:
-    d="Applies to comparison gates."
     c=(
         (
             byte,
@@ -231,13 +230,24 @@ class SignalChannelId:
     )
 
 class GlobalSignalReceiverConfig:
-    d="Applies to global signal receivers and operator signal receivers."
     c=(
         (SignalChannelId,"For operator signal receivers, this represents the ROS line selected. TODO : is this representative for global signal receivers"),
     )
 
 class IBuildingConfiguration:
-    d="Represents a building configuration object, the type of which should be deduced from the previously decoded building ID. Can be ", LabelConfig, ", ", SignalProducerConfig, ", ", ItemProducerConfig, ", ", FluidProducerConfig, ", ", ButtonConfig, ", ", CompareGateConfig, " or ", GlobalSignalReceiverConfig, "."
+    d=(
+        "Represents a building configuration object, the type of which should be deduced from the previously decoded building ID.",
+        [
+            ["Building type","Configuration"],
+            ["Label",LabelConfig],
+            ["Signal producer",SignalProducerConfig],
+            ["Item producer",ItemProducerConfig],
+            ["Fluid producer",FluidProducerConfig],
+            ["Button",ButtonConfig],
+            ["Comparison gate",CompareGateConfig],
+            ["Global signal receivers and operator signal receivers",GlobalSignalReceiverConfig]
+        ]
+    )
 
 #endregion
 #region buildings.bin
