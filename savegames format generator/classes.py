@@ -1,5 +1,6 @@
 #region base types
 
+class Any: ...
 class byte: ...
 bytes
 class short: ...
@@ -32,17 +33,6 @@ class GlobalChunkCoordinate:
         (int,"The X coordinate"),
         (int,"The Y coordinate"),
         (short,"The Z coordinate")
-    )
-
-class ISimulationState:
-    d="todo"
-
-class SimulationStateContainer:
-    c=(
-        (str,"The simulation state class's serialization ID, or `null` if the simulation state itself is `null`"),
-        (Blob(
-            (ISimulationState,"")
-        ),"The simulation state, only there if the previous value wasn't `null`")
     )
 
 class GlobalTileCoordinate:
@@ -248,6 +238,290 @@ class IBuildingConfiguration:
             ["Global signal receivers and operator signal receivers",GlobalSignalReceiverConfig]
         ]
     )
+
+class Steps:
+    d="Represents a distance in the world."
+    c=(
+        (long,"The number of steps, divide this number by 2305195200000 to get the distance in machine level tiles"),
+    )
+
+class BeltLaneState:
+    c=(
+        (bool,"Whether an item is contained"),
+        (IBeltItem,"Item, only there if the first value is `true`"),
+        (Steps,"Progress, only there if the first value is `true`")
+    )
+
+class Ticks:
+    d="Represents a duration of time."
+    c=(
+        (long,"The number of ticks, divide this number by 9604980000 to get the duration in seconds"),
+    )
+
+class SignalTicks:
+    d="Represents a duration of time for wires."
+    c=(
+        (long,"The number of ticks, divide this number by 12 to get the duration in seconds"),
+    )
+
+class SignalBuffer:
+    c=(
+        (int,"ValuesArraySize"),
+        (Array(
+            (ISignal,"")
+        ),"Values"),
+        (Ticks,"LastStartTicks"),
+        (SignalTicks,"LastSignalTick"),
+        (bool,"WasPushedThisStartTick")
+    )
+
+class SignalConductorInputState:
+    c=(
+        (SignalBuffer,"InputConductor"),
+    )
+
+class FastBeltPathLaneState:
+    c=(
+        Checkpoint("fast-belt-path:start"),
+        (short,"ItemCapacity"),
+        (short,"CompressedItemsAfterFirst"),
+        (Blob(
+            (int,"ItemCount"),
+            (Steps,"FirstItemDistance"),
+            (Array(
+                (IBeltItem,"Item"),
+                (Steps,"NextItemDistance")
+            ),"Items")
+        ),""),
+        Checkpoint("fast-belt-path:end")
+    )
+
+class BeltSlotState:
+    c=(
+        (bool,"Whether an item is contained"),
+        (IBeltItem,"Item, only there if the first value is `true`"),
+        (Steps,"Progress, only there if the first value is `true`")
+    )
+
+class BeltPathLaneState:
+    c=(
+        Checkpoint("belt-path-state:start"),
+        (int,"Number of slots"),
+        (Array(
+            (BeltSlotState,""),
+        ),"Slots"),
+        Checkpoint("belt-path-state:end")
+    )
+
+class SimulationBufferState[T]:
+    c=(
+        (int,"Number of items in queue"),
+        (Blob(
+            (Array(
+                (Any,"Contained item"),
+                (Ticks,"SelfExcess")
+            ),"Queue, ingame it is reversed on deserialization, see SPZ2-6575")
+        ),"")
+    )
+
+class FluidContainerState:
+    c=(
+        (FluidUnit,"Value"),
+        (IFluid,"Fluid")
+    )
+
+class FluidPackageLaunchState:
+    c=(
+        (IFluid,"Fluid"),
+        (FluidUnit,"Amount"),
+        (Ticks,"RemainingTicks"),
+        (Ticks,"TotalTicks")
+    )
+
+class ShapeCollapseResult:
+    c=(
+        (int,"The number of items in the array. If this is `0`, the rest of the format will not be written and the ShapeCollapseResult object is `null`"),
+        (bool,"Whether the result shape is valid (i.e. not empty)"),
+        (str,"Shape code of the result shape, only there if the previous value is `true`"),
+        (Array(
+            (str,"Shape code of the group"),
+            (byte,"FallDownLayers"),
+            (bool,"Vanish")
+        ),"Groups making up the result shape")
+    )
+
+class BundleState[T]:
+    c=(
+        (Array(
+            (Any,"Contained items")
+        ),"An array of 12 elements (the number of lanes on a space belt/pipe)"),
+    )
+
+class PathMergerSimulationState:
+    c=(
+        (byte,"Number of input lanes"),
+        (Array(
+            (Array(
+                (BeltLaneState,"")
+            ),"Array of 4 elements")
+        ),"InputSegmentSlotStates"),
+        (short,"PriorityLaneIndex"),
+        (byte,"PreferredInputIndex")
+    )
+
+class PathSplitterSimulationState:
+    c=(
+        (byte,"Number of output lanes"),
+        (Array(
+            (BeltPathLaneState,"")
+        ),"OutputLaneStates"),
+        (byte,"NextPreferredIndex")
+    )
+
+#region simulation states
+
+# name changes
+BeltItemSimulationBufferState = SimulationBufferState[IBeltItem]
+GenericFluid = IFluid
+MixerSimulationMixingState = type # value shouldn't be used
+
+class SplitterSimulationState:
+    c=(
+        (byte,"Number of output lanes"),
+        (BeltLaneState,"InputLaneState"),
+        (Array(
+            (BeltLaneState,"")
+        ),"OutputLaneStates")
+    )
+
+class BeltFilterSimulationState:
+    c=(
+        (SplitterSimulationState,"The BeltFilterSimulationState class inherits from SplitterSimulationState"),
+        (SignalConductorInputState,"InputConductorState")
+    )
+
+class BeltPortSenderTransferSimulationState:
+    c=(
+        (byte,"ItemCapacity attribute of JumpLaneState, constant 2 (the written value is ignored on deserialization)"),
+        (FastBeltPathLaneState,"JumpLaneState")
+    )
+
+class ConverterHubProducerSimulationState:
+    c=(
+        (BeltLaneState,"OutputLaneState"),
+        (int,"NumProducedItems")
+    )
+
+class ConverterSimulationState:
+    d="TODO : this supposedly throws an exception on deserialization"
+
+class MergerSimulationState:
+    c=(
+        (byte,"Number of input lanes"),
+        (Array(
+            (BeltLaneState,"")
+        ),"InputLaneStates"),
+        (BeltLaneState,"OutputLaneState"),
+        (short,"CurrentInputIndex"),
+        (byte,"PreferredInputIndex")
+    )
+
+class MixerSimulationState:
+    c=(
+        (FluidContainerState,"Input0ContainerState"),
+        (FluidContainerState,"Input1ContainerState"),
+        (FluidContainerState,"Chamber0ContainerState"),
+        (FluidContainerState,"Chamber1ContainerState"),
+        (FluidContainerState,"OutputContainerState"),
+        (byte,[
+            ["Byte value","Mixing State"],
+            ["0","Filling chambers"],
+            ["1","Mixing"],
+            ["2","Draining"]
+        ]),
+        (Ticks,"MixingProgress"),
+        (IFluid,"MixingResult")
+    )
+
+class PrioritySplitterSimulationState:
+    c=(
+        (SplitterSimulationState,"The PrioritySplitterSimulationState class inherits from SplitterSimulationState"),
+        (byte,"PrioritizedIndex")
+    )
+
+class SpaceConverterHubSimulationState:
+    c=(
+        (byte,"Number of output lanes"),
+        (Array(
+            (BundleState[FastBeltPathLaneState],"")
+        ),"OutputLaneBundleStates")
+    )
+
+class SpaceConverterSimulationState:
+    c=(
+        (byte,"Number of input lanes"),
+        (byte,"Number of output lanes"),
+        (Array(
+            (BundleState[FastBeltPathLaneState],"")
+        ),"InputLaneBundleStates"),
+        (BundleState[ConverterSimulationState],"SimulationBundleState"),
+        (Array(
+            (BundleState[FastBeltPathLaneState],"")
+        ),"OutputLaneBundleStates"),
+        (int,"ConversionCount")
+    )
+
+class SpaceMergerSimulationState:
+    c=(
+        (BundleState[PathMergerSimulationState],"MergerSimulationBundleState"),
+        (byte,"Number of input lanes"),
+        (Array(
+            (BundleState[FastBeltPathLaneState],"")
+        ),"InputLaneBundleStates")
+    )
+
+class SpaceResearchStationSimulationState:
+    d="TODO : this supposedly throws an exception on deserialization"
+
+class SpaceTrashSimulationState:
+    d="TODO : this supposedly throws an exception on deserialization"
+
+class TrashSimulationState:
+    c=(
+        (Array(
+            (BeltLaneState,"")
+        ),"An array of 4 elements"),
+    )
+
+SIMULATION_STATE_EXCEPTIONS:list[type] = [
+    SplitterSimulationState,
+    BeltFilterSimulationState,
+    BeltPortSenderTransferSimulationState,
+    ConverterHubProducerSimulationState,
+    ConverterSimulationState,
+    MergerSimulationState,
+    MixerSimulationState,
+    PrioritySplitterSimulationState,
+    SpaceConverterHubSimulationState,
+    SpaceConverterSimulationState,
+    SpaceMergerSimulationState,
+    SpaceResearchStationSimulationState,
+    SpaceTrashSimulationState,
+    TrashSimulationState
+]
+
+class ISimulationState:
+    d="A simulation state, the type of which should be deduced from the previously decoded ID, according to the table below. The simulation state classes and the objects contained inside are pretty repetitive and sometimes unclear on their function, so the format descriptions here might be less detailed than in the rest of the documentation, sometimes the description will just be the ingame name of the attribute described.", [["Class ID","Simulation State Class"]]
+
+class SimulationStateContainer:
+    c=(
+        (str,"The simulation state class's serialization ID, or `null` if the simulation state itself is `null`"),
+        (Blob(
+            (ISimulationState,"")
+        ),"The simulation state, only there if the previous value wasn't `null`")
+    )
+
+#endregion
 
 #endregion
 #region buildings.bin

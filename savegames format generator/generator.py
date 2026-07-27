@@ -1,5 +1,6 @@
 import classes
 from classes import (
+    Any,
     byte,
     short,
     ushort,
@@ -10,7 +11,11 @@ from classes import (
     Blob,
     Array
 )
+import simulationStates
 from dataclasses import dataclass
+import inspect
+import typing
+import types
 
 FORMAT_OBJECTS:dict[str,type] = {
     "BUILDINGS_BIN_FORMAT" : classes.BuildingsBIN,
@@ -48,12 +53,15 @@ class FormatTableRow:
 
 # add new types to list and function at the same time
 BASE_TYPES = [
+    Any,
     byte,bytes,
     short,ushort,int,uint,long,ulong,
     bool,str,
     Checkpoint,Blob,Array
 ]
 def typeLink(t:type) -> Link|str:
+    if t == Any:
+        return "Any"
     if t == byte:
         return Link("byte","byte")
     if t == bytes:
@@ -104,16 +112,31 @@ def genFormatTableRows(contents) -> list[FormatTableRow]:
             continue
 
         typeInfo, *desc = line
-        typeInfo:type|Checkpoint|Blob|Array
+        typeInfo:type|typing._GenericAlias|Blob|Array
         desc:RawTextContent = tuple(desc)
 
-        if isinstance(typeInfo,(Blob,Array)):
-            innerRows = genFormatTableRows(typeInfo.content)
+        if isinstance(typeInfo,(Blob,Array)) or type(typeInfo) == typing._GenericAlias:
+
+            if isinstance(typeInfo,Blob):
+                innerRows = genFormatTableRows(typeInfo.content)
+                resolvedType = Blob
+            elif isinstance(typeInfo,Array):
+                innerRows = genFormatTableRows(typeInfo.content)
+                resolvedType = Array
+            else:
+                typeArgs = typing.get_args(typeInfo)
+                assert len(typeArgs) == 1
+                containedType = typeArgs[0]
+                addContainedObj(containedType)
+                innerRows = [FormatTableRow(typeLink(containedType),[""])]
+                resolvedType = typing.get_origin(typeInfo)
+                addContainedObj(resolvedType)
+
             innerRows[0].paddingHeight = len(innerRows)
             for r in innerRows:
                 r.paddingWidth += 1
             generatedRows.append(FormatTableRow(
-                typeLink(Blob if isinstance(typeInfo,Blob) else Array),
+                typeLink(resolvedType),
                 parseTextContent(desc)
             ))
             generatedRows.extend(innerRows)
@@ -238,22 +261,64 @@ def processClass(cls:type) -> str:
 # can't use a set because it changes size while iterating over it
 containedObjects = list[type]()
 def addContainedObj(obj:type) -> None:
+    assert type(obj) == type, obj
     if (obj not in BASE_TYPES) and (obj not in containedObjects):
         containedObjects.append(obj)
 
-with open(INPUT_FILE,encoding="utf-8") as f:
-    fileContent = f.read()
+def simulationSateIDMarker(id:str):
+    def wrapper(cls):
+        cls._serializationId = id
+        return cls
+    return wrapper
 
-for replace,cls in FORMAT_OBJECTS.items():
-    fileContent = fileContent.replace(replace,processClass(cls))
+# different from str.capitalize
+def capitalizeAttrName(name:str) -> str:
+    return name[0].upper() + name[1:]
 
-containedObjectsStr = list[str]()
-for cls in containedObjects:
-    cur = f"#### {cls.__name__}"
-    cur += "\n\n"
-    cur += processClass(cls)
-    containedObjectsStr.append(cur)
-fileContent = fileContent.replace("CONTAINED_OBJECTS_FORMAT","\n\n".join(containedObjectsStr))
+def processSimulationStates() -> None:
 
-with open(OUTPUT_FILE,"w",encoding="utf-8") as f:
-    f.write(fileContent)
+    allRawClasses = simulationStates.GenericSimulationState.__subclasses__()
+    exceptionsByName = {cls.__name__:cls for cls in classes.SIMULATION_STATE_EXCEPTIONS}
+    mappingTable = classes.ISimulationState.d[1]
+
+    for rawCls in allRawClasses:
+
+        clsName = rawCls.__name__
+        clsID = rawCls._serializationId
+
+        if clsName in exceptionsByName:
+            mappingTable.append([clsID,exceptionsByName[clsName]])
+            continue
+
+        contents = []
+        for attrName,attrType in inspect.get_annotations(rawCls).items():
+            if typing.get_origin(attrType) == types.UnionType:
+                args = typing.get_args(attrType)
+                assert args[1] == types.NoneType
+                attrType = args[0]
+            contents.append((attrType,capitalizeAttrName(attrName)))
+
+        mappingTable.append([clsID,type(clsName,(),{"c":tuple(contents)})])
+
+
+
+if __name__ == "__main__":
+
+    with open(INPUT_FILE,encoding="utf-8") as f:
+        fileContent = f.read()
+
+    processSimulationStates()
+
+    for replace,cls in FORMAT_OBJECTS.items():
+        fileContent = fileContent.replace(replace,processClass(cls))
+
+    containedObjectsStr = list[str]()
+    for cls in containedObjects:
+        cur = f"#### {cls.__name__}"
+        cur += "\n\n"
+        cur += processClass(cls)
+        containedObjectsStr.append(cur)
+    fileContent = fileContent.replace("CONTAINED_OBJECTS_FORMAT","\n\n".join(containedObjectsStr))
+
+    with open(OUTPUT_FILE,"w",encoding="utf-8") as f:
+        f.write(fileContent)

@@ -104,13 +104,22 @@ return hash;
 
 That algorithm produces a [uint](#integers) that is then written to represent the checkpoint.<br/>
 The checkpoints currently used by the game and their hash can be found below for convenience.
-| ID         | hash (`uint`) | hash (`bytes`) |
-| ---------- | ------------- | -------------- |
-| blob:end   | 2225352737    | `21 30 A4 84`  |
-| blob:start | 3295808852    | `54 0D 72 C4`  |
-| building   | 899714533     | `E5 8D A0 35`  |
-| buildings  | 2756275580    | `7C 6D 49 A4`  |
-| island     | 2971730586    | `9A 02 21 B1`  |
+
+| ID                          | hash (`uint`) | hash (`bytes`) |
+| --------------------------- | ------------- | -------------- |
+| belt-path-state:end         | 4240874953    | `C9 9D C6 FC`  |
+| belt-path-state:start       | 1930277995    | `6B B4 0D 73`  |
+| blob:end                    | 2225352737    | `21 30 A4 84`  |
+| blob:start                  | 3295808852    | `54 0D 72 C4`  |
+| building                    | 899714533     | `E5 8D A0 35`  |
+| buildings                   | 2756275580    | `7C 6D 49 A4`  |
+| fast-belt-path:end          | 3032662934    | `96 C3 C2 B4`  |
+| fast-belt-path:start        | 937161514     | `2A F3 DB 37`  |
+| island                      | 2971730586    | `9A 02 21 B1`  |
+| super-chunk                 | 2789635310    | `EE 74 46 A6`  |
+| super-chunk:fluid-resources | 373766737     | `51 3A 47 16`  |
+| super-chunk:shape-resources | 166886618     | `DA 7C F2 09`  |
+| TrainData                   | 3975112935    | `E7 68 EF EC`  |
 
 #### Blob
 
