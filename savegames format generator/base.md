@@ -122,6 +122,45 @@ The checkpoints currently used by the game and their hash can be found below for
 | super-chunk:shape-resources | 166886618     | `DA 7C F2 09`  |
 | TrainData                   | 3975112935    | `E7 68 EF EC`  |
 
+#### T
+
+When a format table has something like this :
+
+<table>
+    <tr>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><a href="#numbers">int</a></td>
+        <td>Some number</td>
+    </tr>
+    <tr>
+        <td><a href="#t">T</a></td>
+        <td>The object contained</td>
+    </tr>
+</table>
+
+It means that the object described contains other objects of unknown types. When it's used in a format table, it will look like this :
+
+<table>
+    <tr>
+        <th colspan="2">Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td colspan="2">ContainerType</td>
+        <td>...</td>
+    </tr>
+    <tr>
+        <td>|</td>
+        <td>ContainedType</td>
+        <td>...</td>
+    </tr>
+</table>
+
+In this case, the `T` of `ContainerType` will be `ContainedType`.
+
 #### Blob
 
 Blobs are used to wrap pieces of data. Since they store the length of their content, a reader can easily skip a blob if needed, in case of outdated data for example.
@@ -129,20 +168,20 @@ Blobs are used to wrap pieces of data. Since they store the length of their cont
 | Type                      | Description                   |
 | ------------------------- | ----------------------------- |
 | [Checkpoint](#checkpoint) | `blob:start`                  |
-| [int](#numbers)          | The content's length in bytes |
-| Any                       | The blob's content            |
+| [int](#numbers)           | The content's length in bytes |
+| [T](#t)                   | The blob's content            |
 | [Checkpoint](#checkpoint) | `blob:end`                    |
 
 #### Array
 
-Arrays don't have special formatting, but they are referenced here for completeness.
+Arrays don't have special formatting, but they are referenced here for completeness. The number of elements in the array is either fixed and said in the format description, or defined by a [number](#numbers) read previously.
 
-| Type | Description     |
-| ---- | --------------- |
-| Any  | Array element 0 |
-| Any  | Array element 1 |
-| ...  | ...             |
-| Any  | Array element n |
+| Type    | Description     |
+| ------- | --------------- |
+| [T](#t) | Array element 0 |
+| [T](#t) | Array element 1 |
+| ...     | ...             |
+| [T](#t) | Array element n |
 
 ### maps/main/buildings/[#].bin
 
@@ -162,7 +201,7 @@ todo
 
 ### maps/main/cargo.bin
 
-todo
+CARGO_BIN_FORMAT
 
 ### maps/main/resource-chunks.bin
 

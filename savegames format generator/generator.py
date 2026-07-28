@@ -1,12 +1,12 @@
 import classes
 from classes import (
-    Any,
     byte,
     short,
     ushort,
     uint,
     long,
     ulong,
+    T,
     Checkpoint,
     Blob,
     Array
@@ -20,6 +20,7 @@ import types
 FORMAT_OBJECTS:dict[str,type] = {
     "BUILDINGS_BIN_FORMAT" : classes.BuildingsBIN,
     "ISLANDS_BIN_FORMAT" : classes.IslandsBIN,
+    "CARGO_BIN_FORMAT" : classes.CargoBIN,
     "TRAINS_BIN_FORMAT" : classes.TrainsBIN,
     "STRINGS_BIN_FORMAT" : classes.StringLUT
 }
@@ -54,15 +55,12 @@ class FormatTableRow:
 
 # add new types to list and function at the same time
 BASE_TYPES = [
-    Any,
     byte,bytes,
     short,ushort,int,uint,long,ulong,float,
     bool,str,
-    Checkpoint,Blob,Array
+    T,Checkpoint,Blob,Array
 ]
 def typeLink(t:type) -> Link|str:
-    if t == Any:
-        return "Any"
     if t == byte:
         return Link("byte","byte")
     if t == bytes:
@@ -73,6 +71,8 @@ def typeLink(t:type) -> Link|str:
         return Link("bool","bool")
     if t == str:
         return Link("string","string")
+    if t == T:
+        return Link("T","t")
     if t == Checkpoint:
         return Link("Checkpoint","checkpoint")
     if t == Blob:

@@ -1,6 +1,5 @@
 #region base types
 
-class Any: ...
 class byte: ...
 bytes
 class short: ...
@@ -12,6 +11,8 @@ class ulong: ...
 float
 bool
 str
+
+class T: ...
 
 class Checkpoint:
     def __init__(self,id:str):
@@ -74,7 +75,7 @@ class IIslandConfiguration:
         [
             ["Island types","Configuration"],
             ["All rail types (regular, splitter, merger)",RailConfig],
-            ["Shape and fluid train unloaders and transfer stations",TrainUnloaderConfig]
+            ["Shape and fluid train unloaders and transfers",TrainUnloaderConfig]
         ]
     )
 
@@ -125,20 +126,21 @@ class FluidPackageItem:
         (FluidUnit,"The amount of fluid contained")
     )
 
-# keeping these two classes below simplified because they're part of the blueprint codes specs
-
-# ingame : CargoPackage[FluidId]
-class FluidPackageOnTrack:
+class ShapeId:
     c=(
-        (short,"The amount contained"),
-        (IFluid,"The fluid contained, only there if the amount isn't 0")
+        (ShapeItem,"Ingame, shapes are represented by integer IDs that are generated at runtime. When serializing, the corresponding ShapeItem is used instead"),
     )
 
-# ingame : CargoPackage[ShapeId]
-class ShapePackageOnTrack:
+class FluidId:
+    c=(
+        (IFluid,"Ingame, fluids are represented by integer IDs that are generated at runtime. When serializing, the corresponding IFluid is used instead"),
+    )
+
+# ingame there are 3 different methods that can serialize a CargoPackage, but they all do it in the exact same way
+class CargoPackage[T_]:
     c=(
         (short,"The amount contained"),
-        (ShapeItem,"The shape contained, only there if the amount isn't 0")
+        (T,"The object contained, only there if the amount isn't 0")
     )
 
 class IBeltItem:
@@ -151,8 +153,8 @@ class IBeltItem:
             ["0","`null` (nothing encoded)"],
             ["1",ShapeItem],
             ["2",FluidPackageItem],
-            ["3",FluidPackageOnTrack],
-            ["4",ShapePackageOnTrack],
+            ["3",(CargoPackage," of ",FluidId)],
+            ["4",(CargoPackage," of ",ShapeId)],
         ]
     )
 
@@ -208,16 +210,6 @@ class CompareGateConfig:
                 ["6","NotEqual"],
             ]
         ),
-    )
-
-class ShapeId:
-    c=(
-        (ShapeItem,"Ingame, shapes are represented by integer IDs that are generated at runtime. When serializing, the corresponding ShapeItem is used instead"),
-    )
-
-class FluidId:
-    c=(
-        (IFluid,"Ingame, fluids are represented by integer IDs that are generated at runtime. When serializing, the corresponding IFluid is used instead"),
     )
 
 class SignalChannelId:
@@ -334,12 +326,12 @@ class BeltPathLaneState:
         Checkpoint("belt-path-state:end")
     )
 
-class SimulationBufferState[T]:
+class SimulationBufferState[T_]:
     c=(
         (int,"Number of items in queue"),
         (Blob(
             (Array(
-                (Any,"Contained item"),
+                (T,"Contained item"),
                 (Ticks,"SelfExcess")
             ),"Queue, ingame it is reversed on deserialization, see SPZ2-6575")
         ),"")
@@ -371,10 +363,10 @@ class ShapeCollapseResult:
         ),"Groups making up the result shape")
     )
 
-class BundleState[T]:
+class BundleState[T_]:
     c=(
         (Array(
-            (Any,"Contained items")
+            (T,"Contained items")
         ),"An array of 12 elements (the number of lanes on a space belt/pipe)"),
     )
 
@@ -558,7 +550,7 @@ class ChunkDirection:
         ]),
     )
 
-class LayeredWagonCargo[T]:
+class LayeredWagonCargo[T_]:
     c=(
         (byte,"The number of containers"),
         (Array(
@@ -566,12 +558,40 @@ class LayeredWagonCargo[T]:
             (short,"The number of packages"),
             (short,"The max number of packages"),
             (Array(
-                # this part is a CargoPackage
-                # ingame there are 3 different methods that can serialize a CargoPackage, but they all do it in the exact same way.
-                (short,"The amount contained"),
-                (Any,"The object contained, only there is the amount isn't 0")
+                (CargoPackage[T],"")
             ),"The packages")
         ),"The containers")
+    )
+
+class TrainCargoExchangerState[T_]:
+    c=(
+        (byte,"Constant 2, makes the game not load the following Blob if a different value"),
+        (Blob(
+            (BundleState[BeltPathLaneState],"Loading paths states")
+        ),""),
+        (Array(
+            (CargoPackage[T],"")
+        ),"Filling containers states, array of 3 elements (the number of floors)"),
+        (Array(
+            (BeltPathLaneState,"")
+        ),"Cargo on track states, array of 3 elements (the number of floors)"),
+        (bool,"Constant `true`, makes the game not load the following array if `false`"),
+        (Array(
+            (BeltPathLaneState,"")
+        ),"Cargo on bridge states, array of 3 elements (the number of floors)"),
+    )
+
+class TrainCargoTransferState:
+    c=(
+        (Array(
+            (BeltPathLaneState,"")
+        ),"Cargo on track states, array of 3 elements (the number of floors)"),
+        (Array(
+            (BeltPathLaneState,"")
+        ),"Cargo on input bridge states, array of 3 elements (the number of floors)"),
+        (Array(
+            (BeltPathLaneState,"")
+        ),"Cargo on output bridge states, array of 3 elements (the number of floors)")
     )
 
 #endregion
@@ -631,6 +651,58 @@ class IslandsBIN:
                 ),"The buildings placed on the island")
             ),"")
         ),"The islands inside the bundle")
+    )
+
+#endregion
+#region cargo
+
+class CargoBIN:
+    d="The data about packages in train loaders, unloaders, and transfers."
+    c=(
+        (Blob(
+            (int,"The number of shape loaders"),
+            (Array(
+                (GlobalChunkCoordinate,"The loader's position"),
+                (Blob(
+                    (TrainCargoExchangerState[ShapeId],"")
+                ),"The loader's state")
+            ),"The shape loaders"),
+            (int,"The number of fluid loaders"),
+            (Array(
+                (GlobalChunkCoordinate,"The loader's position"),
+                (Blob(
+                    (TrainCargoExchangerState[FluidId],"")
+                ),"The loader's state")
+            ),"The fluid loaders"),
+            (int,"The number of shape unloaders"),
+            (Array(
+                (GlobalChunkCoordinate,"The unloader's position"),
+                (Blob(
+                    (TrainCargoExchangerState[ShapeId],"")
+                ),"The unloader's state")
+            ),"The shape unloaders"),
+            (int,"The number of fluid unloaders"),
+            (Array(
+                (GlobalChunkCoordinate,"The unloader's position"),
+                (Blob(
+                    (TrainCargoExchangerState[FluidId],"")
+                ),"The unloader's state")
+            ),"The fluid unloaders"),
+            (int,"The number of shape transfers"),
+            (Array(
+                (GlobalChunkCoordinate,"The transfer platform's position"),
+                (Blob(
+                    (TrainCargoTransferState,"")
+                ),"The transfer platform's state")
+            ),"The shape tranfers"),
+            (int,"The number of fluid transfers"),
+            (Array(
+                (GlobalChunkCoordinate,"The transfer platform's position"),
+                (Blob(
+                    (TrainCargoTransferState,"")
+                ),"The transfer platform's state")
+            ),"The fluid transfers")
+        ),""),
     )
 
 #endregion
