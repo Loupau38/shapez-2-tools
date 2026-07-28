@@ -654,6 +654,26 @@ class IslandsBIN:
     )
 
 #endregion
+#region simulation state
+
+class SimulationStateBIN:
+    d="Holds data about the current simulation time and the signals inside the currently active global signal transmitter channels."
+    c=(
+        (Ticks,"The current simulation time, i.e. how long the simulation has been running for since the save was created"),
+        (int,"The number of active channels"),
+        (Array(
+            (SignalChannelId,"The channel ID"),
+            (Blob(
+                (int,"The number of signals in the array"),
+                (Array(
+                    (ISignal,"The signal value"),
+                    (SignalTicks,"The time associated to that signal")
+                ),"The signals for the channel")
+            ),"The channel's state")
+        ),"The active channels")
+    )
+
+#endregion
 #region cargo
 
 class CargoBIN:

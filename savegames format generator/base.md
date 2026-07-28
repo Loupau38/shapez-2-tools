@@ -197,7 +197,7 @@ When serializing a savegame, the game writes the string `Game.Core.Modding.Resol
 
 ### maps/main/simulation/state.bin
 
-todo
+SIMULATION_STATE_BIN_FORMAT
 
 ### maps/main/cargo.bin
 

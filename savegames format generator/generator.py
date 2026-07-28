@@ -20,6 +20,7 @@ import types
 FORMAT_OBJECTS:dict[str,type] = {
     "BUILDINGS_BIN_FORMAT" : classes.BuildingsBIN,
     "ISLANDS_BIN_FORMAT" : classes.IslandsBIN,
+    "SIMULATION_STATE_BIN_FORMAT" : classes.SimulationStateBIN,
     "CARGO_BIN_FORMAT" : classes.CargoBIN,
     "TRAINS_BIN_FORMAT" : classes.TrainsBIN,
     "STRINGS_BIN_FORMAT" : classes.StringLUT
