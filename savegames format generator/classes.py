@@ -9,6 +9,7 @@ int
 class uint: ...
 class long: ...
 class ulong: ...
+float
 bool
 str
 
@@ -45,7 +46,13 @@ class GlobalTileCoordinate:
 
 class Rotation:
     c=(
-        (byte,"0 : East, 1 : South, 2 : West, 3 : North"),
+        (byte,[
+            ["Byte value","Rotation"],
+            ["0","East"],
+            ["1","South"],
+            ["2","West"],
+            ["3","North"]
+        ]),
     )
 
 class RailConfig:
@@ -118,16 +125,20 @@ class FluidPackageItem:
         (FluidUnit,"The amount of fluid contained")
     )
 
+# keeping these two classes below simplified because they're part of the blueprint codes specs
+
+# ingame : CargoPackage[FluidId]
 class FluidPackageOnTrack:
     c=(
         (short,"The amount contained"),
-        (IFluid,"The fluid contained, only present if the amount isn't 0")
+        (IFluid,"The fluid contained, only there if the amount isn't 0")
     )
 
+# ingame : CargoPackage[ShapeId]
 class ShapePackageOnTrack:
     c=(
         (short,"The amount contained"),
-        (ShapeItem,"The shape contained, only present if the amount isn't 0")
+        (ShapeItem,"The shape contained, only there if the amount isn't 0")
     )
 
 class IBeltItem:
@@ -199,6 +210,16 @@ class CompareGateConfig:
         ),
     )
 
+class ShapeId:
+    c=(
+        (ShapeItem,"Ingame, shapes are represented by integer IDs that are generated at runtime. When serializing, the corresponding ShapeItem is used instead"),
+    )
+
+class FluidId:
+    c=(
+        (IFluid,"Ingame, fluids are represented by integer IDs that are generated at runtime. When serializing, the corresponding IFluid is used instead"),
+    )
+
 class SignalChannelId:
     c=(
         (
@@ -211,7 +232,7 @@ class SignalChannelId:
             [
                 ["Channel Type Byte","Channel Type Name","Channel Value"],
                 ["2","ROS","The goal line index"],
-                ["3","Shape","The shape's UID, internal to the game and generated at runtime"],
+                ["3","Shape",("The value of the ",ShapeId," corresponding to the shape (i.e. meaningless)")],
                 ["4","Fluid",("The fluid's color code, single character converted to a ",byte," then to an ",int)],
                 ["5","Positive Integer","The integer itself"],
                 ["6","Negative Integer","The integer's opposite value"]
@@ -523,6 +544,36 @@ class SimulationStateContainer:
 
 #endregion
 
+class ChunkDirection:
+    d="Represents a 3D direction."
+    c=(
+        (byte,[
+            ["Byte value","Direction"],
+            ["0","East"],
+            ["1","South"],
+            ["2","West"],
+            ["3","North"],
+            ["4","Up"],
+            ["5","Down"]
+        ]),
+    )
+
+class LayeredWagonCargo[T]:
+    c=(
+        (byte,"The number of containers"),
+        (Array(
+            # this part is a CargoContainer
+            (short,"The number of packages"),
+            (short,"The max number of packages"),
+            (Array(
+                # this part is a CargoPackage
+                # ingame there are 3 different methods that can serialize a CargoPackage, but they all do it in the exact same way.
+                (short,"The amount contained"),
+                (Any,"The object contained, only there is the amount isn't 0")
+            ),"The packages")
+        ),"The containers")
+    )
+
 #endregion
 #region buildings.bin
 
@@ -580,6 +631,79 @@ class IslandsBIN:
                 ),"The buildings placed on the island")
             ),"")
         ),"The islands inside the bundle")
+    )
+
+#endregion
+#region trains
+
+class TrainsBIN:
+    d="The data about all trains in the save."
+    c=(
+        (int,"The number of trains"),
+        (Array(
+            Checkpoint("TrainData"),
+            (Blob(
+                (Blob(
+                    (str,"The train color's ID"),
+                    (float,"Chunk progress"),
+                    (byte,[
+                        ["Byte value","Train state"],
+                        ["0","Idle"],
+                        ["1","Moving"]
+                    ]),
+                    (bool,"Is upside down"),
+                    (int,"The number of wagons"),
+                    (Array(
+                        (GlobalChunkCoordinate,"Incoming position"),
+                        (GlobalChunkCoordinate,"Outgoing position"),
+                        (ChunkDirection,"Incoming direction"),
+                        (ChunkDirection,"Outgoing direction"),
+                        (bool,"Is upside down"),
+                        (byte,[
+                            ["Byte value","Wagon state"],
+                            ["0","Moving"],
+                            ["1","Airborne"],
+                            ["2","Twisting"],
+                            ["3","Flipping"],
+                            ["4","In queue for production"],
+                            ["5","Producing"],
+                            ["6","Looping"],
+                            ["7","Launching into HUB"],
+                            ["8","Looping flipped"]
+                        ]),
+                        (float,"Travelled chunks inside jump"),
+                        (float,"Jump length")
+                    ),"Wagons"),
+                    (float,"Velocity"),
+                    (float,"Max speed ahead"),
+                    (float,"Acceleration"),
+                    (float,"Chunks until max speed should be respected"),
+                    (bool,"Is stopped"),
+                    (bool,"Was stopped in current chunk"),
+                    (Ticks,"Stop time"),
+                    (int,"The number of occupied rails"),
+                    (Array(
+                        (GlobalChunkCoordinate,"The rail's position"),
+                        (bool,"Whether the occupied position is under the rail")
+                    ),"Occupied rails")
+                ),"The navigation state"),
+                (GlobalChunkCoordinate,"Parent producer position"),
+                (Blob(
+                    (int,"The number of fluid wagons"),
+                    (Array(
+                        (int,"The wagon's index in the train"),
+                        (LayeredWagonCargo[FluidId],"The wagon's cargo")
+                    ),"Fluid wagons")
+                ),"The fluid cargo data"),
+                (Blob(
+                    (int,"The number of shape wagons"),
+                    (Array(
+                        (int,"The wagon's index in the train"),
+                        (LayeredWagonCargo[ShapeId],"The wagon's cargo")
+                    ),"Shape wagons")
+                ),"The shape cargo data")
+            ),"")
+        ),"Each element is a train")
     )
 
 #endregion

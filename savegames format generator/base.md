@@ -58,15 +58,16 @@ The custom C# objects that make up the contents of a savegame are broken down in
 
 A single byte is simply written as is. It can be used to represent an integer between 0 and 255 or a single ASCII character.
 
-#### Integers
+#### Numbers
 
-All integers are encoded as little endian.
+All numbers are encoded as little endian.
 
 | Type     | Encoded on |
 | -------- | ---------- |
 | (u)short | 2 bytes    |
 | (u)int   | 4 bytes    |
 | (u)long  | 8 bytes    |
+| float    | 4 bytes    |
 
 #### Bool
 
@@ -74,12 +75,12 @@ Booleans are encoded on a single byte, `0` for `false` and `1` for `true`.
 
 #### String
 
-Strings are encoded using a lookup table. What actually gets written is the string's index in the table as an [int](#integers). However, if the string is `null`, it isn't added to the table and instead an index of `-2^31` is written. The lookup table is then written to [strings.bin](#stringsbin).<br/>
+Strings are encoded using a lookup table. What actually gets written is the string's index in the table as an [int](#numbers). However, if the string is `null`, it isn't added to the table and instead an index of `-2^31` is written. The lookup table is then written to [strings.bin](#stringsbin).<br/>
 Exception : if you ended up here from the blueprint codes specifications, since blueprints don't have a lookup table, the string is directly written in the data :
 
 | Type               | Description                               |
 | ------------------ | ----------------------------------------- |
-| [short](#integers) | The string's length, or -1 if it's `null` |
+| [short](#numbers) | The string's length, or -1 if it's `null` |
 | bytes              | The string encoded in UTF-8               |
 
 #### Checkpoint
@@ -102,7 +103,7 @@ hash += hash << 15;
 return hash;
 ```
 
-That algorithm produces a [uint](#integers) that is then written to represent the checkpoint.<br/>
+That algorithm produces a [uint](#numbers) that is then written to represent the checkpoint.<br/>
 The checkpoints currently used by the game and their hash can be found below for convenience.
 
 | ID                          | hash (`uint`) | hash (`bytes`) |
@@ -128,7 +129,7 @@ Blobs are used to wrap pieces of data. Since they store the length of their cont
 | Type                      | Description                   |
 | ------------------------- | ----------------------------- |
 | [Checkpoint](#checkpoint) | `blob:start`                  |
-| [int](#integers)          | The content's length in bytes |
+| [int](#numbers)          | The content's length in bytes |
 | Any                       | The blob's content            |
 | [Checkpoint](#checkpoint) | `blob:end`                    |
 
@@ -169,7 +170,7 @@ todo
 
 ### maps/main/trains.bin
 
-todo
+TRAINS_BIN_FORMAT
 
 ### local-player.json
 

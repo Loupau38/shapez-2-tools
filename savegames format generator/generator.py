@@ -20,6 +20,7 @@ import types
 FORMAT_OBJECTS:dict[str,type] = {
     "BUILDINGS_BIN_FORMAT" : classes.BuildingsBIN,
     "ISLANDS_BIN_FORMAT" : classes.IslandsBIN,
+    "TRAINS_BIN_FORMAT" : classes.TrainsBIN,
     "STRINGS_BIN_FORMAT" : classes.StringLUT
 }
 INPUT_FILE = "./base.md"
@@ -55,7 +56,7 @@ class FormatTableRow:
 BASE_TYPES = [
     Any,
     byte,bytes,
-    short,ushort,int,uint,long,ulong,
+    short,ushort,int,uint,long,ulong,float,
     bool,str,
     Checkpoint,Blob,Array
 ]
@@ -66,8 +67,8 @@ def typeLink(t:type) -> Link|str:
         return Link("byte","byte")
     if t == bytes:
         return "bytes"
-    if t in (short,ushort,int,uint,long,ulong):
-        return Link(t.__name__,"integers")
+    if t in (short,ushort,int,uint,long,ulong,float):
+        return Link(t.__name__,"numbers")
     if t == bool:
         return Link("bool","bool")
     if t == str:
@@ -300,6 +301,14 @@ def processSimulationStates() -> None:
 
         mappingTable.append([clsID,type(clsName,(),{"c":tuple(contents)})])
 
+def checkForDuplicates(page:str) -> None:
+    seen = set[str]()
+    for title in page.split("#### ")[1:]:
+        name = title.split("\n")[0]
+        if name in seen:
+            raise ValueError(f"Duplicate type : {name}")
+        seen.add(name)
+
 
 
 if __name__ == "__main__":
@@ -319,6 +328,8 @@ if __name__ == "__main__":
         cur += processClass(cls)
         containedObjectsStr.append(cur)
     fileContent = fileContent.replace("CONTAINED_OBJECTS_FORMAT","\n\n".join(containedObjectsStr))
+
+    checkForDuplicates(fileContent)
 
     with open(OUTPUT_FILE,"w",encoding="utf-8") as f:
         f.write(fileContent)
