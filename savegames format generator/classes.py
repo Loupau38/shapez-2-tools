@@ -594,6 +594,20 @@ class TrainCargoTransferState:
         ),"Cargo on output bridge states, array of 3 elements (the number of floors)")
     )
 
+class SuperChunkCoordinate:
+    d="Represents a super chunk position. A super chunk is a square with a side length of 64 chunks (island level tiles)."
+    c=(
+        (int,"The X coordinate"),
+        (int,"The Y coordinate")
+    )
+
+# feels appropriate to make it its own class (instead of being integrated in ResourceChunksBIN)
+class ShapeDefinition:
+    d="Represents the definition of a shape, i.e. a list of parts inside a list of layers."
+    c=(
+        (str,"The shape code"),
+    )
+
 #endregion
 #region buildings.bin
 
@@ -723,6 +737,47 @@ class CargoBIN:
                 ),"The transfer platform's state")
             ),"The fluid transfers")
         ),""),
+    )
+
+#endregion
+#region resource chunks
+
+class ResourceChunksBIN:
+    d="The data about asteroids on the map."
+    c=(
+        (int,"The number of super chunks serialized, those being the ones that contain islands"),
+        (Array(
+            Checkpoint("super-chunk"),
+            (SuperChunkCoordinate,"The super chunk's position"),
+            (Blob(
+                Checkpoint("super-chunk:shape-resources"),
+                (int,"The number of shape asteroids"),
+                (Array(
+                    (int,"Resource type, only valid value is `1`"),
+                    (GlobalChunkCoordinate,"The asteroid origin postion"),
+                    (int,"The number of tiles in the asteroid"),
+                    (Array(
+                        (ShapeDefinition,"")
+                    ),"The shapes in the asteroid. Same number of elements as the number of tiles, with each shape being in the tile with the same index in the next array"),
+                    (Array(
+                        (int,"The X coordinate"),
+                        (int,"The Y coordinate")
+                    ),"The tiles in the asteroid, each element is a position relative to the asteroid's origin")
+                ),"The shape asteroids"),
+                Checkpoint("super-chunk:fluid-resources"),
+                (int,"The number of fluid asteroids"),
+                (Array(
+                    (int,"Resource type, only valid value is `1`"),
+                    (GlobalChunkCoordinate,"The asteroid origin position"),
+                    (IFluid,"The fluid in the asteroid"),
+                    (int,"The number of tiles in the asteroid"),
+                    (Array(
+                        (int,"The X coordinate"),
+                        (int,"The Y coordinate")
+                    ),"The tiles in the asteroid, each element is a position relative to the asteroid's origin")
+                ),"The fluid asteroids")
+            ),"The asteroids contained in the super chunk")
+        ),"The super chunks serialized")
     )
 
 #endregion

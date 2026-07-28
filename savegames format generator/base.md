@@ -205,7 +205,7 @@ CARGO_BIN_FORMAT
 
 ### maps/main/resource-chunks.bin
 
-todo
+RESOURCE_CHUNKS_BIN_FORMAT
 
 ### maps/main/trains.bin
 

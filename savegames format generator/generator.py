@@ -22,6 +22,7 @@ FORMAT_OBJECTS:dict[str,type] = {
     "ISLANDS_BIN_FORMAT" : classes.IslandsBIN,
     "SIMULATION_STATE_BIN_FORMAT" : classes.SimulationStateBIN,
     "CARGO_BIN_FORMAT" : classes.CargoBIN,
+    "RESOURCE_CHUNKS_BIN_FORMAT" : classes.ResourceChunksBIN,
     "TRAINS_BIN_FORMAT" : classes.TrainsBIN,
     "STRINGS_BIN_FORMAT" : classes.StringLUT
 }
