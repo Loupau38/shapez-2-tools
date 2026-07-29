@@ -24,6 +24,7 @@ FORMAT_OBJECTS:dict[str,type] = {
     "CARGO_BIN_FORMAT" : classes.CargoBIN,
     "RESOURCE_CHUNKS_BIN_FORMAT" : classes.ResourceChunksBIN,
     "TRAINS_BIN_FORMAT" : classes.TrainsBIN,
+    "STATISTICS_BIN_FORMAT" : classes.StatisticsBIN,
     "STRINGS_BIN_FORMAT" : classes.StringLUT
 }
 INPUT_FILE = "./base.md"

@@ -225,7 +225,7 @@ todo
 
 ### statistics.bin
 
-todo
+STATISTICS_BIN_FORMAT
 
 ### strings.bin
 

@@ -608,6 +608,64 @@ class ShapeDefinition:
         (str,"The shape code"),
     )
 
+class StatisticsStream[T_]:
+    c=(
+        (int,"The total number of entries contained, only used to do further processing on the entries after deserialization ingame"),
+        (int,"The number of elements in the array below"),
+        (Array(
+            (T,"They key for which the entries below are"),
+            (int,"The number of entries"),
+            (Array(
+                (Ticks,"The delivery time"),
+                (byte,"The amount delivered at that time (if the amount exceeds 255, multiple entries with the same delivery time will be present)")
+            ),"The entries")
+        ),"The entries grouped by which key they belong to")
+    )
+
+class StatisticsBucket[T_]:
+    c=(
+        (int,"The number of counts"),
+        (Array(
+            (T,"The key to which the count belongs to"),
+            (long,"The count's value")
+        ),"The counts")
+    )
+
+class IntervalBasedStatisticsTracker[T_]:
+    c=(
+        (int,"Last bucket index"),
+        (int,"Max bucket history, must be 32"),
+        (Ticks,"The interval, must the be the value specified in the <a href=\"#statisticsbin\">statistics.bin</a> description"),
+        (int,"The number of buckets"),
+        (Blob(
+            (Array(
+                (StatisticsBucket[T],"")
+            ),"The buckets")
+        ),"")
+    )
+
+class AggregatedStatisticsTracker[T_]:
+    c=(
+        (StatisticsBucket[T],"The bucket contained"),
+    )
+
+class SlidingWindowStatisticsStreamView:
+    c=(
+        (int,"The number of buckets, must be 1"),
+        (Array(
+            (int,"EntriesStartIndex, relative to an internal list in ",StatisticsStream),
+            (int,"EntriesCount, same as above")
+        ),"The buckets")
+    )
+
+class IStatisticsTracker[T_]:
+    d="A statistics tracker, can be ", IntervalBasedStatisticsTracker, " of ", T, ", ", AggregatedStatisticsTracker, " of ", T, ", or ", SlidingWindowStatisticsStreamView, ". See the description in [statistics.bin](#statisticsbin) to know which."
+
+class RocketGroupId:
+    c=(
+        (str,"The ID of the rocket group"),
+    )
+
 #endregion
 #region buildings.bin
 
@@ -851,6 +909,37 @@ class TrainsBIN:
                 ),"The shape cargo data")
             ),"")
         ),"Each element is a train")
+    )
+
+#endregion
+#region statistics
+
+# ShapeId here -> UnifiedShapeId ingame
+class StatisticsBIN:
+    d="The data for everything showed in the statistics screen."
+    c=(
+        (Blob(
+            (Blob(
+                (StatisticsStream[ShapeId],"The shape statistics stream")
+            ),""),
+            (int,"The number of shape delivery trackers, must be 9"),
+            (Array(
+                (Blob(
+                    (IStatisticsTracker[ShapeId],"The first 5 elements are ",IntervalBasedStatisticsTracker, "s of ", ShapeId, " with intervals of 1, 5, 60, 300, and 3600 seconds, the next element is an ",AggregatedStatisticsTracker, " of ", ShapeId, ", and the last 3 elements are ",SlidingWindowStatisticsStreamView, "s")
+                ),"")
+            ),"The shape delivery trackers")
+        ),"The shape statistics"),
+        (Blob(
+            (Blob(
+                (StatisticsStream[RocketGroupId],"The rocket statistics stream")
+            ),""),
+            (int,"The number of rocket delivery trackers, must be 9"),
+            (Array(
+                (Blob(
+                    (IStatisticsTracker[RocketGroupId],"Same as above (but with ",ShapeId," replaced by ",RocketGroupId,")")
+                ),"")
+            ),"The rocket delivery trackers")
+        ),"The rocket statistics")
     )
 
 #endregion
